@@ -1,0 +1,17 @@
+apply plugin: 'groovy'
+version = 0.7
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+  groovy 'org.codehaus.groovy:groovy:1.7.6'
+  groovy 'log4j:log4j:1.2.16'
+}
+
+//jar {
+//    manifest {
+//        attributes 'Implementation-Title': 'gelf4j - Log4J Appender for graylog2 GELF', 'Implementation-Version': version
+//    }
+//}
