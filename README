@@ -7,6 +7,10 @@ gelf4j is set out to be an easy to use log4j appender to log to graylog2 via GEL
 
 ---
 
+Build with gradle via `gradle build` from the root directory
+
+---
+
 Configure the log4j appender by setting the appender class as usual and maintaining these additional configurations for the appender:
 - graylogServerHost: the host name of your graylog server. Maintained as String. Defaults to localhost.
 - graylogServerPort: the port of your graylog server. Maintained as Integer. Defaults to 12201.
