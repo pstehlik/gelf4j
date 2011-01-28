@@ -21,9 +21,9 @@ See http://www.graylog2.org/ and http://www.graylog2.org/about/gelf for details 
 ---
 
 Notes:
-The 'short_message of the GELF messages is limited to 50 chars at this time as I don't know what the best value should be.
+- The 'short_message' of the GELF messages is limited to 250 chars and just takes the first 250 chars of the log4j message. The 'full_message' contains the full log4j text.
 
 ---
 
-Known issues:
-none
+Open items:
+- doesn't support chunked data transfer

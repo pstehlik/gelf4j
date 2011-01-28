@@ -18,7 +18,7 @@ import org.json.simple.JSONValue
  */
 class Gelf4JAppender
 extends AppenderSkeleton {
-  public static final Integer SHORT_MESSAGE_LENGTH = 50
+  public static final Integer SHORT_MESSAGE_LENGTH = 250
   public static final String UNKNOWN_HOST = 'unknown_host'
 
   //---------------------------------------
