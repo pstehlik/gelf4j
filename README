@@ -1,0 +1,25 @@
+gelf4j created by Philip Stehlik - Copyright 2011
+See LICENSE for license details
+
+---
+
+gelf4j is set out to be an easy to use log4j appender to log to graylog2 via GELF messages.
+
+---
+
+Configure the log4j appender by setting the appender class as usual and maintaining these additional configurations for the appender:
+- graylogServerHost: the host name of your graylog server. Maintained as String. Defaults to localhost.
+- graylogServerPort: the port of your graylog server. Maintained as Integer. Defaults to 12201.
+- includeLocationInformation: determines if the logger will include location information (where a log occurred in which file file). Maintained as boolean. Defaults to false.
+
+See http://www.graylog2.org/ and http://www.graylog2.org/about/gelf for details on what that is.
+
+---
+
+Notes:
+The 'short_message of the GELF messages is limited to 50 chars at this time as I don't know what the best value should be.
+
+---
+
+Known issues:
+none

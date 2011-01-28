@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2011 - Philip Stehlik - p [at] pstehlik [dot] com
+ * Licensed under Apache 2 license - See LICENSE for details
+ */
 package com.pstehlik.groovy.gelf4j.appender
 
 import org.apache.log4j.spi.LoggingEvent
@@ -14,13 +18,15 @@ import org.json.simple.JSONValue
  */
 class Gelf4JAppender
 extends AppenderSkeleton {
-  public static final String UNKNOWN_HOST = 'unknown_host'
   public static final Integer SHORT_MESSAGE_LENGTH = 50
+  public static final String UNKNOWN_HOST = 'unknown_host'
 
-  //configuration of the appender
+  //---------------------------------------
+  //configuration settings for the appender
   public String graylogServerHost = 'localhost'
   public int graylogServerPort = 12201
   public boolean includeLocationInformation = false
+  //---------------------------------------
 
   protected void append(LoggingEvent loggingEvent) {
     String gelfJsonString = createGelfJsonFromLoggingEvent(loggingEvent)
@@ -35,6 +41,13 @@ extends AppenderSkeleton {
     return false
   }
 
+  /**
+   * Creates the JSON String for a given <code>LoggingEvent</code>.
+   * The 'short_message' of the GELF message is max 50 chars long.
+   *
+   * @param loggingEvent The logging event to base the JSON creation on
+   * @return The JSON String created from <code>loggingEvent</code>
+   */
   private String createGelfJsonFromLoggingEvent(LoggingEvent loggingEvent) {
     String fullMessage = loggingEvent.getMessage()
     String shortMessage = fullMessage
@@ -58,21 +71,10 @@ extends AppenderSkeleton {
     return JSONValue.toJSONString(gelfMessage as Map)
   }
 
-  private String mapToJsonString(Map gelfMessage){
-    String json = "{"
-    gelfMessage.each{
-      String addElement = "\"${it.key}\":"
-      String addValue = it.value.toString().replaceAll("\\\\","\\\\\\\\")
-      addValue = addValue.replaceAll(/"/,/\\"/)
-      addElement += "\"${addValue}\""
-      addElement += ','
-      json += addElement
-    }
-    json = json.substring(0, json.length()- 1)
-    json += "}"
-    return json
-  }
-
+  /**
+   * Determine local host name that the GELF message will originate from
+   * @return
+   */
   private String getLoggingHostName() {
     String ret
     try {
