@@ -11,6 +11,14 @@ Build with gradle via `gradle build` from the root directory
 
 ---
 
+Deploy by placing the gelf4j.jar file in your class path.
+If you don't have Groovy 1.7.6 already in your deployment, also place the groovy-all-1.7.6.jar in your classpath.
+Of course you need log4j as well. gelf4j is built against version 1.2.16.
+
+In a future release I hope to bundle this all up in a pom or so for easier distribution.
+
+---
+
 Configure the log4j appender by setting the appender class as usual and maintaining these additional configurations for the appender:
 - graylogServerHost: the host name of your graylog server. Maintained as String. Defaults to localhost.
 - graylogServerPort: the port of your graylog server. Maintained as Integer. Defaults to 12201.
