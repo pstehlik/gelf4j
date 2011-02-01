@@ -10,6 +10,7 @@ import java.nio.ByteBuffer
 
 /**
  * Transports GELF messages over the wire to a graylog2 server based on the config on a <code>Gelf4JAppender</code>
+ * ID generation based on the Hibernate UUIDHexGenerator
  *
  * @author Philip Stehlik
  * @since 0.7
@@ -18,14 +19,15 @@ class GelfTransport {
   private static final USED_CHARSET = 'UTF-8'
   private static short counter = (short) 0
   private static final int JVM = (int) (System.currentTimeMillis() >>> 8)
-  private static final int IP;
+  private static final int IP
+
   static {
-    int ipadd;
+    int ipadd
     try {
-      ipadd = BytesHelper.toInt(InetAddress.getLocalHost().getAddress());
+      ipadd = BytesHelper.toInt(InetAddress.getLocalHost().getAddress())
     }
     catch (Exception e) {
-      ipadd = 0;
+      ipadd = 0
     }
     IP = ipadd;
   }
@@ -84,6 +86,14 @@ class GelfTransport {
     }
   }
 
+  /**
+   * Creates the bytes that identify a chunked message.
+   *
+   * @param messageId The unique identifier for this message
+   * @param sequenceNo The number of the message in the chunk sequence
+   * @param sequenceCount The total number of chunks
+   * @return The prepared byte array
+   */
   private byte[] createChunkedMessagePart(String messageId, Integer sequenceNo, Integer sequenceCount) {
     sequenceNo = sequenceNo -1
     Collection ret = []
@@ -122,21 +132,30 @@ class GelfTransport {
    * @return
    */
   private String generateMessageId() {
-    return new StringBuffer(36).append(format(getIP())).append(sep).append(format(getJVM())).append(sep).append(format(getHiTime())).append(sep).append(format(getLoTime())).append(sep).append(format(getCount())).toString()
+    return new StringBuffer(36)
+      .append(format(getIP()))
+      .append(sep)
+      .append(format(getJVM()))
+      .append(sep)
+      .append(format(getHiTime()))
+      .append(sep)
+      .append(format(getLoTime()))
+      .append(sep)
+      .append(format(getCount())).toString()
   }
 
   protected String format(int intval) {
-    String formatted = Integer.toHexString(intval);
-    StringBuffer buf = new StringBuffer("00000000");
-    buf.replace(8 - formatted.length(), 8, formatted);
-    return buf.toString();
+    String formatted = Integer.toHexString(intval)
+    StringBuffer buf = new StringBuffer("00000000")
+    buf.replace(8 - formatted.length(), 8, formatted)
+    return buf.toString()
   }
 
   protected static String format(short shortval) {
-    String formatted = Integer.toHexString(shortval);
-    StringBuffer buf = new StringBuffer("0000");
-    buf.replace(4 - formatted.length(), 4, formatted);
-    return buf.toString();
+    String formatted = Integer.toHexString(shortval)
+    StringBuffer buf = new StringBuffer("0000")
+    buf.replace(4 - formatted.length(), 4, formatted)
+    return buf.toString()
   }
 
   /**
@@ -144,7 +163,7 @@ class GelfTransport {
    * in the same quater second - very unlikely)
    */
   protected int getJVM() {
-    return JVM;
+    return JVM
   }
 
   /**
@@ -153,8 +172,8 @@ class GelfTransport {
    */
   protected short getCount() {
     synchronized (this.class) {
-      if (counter < 0) counter = 0;
-      return counter++;
+      if (counter < 0) counter = 0
+      return counter++
     }
   }
 
@@ -162,18 +181,18 @@ class GelfTransport {
    * Unique in a local network
    */
   protected int getIP() {
-    return IP;
+    return IP
   }
 
   /**
    * Unique down to millisecond
    */
   protected short getHiTime() {
-    return (short) (System.currentTimeMillis() >>> 32);
+    return (short) (System.currentTimeMillis() >>> 32)
   }
 
   protected int getLoTime() {
-    return (int) System.currentTimeMillis();
+    return (int) System.currentTimeMillis()
   }
 
   protected String format(int intval, int lastDigits) {
@@ -183,7 +202,7 @@ class GelfTransport {
   }
 
   protected static String format(short shortval, int lastDigits) {
-    String formatted = Integer.toHexString(shortval);
+    String formatted = Integer.toHexString(shortval)
     formatted = formatted.substring(0, formatted.size() >= lastDigits ? lastDigits : formatted.size())
     return formatted.padLeft(lastDigits, '0')
   }
