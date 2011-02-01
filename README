@@ -19,8 +19,10 @@ In a future release I hope to bundle this all up in a pom or so for easier distr
 
 ---
 
-Configure the log4j appender by setting the appender class as usual and maintaining these additional configurations for the appender:
-Configuration options:
+Configure the log4j appender by setting the appender class as usual and maintaining the additional configurations for the appender.
+The appender's class is com.pstehlik.groovy.gelf4j.appender.Gelf4JAppender
+
+Additional configuration options:
 
 'additionalFields'
 Set as a java Collection in your config to include additional fields to send to graylog2 server.
