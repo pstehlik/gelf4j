@@ -20,18 +20,36 @@ In a future release I hope to bundle this all up in a pom or so for easier distr
 ---
 
 Configure the log4j appender by setting the appender class as usual and maintaining these additional configurations for the appender:
-- graylogServerHost: the host name of your graylog server. Maintained as String. Defaults to localhost.
-- graylogServerPort: the port of your graylog server. Maintained as Integer. Defaults to 12201.
-- includeLocationInformation: determines if the logger will include location information (where a log occurred in which file file). Maintained as boolean. Defaults to false.
+Configuration options:
 
-See http://www.graylog2.org/ and http://www.graylog2.org/about/gelf for details on what that is.
+'additionalFields'
+Set as a java Collection in your config to include additional fields to send to graylog2 server.
+Default: empty/no additional fields added
+
+'facility'
+Set the facility number to use.
+Default: 'GELF'
+
+'graylogServerHost'
+The host name of your graylog server. Maintained as String.
+Default: 'localhost'
+
+'graylogServerPort'
+The port of your graylog server. Maintained as Integer.
+Default: 12201
+
+'host'
+Sets the host name that should be mentioned in the GELF message
+Default: Name of the host that runs the JVM with fallback to 'unknown_host'
+
+'maxChunkSize'
+The amount of bytes a message chunk can contain.
+Default: 8154
 
 ---
 
 Notes:
 - The 'short_message' of the GELF messages is limited to 250 chars and just takes the first 250 chars of the log4j message. The 'full_message' contains the full log4j text.
-
+- The appender does not layout the message according to a message layout. It sends all the fields to the graylog2 server where you can query/look at the log.
 ---
 
-Open items:
-- doesn't support chunked data transfer

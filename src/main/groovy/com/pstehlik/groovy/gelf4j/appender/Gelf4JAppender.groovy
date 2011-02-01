@@ -20,17 +20,24 @@ class Gelf4JAppender
 extends AppenderSkeleton {
   public static final Integer SHORT_MESSAGE_LENGTH = 250
   public static final String UNKNOWN_HOST = 'unknown_host'
+  private static final String GELF_VERSION = "1.0"
 
   //---------------------------------------
   //configuration settings for the appender
+  public Map additionalFields = null
+  public String facility = null
   public String graylogServerHost = 'localhost'
-  public int graylogServerPort = 12201
-  public boolean includeLocationInformation = false
+  public Integer graylogServerPort = 12201
+  public String host = null
+  public Boolean includeLocationInformation = false
+  public Integer maxChunkSize = 8154
   //---------------------------------------
+
+  private GelfTransport _gelfTransport
 
   protected void append(LoggingEvent loggingEvent) {
     String gelfJsonString = createGelfJsonFromLoggingEvent(loggingEvent)
-    GelfTransport.sendGelfMessageToGraylog(this, gelfJsonString)
+    gelfTransport.sendGelfMessageToGraylog(this, gelfJsonString)
   }
 
   void close() {
@@ -44,6 +51,8 @@ extends AppenderSkeleton {
   /**
    * Creates the JSON String for a given <code>LoggingEvent</code>.
    * The 'short_message' of the GELF message is max 50 chars long.
+   * Message building and skipping of additional fields etc is based on
+   * https://github.com/Graylog2/graylog2-docs/wiki/GELF from Jan 7th 2011.
    *
    * @param loggingEvent The logging event to base the JSON creation on
    * @return The JSON String created from <code>loggingEvent</code>
@@ -55,18 +64,33 @@ extends AppenderSkeleton {
       shortMessage = shortMessage.substring(0, SHORT_MESSAGE_LENGTH - 1)
     }
     def gelfMessage = [
-      'level': "${loggingEvent.getLevel().getSyslogEquivalent()}",
-      "short_message": shortMessage,
+      "facility": facility ?: 'GELF',
+      "file": '',
       "full_message": fullMessage,
       "host": loggingHostName,
-      "file": '',
+      "level": "${loggingEvent.getLevel().getSyslogEquivalent()}",
       "line": '',
-      "version": "1"
+      "short_message": shortMessage,
+      "timestamp": loggingEvent.getTimeStamp(),
+      "version": GELF_VERSION
     ]
     //only set location information if configured
-    if(includeLocationInformation){
+    if (includeLocationInformation) {
       gelfMessage.file = loggingEvent.getLocationInformation().fileName
       gelfMessage.line = loggingEvent.getLocationInformation().lineNumber
+    }
+    //add additional fields and prepend with _ if not present already
+    if (additionalFields != null) {
+      additionalFields.each {
+        String key = it.key
+        if (!key.startsWith('_')) {
+          key = '_' + key
+        }
+        //skip additional field called '_id'
+        if(key != '_id'){
+          gelfMessage[key] = it.value as String
+        }
+      }
     }
     return JSONValue.toJSONString(gelfMessage as Map)
   }
@@ -76,12 +100,29 @@ extends AppenderSkeleton {
    * @return
    */
   private String getLoggingHostName() {
-    String ret
-    try {
-      ret = InetAddress.getLocalHost().getHostName()
-    } catch (UnknownHostException e) {
-      ret = UNKNOWN_HOST
+    String ret = host
+    if(ret == null){
+      try {
+        ret = InetAddress.getLocalHost().getHostName()
+      } catch (UnknownHostException e) {
+        ret = UNKNOWN_HOST
+      }
     }
     return ret
+  }
+
+
+  public setMaxChunkSize(Integer maxChunk){
+    if(maxChunk > 8154){
+      throw new IllegalArgumentException("Can not configure maxChunkSize > 8154")
+    }
+    maxChunkSize = maxChunk
+  }
+
+  private GelfTransport getGelfTransport(){
+    if(!_gelfTransport){
+      _gelfTransport = new GelfTransport()
+    }
+    return _gelfTransport
   }
 }
