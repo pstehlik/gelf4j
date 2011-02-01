@@ -176,19 +176,6 @@ class GelfTransport {
     return (int) System.currentTimeMillis();
   }
 
-//  /**
-//   * Generate unique Message ID
-//   * @return
-//   */
-//  private String generateMessageId(){
-//    return new StringBuffer(8)
-//		.append( format( getJVM(), 3 ) ).append(sep)
-//		.append( format( getLoTime(), 3 ) ).append(sep)
-//		.append( format( getCount(), 2 ) )
-//		.toString()
-//  }
-//
-
   protected String format(int intval, int lastDigits) {
     String formatted = Integer.toHexString(intval)
     formatted = formatted.substring(0, formatted.size() >= lastDigits ? lastDigits : formatted.size())
@@ -200,27 +187,4 @@ class GelfTransport {
     formatted = formatted.substring(0, formatted.size() >= lastDigits ? lastDigits : formatted.size())
     return formatted.padLeft(lastDigits, '0')
   }
-//
-//	/**
-//	 * Unique across JVMs on this machine (unless they load this class
-//	 * in the same quater second - very unlikely)
-//	 */
-//	protected int getJVM() {
-//		return JVM;
-//	}
-//
-//	/**
-//	 * Unique in a millisecond for this JVM instance (unless there
-//	 * are > Short.MAX_VALUE instances created in a millisecond)
-//	 */
-//	protected short getCount() {
-//		synchronized(this.class) {
-//			if (counter<0) counter=0;
-//			return counter++;
-//		}
-//	}
-//
-//	protected int getLoTime() {
-//		return (int) System.currentTimeMillis();
-//	}
 }
