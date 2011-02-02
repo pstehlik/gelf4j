@@ -50,6 +50,21 @@ Default: 8154
 
 ---
 
+A working example of a GELF appender in a log4j.properties file would be
+#
+# our log4j properties / configuration file
+#
+# GELF appender
+log4j.appender.GELF=com.pstehlik.groovy.gelf4j.appender.Gelf4JAppender
+log4j.appender.GELF.graylogServerHost=my.gelf.host
+log4j.appender.GELF.host=www13
+log4j.appender.GELF.facility=local1
+
+# use the STDOUT appender. set the level to INFO.
+log4j.category.com.my.class.where.i.DoLogging=INFO, GELF
+
+---
+
 Notes:
 - The 'short_message' of the GELF messages is limited to 250 chars and just takes the first 250 chars of the log4j message. The 'full_message' contains the full log4j text.
 - The appender does not layout the message according to a message layout. It sends all the fields to the graylog2 server where you can query/look at the log.

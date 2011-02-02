@@ -112,17 +112,41 @@ extends AppenderSkeleton {
   }
 
 
-  public setMaxChunkSize(Integer maxChunk){
-    if(maxChunk > 8154){
-      throw new IllegalArgumentException("Can not configure maxChunkSize > 8154")
-    }
-    maxChunkSize = maxChunk
-  }
-
   private GelfTransport getGelfTransport(){
     if(!_gelfTransport){
       _gelfTransport = new GelfTransport()
     }
     return _gelfTransport
+  }
+
+  public void setAdditionalFields(Map fields ){
+    additionalFields = fields
+  }
+
+  public void setFacility(String fac){
+    facility = fac
+  }
+
+  public void setGraylogServerHost(String srvHost){
+    graylogServerHost = srvHost
+  }
+
+  public void setGraylogServerPort(Integer srvPort){
+    graylogServerPort = srvPort
+  }
+
+  public void setHost(String hostName){
+    host = hostName
+  }
+
+  public void setIncludeLocationInformation(Boolean includeLocation){
+    includeLocationInformation = includeLocation
+  }
+
+  public void setMaxChunkSize(Integer maxChunk){
+    if(maxChunk > 8154){
+      throw new IllegalArgumentException("Can not configure maxChunkSize > 8154")
+    }
+    maxChunkSize = maxChunk
   }
 }
