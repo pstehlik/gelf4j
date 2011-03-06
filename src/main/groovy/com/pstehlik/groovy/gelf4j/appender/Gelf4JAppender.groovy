@@ -9,6 +9,7 @@ import org.apache.log4j.AppenderSkeleton
 
 import com.pstehlik.groovy.gelf4j.net.GelfTransport
 import org.json.simple.JSONValue
+import org.apache.log4j.Layout
 
 /**
  * Log4J appender to log to Graylog2 via GELF
@@ -58,17 +59,35 @@ extends AppenderSkeleton {
    * @return The JSON String created from <code>loggingEvent</code>
    */
   private String createGelfJsonFromLoggingEvent(LoggingEvent loggingEvent) {
-    String fullMessage = loggingEvent.getMessage()
+    Map gelfMessage = createGelfMapFromLoggingEvent(loggingEvent)
+    return JSONValue.toJSONString(gelfMessage as Map)
+  }
+
+  Map createGelfMapFromLoggingEvent(LoggingEvent loggingEvent) {
+    String fullMessage = layout ? layout.format(loggingEvent) : loggingEvent.getMessage()
+    if (layout) {
+      if (layout.ignoresThrowable()) {
+        String[] s = loggingEvent.getThrowableStrRep()
+        if (s != null) {
+          int len = s.length
+          for (int i = 0; i < len; i++) {
+            fullMessage += s[i]
+            fullMessage += Layout.LINE_SEP
+          }
+        }
+      }
+    }
+
     String shortMessage = fullMessage
     if (shortMessage.length() > SHORT_MESSAGE_LENGTH) {
-      shortMessage = shortMessage.substring(0, SHORT_MESSAGE_LENGTH - 1)
+      shortMessage = shortMessage.substring(0, SHORT_MESSAGE_LENGTH)
     }
     def gelfMessage = [
       "facility": facility ?: 'GELF',
       "file": '',
       "full_message": fullMessage,
       "host": loggingHostName,
-      "level": "${loggingEvent.getLevel().getSyslogEquivalent()}",
+      "level": "${loggingEvent.getLevel().getSyslogEquivalent()}" as String,
       "line": '',
       "short_message": shortMessage,
       "timestamp": loggingEvent.getTimeStamp(),
@@ -87,12 +106,12 @@ extends AppenderSkeleton {
           key = '_' + key
         }
         //skip additional field called '_id'
-        if(key != '_id'){
+        if (key != '_id') {
           gelfMessage[key] = it.value as String
         }
       }
     }
-    return JSONValue.toJSONString(gelfMessage as Map)
+    return gelfMessage
   }
 
   /**
@@ -101,7 +120,7 @@ extends AppenderSkeleton {
    */
   private String getLoggingHostName() {
     String ret = host
-    if(ret == null){
+    if (ret == null) {
       try {
         ret = InetAddress.getLocalHost().getHostName()
       } catch (UnknownHostException e) {
@@ -112,39 +131,39 @@ extends AppenderSkeleton {
   }
 
 
-  private GelfTransport getGelfTransport(){
-    if(!_gelfTransport){
+  private GelfTransport getGelfTransport() {
+    if (!_gelfTransport) {
       _gelfTransport = new GelfTransport()
     }
     return _gelfTransport
   }
 
-  public void setAdditionalFields(Map fields ){
+  public void setAdditionalFields(Map fields) {
     additionalFields = fields
   }
 
-  public void setFacility(String fac){
+  public void setFacility(String fac) {
     facility = fac
   }
 
-  public void setGraylogServerHost(String srvHost){
+  public void setGraylogServerHost(String srvHost) {
     graylogServerHost = srvHost
   }
 
-  public void setGraylogServerPort(Integer srvPort){
+  public void setGraylogServerPort(Integer srvPort) {
     graylogServerPort = srvPort
   }
 
-  public void setHost(String hostName){
+  public void setHost(String hostName) {
     host = hostName
   }
 
-  public void setIncludeLocationInformation(Boolean includeLocation){
+  public void setIncludeLocationInformation(Boolean includeLocation) {
     includeLocationInformation = includeLocation
   }
 
-  public void setMaxChunkSize(Integer maxChunk){
-    if(maxChunk > 8154){
+  public void setMaxChunkSize(Integer maxChunk) {
+    if (maxChunk > 8154) {
       throw new IllegalArgumentException("Can not configure maxChunkSize > 8154")
     }
     maxChunkSize = maxChunk

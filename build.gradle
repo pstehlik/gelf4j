@@ -1,13 +1,15 @@
 apply plugin: 'groovy'
-version = 0.81
+apply plugin: 'idea'
+version = 0.82
 
 repositories {
     mavenCentral()
 }
 
 dependencies {
-  groovy 'org.codehaus.groovy:groovy:1.7.6'
+  groovy 'org.codehaus.groovy:groovy:1.7.8'
   groovy 'log4j:log4j:1.2.16'
+  testCompile group: 'junit', name: 'junit', version: '4.8.2'
 }
 
 jar {
