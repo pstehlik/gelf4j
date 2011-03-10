@@ -57,6 +57,9 @@
   <ItemGroup>
     <Compile Include="Appender\Gelf4NetAppender.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Transport\AmqpTransport.cs" />
+    <Compile Include="Transport\Transport.cs" />
+    <Compile Include="Transport\UdpTransport.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

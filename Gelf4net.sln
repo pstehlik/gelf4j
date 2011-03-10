@@ -12,7 +12,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		TraceAndTestImpact.testsettings = TraceAndTestImpact.testsettings
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RandomPhrases", "RandomPhrases\RandomPhrases.csproj", "{57AFE8AB-F7E6-4CD5-865D-5E96438C3E80}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RandomSentence", "RandomSentence\RandomSentence.csproj", "{66FA4787-0847-4B16-A653-0D0E4A6ED6DB}"
 EndProject
 Global
 	GlobalSection(TestCaseManagementSettings) = postSolution
@@ -47,16 +47,16 @@ Global
 		{3566B339-845E-49E9-8256-10545E91BD59}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{3566B339-845E-49E9-8256-10545E91BD59}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{3566B339-845E-49E9-8256-10545E91BD59}.Release|x86.ActiveCfg = Release|Any CPU
-		{57AFE8AB-F7E6-4CD5-865D-5E96438C3E80}.Debug|Any CPU.ActiveCfg = Debug|x86
-		{57AFE8AB-F7E6-4CD5-865D-5E96438C3E80}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
-		{57AFE8AB-F7E6-4CD5-865D-5E96438C3E80}.Debug|Mixed Platforms.Build.0 = Debug|x86
-		{57AFE8AB-F7E6-4CD5-865D-5E96438C3E80}.Debug|x86.ActiveCfg = Debug|x86
-		{57AFE8AB-F7E6-4CD5-865D-5E96438C3E80}.Debug|x86.Build.0 = Debug|x86
-		{57AFE8AB-F7E6-4CD5-865D-5E96438C3E80}.Release|Any CPU.ActiveCfg = Release|x86
-		{57AFE8AB-F7E6-4CD5-865D-5E96438C3E80}.Release|Mixed Platforms.ActiveCfg = Release|x86
-		{57AFE8AB-F7E6-4CD5-865D-5E96438C3E80}.Release|Mixed Platforms.Build.0 = Release|x86
-		{57AFE8AB-F7E6-4CD5-865D-5E96438C3E80}.Release|x86.ActiveCfg = Release|x86
-		{57AFE8AB-F7E6-4CD5-865D-5E96438C3E80}.Release|x86.Build.0 = Release|x86
+		{66FA4787-0847-4B16-A653-0D0E4A6ED6DB}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{66FA4787-0847-4B16-A653-0D0E4A6ED6DB}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
+		{66FA4787-0847-4B16-A653-0D0E4A6ED6DB}.Debug|Mixed Platforms.Build.0 = Debug|x86
+		{66FA4787-0847-4B16-A653-0D0E4A6ED6DB}.Debug|x86.ActiveCfg = Debug|x86
+		{66FA4787-0847-4B16-A653-0D0E4A6ED6DB}.Debug|x86.Build.0 = Debug|x86
+		{66FA4787-0847-4B16-A653-0D0E4A6ED6DB}.Release|Any CPU.ActiveCfg = Release|x86
+		{66FA4787-0847-4B16-A653-0D0E4A6ED6DB}.Release|Mixed Platforms.ActiveCfg = Release|x86
+		{66FA4787-0847-4B16-A653-0D0E4A6ED6DB}.Release|Mixed Platforms.Build.0 = Release|x86
+		{66FA4787-0847-4B16-A653-0D0E4A6ED6DB}.Release|x86.ActiveCfg = Release|x86
+		{66FA4787-0847-4B16-A653-0D0E4A6ED6DB}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

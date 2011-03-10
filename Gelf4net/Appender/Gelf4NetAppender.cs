@@ -10,6 +10,8 @@ using System.Net;
 using System.IO;
 using System.IO.Compression;
 using RabbitMQ.Client;
+using Esilog.Gelf4net.Transport;
+using System.Collections;
 
 namespace Esilog.Gelf4net.Appender
 {
@@ -18,6 +20,9 @@ namespace Esilog.Gelf4net.Appender
 		public static int SHORT_MESSAGE_LENGTH = 250;
 		public static string UNKNOWN_HOST = "unknown_host";
 		private static string GELF_VERSION = "1.0";
+
+		private UdpTransport udpTransport;
+		private AmqpTransport amqpTransport;
 
 		//---------------------------------------
 		//configuration settings for the appender
@@ -29,7 +34,19 @@ namespace Esilog.Gelf4net.Appender
 		public string Host { get; set; }
 		public bool IncludeLocationInformation { get; set; }
 		public bool SendAsGelfOrAmqp { get; set; }
-		public int MaxChunkSize { get; set; }
+
+		private int maxChunkSize;
+
+		public int MaxChunkSize
+		{
+			get { return maxChunkSize; }
+			set 
+			{ 
+				maxChunkSize = value;
+				if(udpTransport != null)
+					udpTransport.MaxChunkSize = value;
+			}
+		}
 
 
 		public int GrayLogServerAmqpPort { get; set; }
@@ -42,14 +59,14 @@ namespace Esilog.Gelf4net.Appender
 		public Gelf4NetAppender()
 			: base()
 		{
-			AdditionalFields = null;
+			AdditionalFields = new Dictionary<string,string>();
 			Facility = null;
 			GrayLogServerHost = "";
 			GrayLogServerHostIpAddress = "";
 			GrayLogServerPort = 12201;
 			Host = null;
 			IncludeLocationInformation = false;
-			MaxChunkSize = 8154;
+			MaxChunkSize = 1024;
 			SendAsGelfOrAmqp = true;
 
 
@@ -59,7 +76,18 @@ namespace Esilog.Gelf4net.Appender
 			GrayLogServerAmqpVirtualHost = "/";
 			GrayLogServerAmqpQueue = "queue1";
 
+			udpTransport = new UdpTransport
+			{
+				MaxChunkSize = MaxChunkSize
+			};
 
+			amqpTransport = new AmqpTransport
+			{
+				VirtualHost = GrayLogServerAmqpVirtualHost,
+				User = GrayLogServerAmqpUser,
+				Password = GrayLogServerAmqpPassword,
+				Queue = GrayLogServerAmqpQueue
+			};
 		}
 
 		
@@ -86,7 +114,7 @@ namespace Esilog.Gelf4net.Appender
 		}
 
 		/// <summary>
-		/// 
+		/// Get the HostName
 		/// </summary>
 		private String LoggingHostName
 		{
@@ -109,7 +137,7 @@ namespace Esilog.Gelf4net.Appender
 		}
 
 		/// <summary>
-		/// 
+		/// Get the UDP address of the Server with the format "udp://{GrayLogServerHost}:{GrayLogServerPort}"
 		/// </summary>
 		private string GrayLogServerUrl
 		{
@@ -120,96 +148,43 @@ namespace Esilog.Gelf4net.Appender
 		}
 
 		/// <summary>
-		/// 
+		/// Sending the message to the graylog2 server via UDP
 		/// </summary>
 		/// <param name="message"></param>
 		private void SendGelfMessageToGrayLog(string message)
 		{
-			UdpClient udpClient = new UdpClient();
 			if (GrayLogServerHostIpAddress == string.Empty)
 			{
 				GrayLogServerHostIpAddress = GetIpAddressFromHostName();
 			}
-			IPAddress ipAddress = IPAddress.Parse(GrayLogServerHostIpAddress);
-			IPEndPoint ipEndPoint = new IPEndPoint(ipAddress, GrayLogServerPort);
-
-			Byte[] sendBytes = GzipMessage(message);
-			try
-			{
-
-				udpClient.Send(sendBytes, sendBytes.Length, ipEndPoint);
-			}
-			catch (Exception e)
-			{
-				Console.WriteLine(e.ToString());
-			}
-
+			udpTransport.Send(LoggingHostName, GrayLogServerHostIpAddress, GrayLogServerPort, message);
 		}
 
 		/// <summary>
-		/// 
+		/// Sending the message to the graylog2 server via AMQP
 		/// </summary>
-		/// <param name="message"></param>
+		/// <param name="message">Message to be sent</param>
 		private void SendAmqpMessageToGrayLog(string message)
 		{
 			if (GrayLogServerHostIpAddress == string.Empty)
 			{
 				GrayLogServerHostIpAddress = GetIpAddressFromHostName();
 			}
-
-			//Create the Connection 
-			var factory = new ConnectionFactory()
-			{
-				Protocol = Protocols.FromEnvironment(),
-				HostName = GrayLogServerHostIpAddress,
-				Port = GrayLogServerAmqpPort,
-				VirtualHost = GrayLogServerAmqpVirtualHost,
-				UserName = GrayLogServerAmqpUser,
-				Password = GrayLogServerAmqpPassword
-			};
-
-			using (IConnection conn = factory.CreateConnection())
-			{
-				var model = conn.CreateModel();
-				model.ExchangeDeclare("sendExchange", ExchangeType.Direct);
-				model.QueueDeclare(GrayLogServerAmqpQueue, true, true, true, null);
-				model.QueueBind(GrayLogServerAmqpQueue, "sendExchange", "key");
-				byte[] messageBodyBytes = GzipMessage(message);
-				model.BasicPublish(GrayLogServerAmqpQueue, "key", null, messageBodyBytes);
-
-			}
+			amqpTransport.Send(LoggingHostName, GrayLogServerHostIpAddress, GrayLogServerPort, message);
+			
 		}
 
 		/// <summary>
-		/// 
+		/// Get the first IPAddress from the HostName
 		/// </summary>
-		/// <returns></returns>
+		/// <returns>IPAddress as string</returns>
 		private string GetIpAddressFromHostName()
 		{
 			IPAddress[] addresslist = Dns.GetHostAddresses(GrayLogServerHost);
 			return addresslist[0].ToString();
 		}
 
-		/// <summary>
-		/// 
-		/// </summary>
-		/// <param name="message"></param>
-		/// <returns></returns>
-		private byte[] GzipMessage(String message)
-		{
-			byte[] buffer = Encoding.UTF8.GetBytes(message);
-			MemoryStream ms = new MemoryStream();
-			using (GZipStream zip = new System.IO.Compression.GZipStream(ms, CompressionMode.Compress, true))
-			{
-				zip.Write(buffer, 0, buffer.Length);
-			}
-			ms.Position = 0;
-			MemoryStream outStream = new MemoryStream();
-			byte[] compressed = new byte[ms.Length];
-			ms.Read(compressed, 0, compressed.Length);
-			return compressed;
-
-		}
+		
 
 		/// <summary>
 		/// Creates the JSON String for a given <code>LoggingEvent</code>.
@@ -218,7 +193,7 @@ namespace Esilog.Gelf4net.Appender
 		/// https://github.com/Graylog2/graylog2-docs/wiki/GELF from Jan 7th 2011.
 		/// </summary>
 		/// <param name="loggingEvent"> The logging event to base the JSON creation on</param>
-		/// <returns></returns>
+		/// <returns>GelfMessage as JSON</returns>
 		private string CreateGelfJsonFromLoggingEvent(log4net.Core.LoggingEvent loggingEvent)
 		{
 			var fullMessage = loggingEvent.RenderedMessage;
@@ -228,8 +203,6 @@ namespace Esilog.Gelf4net.Appender
 			{
 				shortMessage = shortMessage.Substring(0, SHORT_MESSAGE_LENGTH - 1);
 			}
-
-			
 
 			var gelfMessage = new GelfMessage
 			{
@@ -269,57 +242,83 @@ namespace Esilog.Gelf4net.Appender
 					if (key != "_id")
 					{
 						jsonObject.Add(key, item.Value);
-						//gelfMessage.key ) it.value as string
 					}
 				}
 			}
+
+            //add additional fields and prepend with _ if not present already
+            if (loggingEvent.Properties != null)
+            {
+                foreach (DictionaryEntry item in loggingEvent.Properties)
+                {
+                    string key = item.Key as string;
+                    if (key != null)
+                    {
+                        if (!key.StartsWith("_"))
+                        {
+                            key = String.Format("_{0}", key);
+                        }
+
+                        if (key != "_id")
+                        {
+                            jsonObject.Add(key, item.Value.ToString());
+                        }
+                    }
+                    
+                }
+            }
 
 
 			return jsonObject.ToString();
 		}
 
+		/// <summary>
+		/// Convert the log4net level to SyslogSeverity
+		/// </summary>
+		/// <param name="level">log4net level</param>
+		/// <returns>SyslogSeverity as integer</returns>
 		private int GetSyslogSeverity(log4net.Core.Level level)
 		{
-            if(level == log4net.Core.Level.Alert)
-                return (int) LocalSyslogAppender.SyslogSeverity.Alert;
+			if(level == log4net.Core.Level.Alert)
+				return (int) LocalSyslogAppender.SyslogSeverity.Alert;
 
-            if(level == log4net.Core.Level.Critical || level == log4net.Core.Level.Fatal)
-                return (int)LocalSyslogAppender.SyslogSeverity.Critical;
+			if(level == log4net.Core.Level.Critical || level == log4net.Core.Level.Fatal)
+				return (int)LocalSyslogAppender.SyslogSeverity.Critical;
 
-            if(level == log4net.Core.Level.Debug)
-                return (int)LocalSyslogAppender.SyslogSeverity.Debug;
+			if(level == log4net.Core.Level.Debug)
+				return (int)LocalSyslogAppender.SyslogSeverity.Debug;
 
-            if(level == log4net.Core.Level.Emergency)
-                return (int)LocalSyslogAppender.SyslogSeverity.Emergency;
+			if(level == log4net.Core.Level.Emergency)
+				return (int)LocalSyslogAppender.SyslogSeverity.Emergency;
 
-            if(level == log4net.Core.Level.Error)
-                return (int)LocalSyslogAppender.SyslogSeverity.Error;
+			if(level == log4net.Core.Level.Error)
+				return (int)LocalSyslogAppender.SyslogSeverity.Error;
 
-            if(level == log4net.Core.Level.Fine 
-                || level == log4net.Core.Level.Finer 
-                || level ==  log4net.Core.Level.Finest 
-                || level ==  log4net.Core.Level.Info 
-                || level ==  log4net.Core.Level.Off)
-                return (int)LocalSyslogAppender.SyslogSeverity.Informational;
+			if(level == log4net.Core.Level.Fine 
+				|| level == log4net.Core.Level.Finer 
+				|| level ==  log4net.Core.Level.Finest 
+				|| level ==  log4net.Core.Level.Info 
+				|| level ==  log4net.Core.Level.Off)
+				return (int)LocalSyslogAppender.SyslogSeverity.Informational;
 
-            if(level == log4net.Core.Level.Notice 
-                || level == log4net.Core.Level.Verbose 
-                || level == log4net.Core.Level.Trace)
-                return (int) LocalSyslogAppender.SyslogSeverity.Notice;
+			if(level == log4net.Core.Level.Notice 
+				|| level == log4net.Core.Level.Verbose 
+				|| level == log4net.Core.Level.Trace)
+				return (int) LocalSyslogAppender.SyslogSeverity.Notice;
 
-            if(level == log4net.Core.Level.Severe)
-                return (int) LocalSyslogAppender.SyslogSeverity.Emergency;
-            
-            if(level == log4net.Core.Level.Warn)
-                return (int) LocalSyslogAppender.SyslogSeverity.Warning;
+			if(level == log4net.Core.Level.Severe)
+				return (int) LocalSyslogAppender.SyslogSeverity.Emergency;
+			
+			if(level == log4net.Core.Level.Warn)
+				return (int) LocalSyslogAppender.SyslogSeverity.Warning;
 
-            return (int) LocalSyslogAppender.SyslogSeverity.Debug;
+			return (int) LocalSyslogAppender.SyslogSeverity.Debug;
 		}
 
 	}
 
 	/// <summary>
-	/// 
+	/// GelfMessage Class
 	/// </summary>
 	[JsonObject(MemberSerialization.OptIn)]
 	class GelfMessage
