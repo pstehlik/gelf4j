@@ -7,7 +7,15 @@ See LICENSE for license details
 
 ---
 
-There's more todo this is just like an alpha stuff for the moment
+Chunk message is here!
+
+---
+
+Now we accept loggingEvent.Properties != null, and we send the variables to graylog2 as additional fields
+
+---
+
+We have a cool project that it's a random sentence generator, to make the examples
 
 ---
 
