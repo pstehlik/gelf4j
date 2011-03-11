@@ -11,7 +11,7 @@ Chunk message is here!
 
 ---
 
-Now we accept loggingEvent.Properties != null, and we send the variables to graylog2 as additional fields
+Now we accept loggingEvent.Properties, and we send the variables to graylog2 as additional fields
 
 ---
 
