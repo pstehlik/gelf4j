@@ -233,16 +233,7 @@ namespace Esilog.Gelf4net.Appender
 			{
 				foreach (var item in AdditionalFields)
 				{
-					var key = item.Key;
-					if (!key.StartsWith("_"))
-					{
-						key = String.Format("_{0}", key);
-					}
-
-					if (key != "_id")
-					{
-						jsonObject.Add(key, item.Value);
-					}
+                    AddAdditionalFields(item.Key, item.Value, jsonObject);
 				}
 			}
 
@@ -251,26 +242,39 @@ namespace Esilog.Gelf4net.Appender
             {
                 foreach (DictionaryEntry item in loggingEvent.Properties)
                 {
-                    string key = item.Key as string;
+                    var key = item.Key as string;
                     if (key != null)
                     {
-                        if (!key.StartsWith("_"))
-                        {
-                            key = String.Format("_{0}", key);
-                        }
-
-                        if (key != "_id")
-                        {
-                            jsonObject.Add(key, item.Value.ToString());
-                        }
+                        AddAdditionalFields(key, item.Value as string, jsonObject);
                     }
-                    
                 }
             }
 
-
 			return jsonObject.ToString();
 		}
+
+        /// <summary>
+        /// Add    
+        /// </summary>
+        /// <param name="key"></param>
+        /// <param name="value"></param>
+        /// <param name="json"></param>
+        private void AddAdditionalFields(string key, string value, JObject jsonObject)
+        {
+            if (key != null)
+            {
+                if (!key.StartsWith("_"))
+                {
+                    key = String.Format("_{0}", key);
+                }
+
+                if (key != "_id")
+                {
+                    key.Replace(":", "");
+                    jsonObject.Add(key, value);
+                }
+            }
+        }
 
 		/// <summary>
 		/// Convert the log4net level to SyslogSeverity

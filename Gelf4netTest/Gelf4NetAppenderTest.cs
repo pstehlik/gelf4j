@@ -79,7 +79,7 @@ namespace Gelf4netTest
             };
 
             var logEvent = new LoggingEvent(data);
-            gelfAppender.GrayLogServerHost = "192.168.159.2";
+            gelfAppender.GrayLogServerHost = "public-graylog2.taulia.com";
             gelfAppender.TestAppend(logEvent);
 
         }
@@ -100,7 +100,7 @@ namespace Gelf4netTest
             };
 
             var logEvent = new LoggingEvent(data);
-            gelfAppender.GrayLogServerHost = "77.0.33.140";
+            gelfAppender.GrayLogServerHost = "public-graylog2.taulia.com";
             gelfAppender.MaxChunkSize = 500;
             logEvent.Properties["customProperty"] = "My Custom Property";
 
