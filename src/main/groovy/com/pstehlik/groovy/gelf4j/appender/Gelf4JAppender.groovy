@@ -10,6 +10,7 @@ import org.apache.log4j.AppenderSkeleton
 import com.pstehlik.groovy.gelf4j.net.GelfTransport
 import org.json.simple.JSONValue
 import org.apache.log4j.Layout
+import org.apache.log4j.helpers.LogLog
 
 /**
  * Log4J appender to log to Graylog2 via GELF
@@ -37,8 +38,12 @@ extends AppenderSkeleton {
   private GelfTransport _gelfTransport
 
   protected void append(LoggingEvent loggingEvent) {
-    String gelfJsonString = createGelfJsonFromLoggingEvent(loggingEvent)
-    gelfTransport.sendGelfMessageToGraylog(this, gelfJsonString)
+    try {
+      String gelfJsonString = createGelfJsonFromLoggingEvent(loggingEvent)
+      gelfTransport.sendGelfMessageToGraylog(this, gelfJsonString)
+    } catch (Exception ex) {
+      LogLog.error("An unexpected error occured", ex)
+    }
   }
 
   void close() {

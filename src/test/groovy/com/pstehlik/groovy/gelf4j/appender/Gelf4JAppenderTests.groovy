@@ -6,16 +6,20 @@ import static org.junit.Assert.assertNull
 import org.apache.log4j.spi.LoggingEvent
 import org.apache.log4j.Priority
 import org.apache.log4j.spi.LocationInfo
+import com.pstehlik.groovy.test.BaseUnitTest
 
 /**
  * @author Philip Stehlik
  * @since 0.82
  */
-class Gelf4JAppenderTests {
+class Gelf4JAppenderTests
+extends BaseUnitTest{
   Gelf4JAppender appender
 
   @org.junit.Before
   void setUp() {
+    super.setUp()
+    registerMetaClass(Gelf4JAppender)
     appender = new Gelf4JAppender()
     appender.layout = new org.apache.log4j.PatternLayout()
     appender.layout.conversionPattern = '%d{ABSOLUTE} %5p %c{1}:%L - %m%n'
@@ -23,6 +27,7 @@ class Gelf4JAppenderTests {
 
   @org.junit.After
   void tearDown() {
+    super.tearDown()
     appender = null
   }
 
@@ -144,4 +149,14 @@ some long message. some long message. some long message. some long message. some
     assertNull res._id
     assertEquals 'prefixedValue',res._prefixedField
   }
+
+  @Test
+  void testAllSurroundingCatch() {
+    appender.metaClass.createGelfMapFromLoggingEvent = { LoggingEvent loggingEvent ->
+      throw new IllegalStateException('error should not break stuff')
+    }
+    def res = appender.append(null)
+    assertNull res
+  }
+
 }
