@@ -12,8 +12,7 @@
 
 **Properties**
 
-
-- <strike>Dictionary<string, string> AdditionalFields</strike>
+- <strike>~~Dictionary<string, string> AdditionalFields~~</strike>
 - string AdditionalFields //Key:Value CSV ex: app:MyApp,version:1.0
 - string Facility
 - string GrayLogServerHost
