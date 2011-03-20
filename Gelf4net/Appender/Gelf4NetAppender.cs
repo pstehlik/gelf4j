@@ -12,6 +12,7 @@ using System.IO.Compression;
 using RabbitMQ.Client;
 using Esilog.Gelf4net.Transport;
 using System.Collections;
+using System.Text.RegularExpressions;
 
 namespace Esilog.Gelf4net.Appender
 {
@@ -24,9 +25,33 @@ namespace Esilog.Gelf4net.Appender
 		private UdpTransport udpTransport;
 		private AmqpTransport amqpTransport;
 
+		private string additionalFields;
+
 		//---------------------------------------
 		//configuration settings for the appender
-		public Dictionary<string, string> AdditionalFields { get; set; }
+		private Dictionary<string, string> innerAdditionalFields;
+
+		public string AdditionalFields
+		{
+			get
+			{
+				return additionalFields;
+			}
+			set
+			{
+				additionalFields = value;
+
+				if (additionalFields != null)
+				{
+					innerAdditionalFields = new Dictionary<string, string>();
+				}
+				else
+				{
+					innerAdditionalFields.Clear();
+				}
+				innerAdditionalFields = additionalFields.Split(',').ToDictionary(it => it.Split(':')[0], it => it.Split(':')[1]);
+			}
+		}
 		public string Facility { get; set; }
 		public string GrayLogServerHost { get; set; }
 		public string GrayLogServerHostIpAddress { get; set; }
@@ -59,7 +84,6 @@ namespace Esilog.Gelf4net.Appender
 		public Gelf4NetAppender()
 			: base()
 		{
-			AdditionalFields = new Dictionary<string,string>();
 			Facility = null;
 			GrayLogServerHost = "";
 			GrayLogServerHostIpAddress = "";
@@ -229,52 +253,52 @@ namespace Esilog.Gelf4net.Appender
 			var jsonObject = JObject.Parse(gelfJsonMessage);
 
 			//add additional fields and prepend with _ if not present already
-			if (AdditionalFields != null)
+			if (innerAdditionalFields != null)
 			{
-				foreach (var item in AdditionalFields)
+				foreach (var item in innerAdditionalFields)
 				{
-                    AddAdditionalFields(item.Key, item.Value, jsonObject);
+					AddAdditionalFields(item.Key, item.Value, jsonObject);
 				}
 			}
 
-            //add additional fields and prepend with _ if not present already
-            if (loggingEvent.Properties != null)
-            {
-                foreach (DictionaryEntry item in loggingEvent.Properties)
-                {
-                    var key = item.Key as string;
-                    if (key != null)
-                    {
-                        AddAdditionalFields(key, item.Value as string, jsonObject);
-                    }
-                }
-            }
+			//add additional fields and prepend with _ if not present already
+			if (loggingEvent.Properties != null)
+			{
+				foreach (DictionaryEntry item in loggingEvent.Properties)
+				{
+					var key = item.Key as string;
+					if (key != null)
+					{
+						AddAdditionalFields(key, item.Value as string, jsonObject);
+					}
+				}
+			}
 
 			return jsonObject.ToString();
 		}
 
-        /// <summary>
-        /// Add    
-        /// </summary>
-        /// <param name="key"></param>
-        /// <param name="value"></param>
-        /// <param name="json"></param>
-        private void AddAdditionalFields(string key, string value, JObject jsonObject)
-        {
-            if (key != null)
-            {
-                if (!key.StartsWith("_"))
-                {
-                    key = String.Format("_{0}", key);
-                }
+		/// <summary>
+		/// Add    
+		/// </summary>
+		/// <param name="key"></param>
+		/// <param name="value"></param>
+		/// <param name="json"></param>
+		private void AddAdditionalFields(string key, string value, JObject jsonObject)
+		{
+			if (key != null)
+			{
+				if (!key.StartsWith("_"))
+				{
+					key = String.Format("_{0}", key);
+				}
 
-                if (key != "_id")
-                {
-                    key.Replace(":", "");
-                    jsonObject.Add(key, value);
-                }
-            }
-        }
+				if (key != "_id")
+				{
+					key = Regex.Replace(key, "[\\W]", "");
+					jsonObject.Add(key, value);
+				}
+			}
+		}
 
 		/// <summary>
 		/// Convert the log4net level to SyslogSeverity

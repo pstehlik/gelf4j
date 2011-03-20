@@ -14,32 +14,33 @@ namespace Esilog.Gelf4net.Transport
 
         public override void Send(string serverHostName, string serverIpAddress, int serverPort, string message)
         {
-            UdpClient udpClient = new UdpClient();
             var ipAddress = IPAddress.Parse(serverIpAddress);
             IPEndPoint ipEndPoint = new IPEndPoint(ipAddress, serverPort);
 
-            var gzipMessage = GzipMessage(message);
+            using(UdpClient udpClient = new UdpClient()){
+                var gzipMessage = GzipMessage(message);
 
-            if (MaxChunkSize < gzipMessage.Length)
-            {
-                var chunkCount = gzipMessage.Length / MaxChunkSize + 1;
-                var messageId = GenerateMessageId(serverHostName);
-                for (int i = 0; i < chunkCount; i++)
+                if (MaxChunkSize < gzipMessage.Length)
                 {
-                    var messageChunkPrefix = CreateChunkedMessagePart(messageId, i, chunkCount);
-                    var skip = i * MaxChunkSize;
-                    var messageChunkSuffix = gzipMessage.Skip(skip).Take(MaxChunkSize).ToArray<byte>();
+                    var chunkCount = gzipMessage.Length / MaxChunkSize + 1;
+                    var messageId = GenerateMessageId(serverHostName);
+                    for (int i = 0; i < chunkCount; i++)
+                    {
+                        var messageChunkPrefix = CreateChunkedMessagePart(messageId, i, chunkCount);
+                        var skip = i * MaxChunkSize;
+                        var messageChunkSuffix = gzipMessage.Skip(skip).Take(MaxChunkSize).ToArray<byte>();
 
-                    var messageChunkFull = new byte[messageChunkPrefix.Length + messageChunkSuffix.Length];
-                    messageChunkPrefix.CopyTo(messageChunkFull, 0);
-                    messageChunkSuffix.CopyTo(messageChunkFull, messageChunkPrefix.Length);
+                        var messageChunkFull = new byte[messageChunkPrefix.Length + messageChunkSuffix.Length];
+                        messageChunkPrefix.CopyTo(messageChunkFull, 0);
+                        messageChunkSuffix.CopyTo(messageChunkFull, messageChunkPrefix.Length);
 
-                    udpClient.Send(messageChunkFull, messageChunkFull.Length, ipEndPoint);
+                        udpClient.Send(messageChunkFull, messageChunkFull.Length, ipEndPoint);
+                    }
                 }
-            }
-            else
-            {
-                udpClient.Send(gzipMessage, gzipMessage.Length, ipEndPoint);
+                else
+                {
+                    udpClient.Send(gzipMessage, gzipMessage.Length, ipEndPoint);
+                }
             }
         }
 

@@ -100,8 +100,9 @@ namespace Gelf4netTest
             };
 
             var logEvent = new LoggingEvent(data);
-            gelfAppender.GrayLogServerHost = "public-graylog2.taulia.com";
+            gelfAppender.GrayLogServerHost = "77.0.33.140";
             gelfAppender.MaxChunkSize = 500;
+            gelfAppender.AdditionalFields = "nombre:pedro,apellido:jimenez";
             logEvent.Properties["customProperty"] = "My Custom Property";
 
             gelfAppender.TestAppend(logEvent);
