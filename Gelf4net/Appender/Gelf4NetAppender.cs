@@ -220,7 +220,12 @@ namespace Esilog.Gelf4net.Appender
 		/// <returns>GelfMessage as JSON</returns>
 		private string CreateGelfJsonFromLoggingEvent(log4net.Core.LoggingEvent loggingEvent)
 		{
-			var fullMessage = loggingEvent.RenderedMessage;
+            var fullMessage = loggingEvent.RenderedMessage;
+            if (loggingEvent.ExceptionObject != null)
+            {
+                fullMessage = String.Format("{0} - {1}. {2}. {3}.", fullMessage, loggingEvent.ExceptionObject.Source, loggingEvent.ExceptionObject.Message, loggingEvent.ExceptionObject.StackTrace);
+            }
+
 			var shortMessage = fullMessage;
 
 			if (shortMessage.Length > SHORT_MESSAGE_LENGTH)

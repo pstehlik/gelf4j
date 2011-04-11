@@ -40,10 +40,10 @@
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\packages\Newtonsoft.Json.4.0.1\lib\40\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="RabbitMQ.Client">
+    <Reference Include="RabbitMQ.Client, Version=2.3.1.0, Culture=neutral, PublicKeyToken=89e7d7c5feba84ce, processorArchitecture=MSIL">
       <HintPath>..\packages\RabbitMQ.Client.dll</HintPath>
     </Reference>
-    <Reference Include="RabbitMQ.ServiceModel">
+    <Reference Include="RabbitMQ.ServiceModel, Version=2.3.1.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\RabbitMQ.ServiceModel.dll</HintPath>
     </Reference>
     <Reference Include="System" />
