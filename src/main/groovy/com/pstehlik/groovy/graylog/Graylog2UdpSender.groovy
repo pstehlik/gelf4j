@@ -29,9 +29,9 @@ class Graylog2UdpSender {
       socket = new DatagramSocket()
       socket.send(packet)
     } catch(UnknownHostException ex) {
-      LogLog.error("Could determine address for [${hostname}]", ex)
+      LogLog.error("Could not determine address for [${hostname}]")
     } catch(IOException ex) {
-      LogLog.error("Error when sending data to  [${address}/${port}]", ex)
+      LogLog.error("Error when sending data to [${address}/${port}]. [${ex.message}]")
     } finally {
       socket?.close()
     }
