@@ -33,6 +33,7 @@ extends AppenderSkeleton {
   public Integer graylogServerPort = 12201
   public String host = null
   public Boolean includeLocationInformation = false
+  public Boolean logStackTraceFromMessage = false
   public Integer maxChunkSize = 8154
   //---------------------------------------
 
@@ -72,9 +73,15 @@ extends AppenderSkeleton {
   Map createGelfMapFromLoggingEvent(LoggingEvent loggingEvent) {
     String fullMessage = ''
     String[] throwableAsString
+
+    //detecting if the actual log-message is a throwable - because if so, might want the whole stacktrace
     if(loggingEvent.message instanceof Throwable){
-      def tI = new ThrowableInformation(loggingEvent.message as Throwable)
-      throwableAsString = tI.throwableStrRep
+      if(logStackTraceFromMessage){
+        def tI = new ThrowableInformation(loggingEvent.message as Throwable)
+        throwableAsString = tI.throwableStrRep
+      } else {
+        fullMessage = layout ? layout.format(loggingEvent) : (loggingEvent.getMessage() as String)
+      }
     } else {
       fullMessage = layout ? layout.format(loggingEvent) : loggingEvent.getMessage()
     }
@@ -185,5 +192,9 @@ extends AppenderSkeleton {
       throw new IllegalArgumentException("Can not configure maxChunkSize > 8154")
     }
     maxChunkSize = maxChunk
+  }
+
+  public void setLogStackTraceFromMessage(String trueFalse) {
+    logStackTraceFromMessage = Boolean.parseBoolean(trueFalse)
   }
 }

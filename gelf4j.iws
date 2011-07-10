@@ -21,7 +21,7 @@
   </component>
   <component name="DebuggerManager">
     <line_breakpoints>
-      <breakpoint url="file://$PROJECT_DIR$/src/main/groovy/com/pstehlik/groovy/gelf4j/appender/Gelf4JAppender.groovy" line="74" class="Class at Gelf4JAppender.groovy:74" package="">
+      <breakpoint url="file://$PROJECT_DIR$/src/main/groovy/com/pstehlik/groovy/gelf4j/appender/Gelf4JAppender.groovy" line="77" class="Class at Gelf4JAppender.groovy:74" package="">
         <option name="ENABLED" value="true" />
         <option name="LOG_ENABLED" value="false" />
         <option name="LOG_EXPRESSION_ENABLED" value="false" />
@@ -75,10 +75,28 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="Gelf4JAppender.groovy" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="Gelf4JAppender.groovy" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/groovy/com/pstehlik/groovy/gelf4j/appender/Gelf4JAppender.groovy">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="81" column="56" selection-start="2724" selection-end="2724" vertical-scroll-proportion="0.17828572">
+            <state line="35" column="41" selection-start="1126" selection-end="1150" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="RealLog4JRunner.groovy" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/test/groovy/com/pstehlik/groovy/gelf4j/RealLog4JRunner.groovy">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="52" column="45" selection-start="1543" selection-end="1567" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="README" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/README">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="56" column="44" selection-start="2007" selection-end="2007" vertical-scroll-proportion="0.9464286">
               <folding />
             </state>
           </provider>
@@ -99,8 +117,9 @@
     <option name="changedFiles">
       <list>
         <option value="$PROJECT_DIR$/src/test/groovy/com/pstehlik/groovy/com/pstehlik/groovy/gelf4j/RealLog4JRunner.groovy" />
-        <option value="$PROJECT_DIR$/src/test/groovy/com/pstehlik/groovy/gelf4j/RealLog4JRunner.groovy" />
         <option value="$PROJECT_DIR$/src/main/groovy/com/pstehlik/groovy/gelf4j/appender/Gelf4JAppender.groovy" />
+        <option value="$PROJECT_DIR$/src/test/groovy/com/pstehlik/groovy/gelf4j/RealLog4JRunner.groovy" />
+        <option value="$PROJECT_DIR$/README" />
       </list>
     </option>
   </component>
@@ -414,7 +433,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="22" width="1680" height="1024" extended-state="0" />
-    <editor active="false" />
+    <editor active="true" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
@@ -426,9 +445,9 @@
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.16371681" order="1" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.25" sideWeight="0.6006637" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.25" sideWeight="0.789823" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Dependency Viewer" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.21017699" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.21017699" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -566,16 +585,23 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/groovy/com/pstehlik/groovy/gelf4j/RealLog4JRunner.groovy">
+    <entry file="file://$PROJECT_DIR$/src/main/groovy/com/pstehlik/groovy/gelf4j/appender/Gelf4JAppender.groovy">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="15" column="31" selection-start="349" selection-end="349" vertical-scroll-proportion="0.2706767">
+        <state line="35" column="41" selection-start="1126" selection-end="1150" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/groovy/com/pstehlik/groovy/gelf4j/appender/Gelf4JAppender.groovy">
+    <entry file="file://$PROJECT_DIR$/src/test/groovy/com/pstehlik/groovy/gelf4j/RealLog4JRunner.groovy">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="81" column="56" selection-start="2724" selection-end="2724" vertical-scroll-proportion="0.17828572">
+        <state line="52" column="45" selection-start="1543" selection-end="1567" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/README">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="56" column="44" selection-start="2007" selection-end="2007" vertical-scroll-proportion="0.9464286">
           <folding />
         </state>
       </provider>

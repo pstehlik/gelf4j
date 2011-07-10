@@ -42,24 +42,20 @@ class RealLog4JRunner {
 # GELF appender
 log4j.appender.GELF=com.pstehlik.groovy.gelf4j.appender.Gelf4JAppender
 log4j.appender.GELF.graylogServerHost=public-graylog2.taulia.com
-log4j.appender.GELF.host=User Test Data Gen
+log4j.appender.GELF.host=Log With Stack
 log4j.appender.GELF.facility=1
-log4j.appender.GELF.layout=org.apache.log4j.PatternLayout
-log4j.appender.GELF.layout.ConversionPattern=%d{ABSOLUTE} %5p %c{1}:%L - %m%n
+log4j.appender.GELF.logStackTraceFromMessage=true
 
 log4j.appender.GELF2=com.pstehlik.groovy.gelf4j.appender.Gelf4JAppender
 log4j.appender.GELF2.graylogServerHost=public-graylog2.taulia.com
-log4j.appender.GELF2.host=News Test Data Gen
+log4j.appender.GELF2.host=Log No Stack
 log4j.appender.GELF2.facility=7
-log4j.appender.GELF2.layout=org.apache.log4j.PatternLayout
-log4j.appender.GELF2.layout.ConversionPattern=%d{ABSOLUTE} %5p %c{1}:%L - %m%n
+log4j.appender.GELF2.logStackTraceFromMessage=false
 
 log4j.appender.GELF3=com.pstehlik.groovy.gelf4j.appender.Gelf4JAppender
 log4j.appender.GELF3.graylogServerHost=public-graylog2.taulia.com
 log4j.appender.GELF3.host=Another data Generator
 log4j.appender.GELF3.facility=13
-log4j.appender.GELF3.layout=org.apache.log4j.PatternLayout
-log4j.appender.GELF3.layout.ConversionPattern=%d{ABSOLUTE} %5p %c{1}:%L - %m%n
 
 # use the STDOUT appender. set the level to INFO.
 log4j.category.com.pstehlik.groovy.gelf4j.RealLog4JRunner=INFO, GELF
@@ -78,8 +74,10 @@ log4j.category.com.pstehlik.groovy.gelf4j.RealLog4JRunner3=DEBUG, GELF3
     try{
       throw new Exception("something gets thrown here!!! wait time was [---]")
     } catch (Exception ex){
-      log.error 'error happened with some text', ex
-      log.error ex
+      log1.error 'error happened with some text', ex
+      log1.error ex
+      log2.error 'error happened with some text', ex
+      log2.error ex
     }
 
     return;

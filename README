@@ -44,6 +44,18 @@ Default: 12201
 Sets the host name that should be mentioned in the GELF message
 Default: Name of the host that runs the JVM with fallback to 'unknown_host'
 
+'logStackTraceFromMessage'
+Defines if a logged Throwable should be logged with the complete stack trace or just with the info returned by
+the toString() implementation on the Throwable (which is usually calling getMessage()).
+This applies to messages logged by doing things like
+  log.error(myException)
+message logged via
+  log.error("Oh... something bad happened", myException)
+have the stack trace logged and you can't change that.
+
+If you always want to have the stack trace in your logs you should set logStackTraceFromMessage to true (which is recommended).
+Default: false (for backwards compatibility)
+
 'maxChunkSize'
 The amount of bytes a message chunk can contain.
 Default: 8154
