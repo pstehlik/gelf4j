@@ -159,4 +159,13 @@ some long message. some long message. some long message. some long message. some
     assertNull res
   }
 
+
+  @Test
+  void testExceptionMessagePartOfLog() {
+    appender.metaClass.createGelfMapFromLoggingEvent = { LoggingEvent loggingEvent ->
+      throw new IllegalStateException('error should not break stuff')
+    }
+    def res = appender.append(null)
+    assertNull res
+  }
 }

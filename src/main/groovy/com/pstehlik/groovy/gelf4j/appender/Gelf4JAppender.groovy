@@ -11,6 +11,7 @@ import com.pstehlik.groovy.gelf4j.net.GelfTransport
 import org.json.simple.JSONValue
 import org.apache.log4j.Layout
 import org.apache.log4j.helpers.LogLog
+import org.apache.log4j.spi.ThrowableInformation
 
 /**
  * Log4J appender to log to Graylog2 via GELF
@@ -69,20 +70,32 @@ extends AppenderSkeleton {
   }
 
   Map createGelfMapFromLoggingEvent(LoggingEvent loggingEvent) {
-    String fullMessage = layout ? layout.format(loggingEvent) : loggingEvent.getMessage()
-    if (layout) {
-      if (layout.ignoresThrowable()) {
-        String[] s = loggingEvent.getThrowableStrRep()
-        if (s != null) {
-          int len = s.length
-          for (int i = 0; i < len; i++) {
-            fullMessage += s[i]
-            fullMessage += Layout.LINE_SEP
-          }
+    String fullMessage = ''
+    String[] throwableAsString
+    if(loggingEvent.message instanceof Throwable){
+      def tI = new ThrowableInformation(loggingEvent.message as Throwable)
+      throwableAsString = tI.throwableStrRep
+    } else {
+      fullMessage = layout ? layout.format(loggingEvent) : loggingEvent.getMessage()
+    }
+
+    if (layout == null || layout.ignoresThrowable() || !fullMessage) {
+      throwableAsString = throwableAsString?:loggingEvent.getThrowableStrRep()
+      if (throwableAsString != null) {
+        int len = throwableAsString.length
+        if(fullMessage){ // newline after the 'original log message' to have nicer formatting
+          fullMessage += Layout.LINE_SEP
+        }
+        for (int i = 0; i < len; i++) {
+          fullMessage += throwableAsString[i]
+          fullMessage += Layout.LINE_SEP
         }
       }
     }
 
+    if(!fullMessage){ //failsave to prevent a 'null' or empty message even though it should(!) not happen
+      fullMessage = loggingEvent.message as String
+    }
     String shortMessage = fullMessage
     if (shortMessage.length() > SHORT_MESSAGE_LENGTH) {
       shortMessage = shortMessage.substring(0, SHORT_MESSAGE_LENGTH)
