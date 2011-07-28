@@ -6,7 +6,6 @@ using Esilog.Gelf4net.Appender;
 using log4net.Core;
 using System.Security.Cryptography;
 using System.IO;
-using NUnit.Core;
 using NUnit.Framework;
 
 namespace Gelf4netTest
@@ -23,11 +22,9 @@ namespace Gelf4netTest
 		public void Start()
 		{
 			//"public-graylog2.taulia.com"
-			graylogServerHost = "localhost";
+			graylogServerHost = "192.168.1.102";
 		}
-			
-		
-		
+
         [Test()]
         public void AppendTest()
         {
@@ -127,8 +124,6 @@ namespace Gelf4netTest
 				Console.WriteLine (item);
 			}
 			Console.WriteLine (result.ToArray<byte>());
-			
-            //return result.ToArray<byte>();
         }
 
         [Test()]
