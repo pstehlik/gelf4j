@@ -11,6 +11,8 @@ namespace Esilog.Gelf4net.Transport
     class UdpTransport : Transport
     {
         public int MaxChunkSize { get; set; }
+		
+		private int _maxHeaderSize = 8;
 
         public override void Send(string serverHostName, string serverIpAddress, int serverPort, string message)
         {
@@ -22,7 +24,7 @@ namespace Esilog.Gelf4net.Transport
 
                 if (MaxChunkSize < gzipMessage.Length)
                 {
-                    var chunkCount = gzipMessage.Length / MaxChunkSize + 1;
+                    var chunkCount = (gzipMessage.Length / MaxChunkSize) + 1;
                     var messageId = GenerateMessageId(serverHostName);
                     for (int i = 0; i < chunkCount; i++)
                     {
@@ -47,18 +49,21 @@ namespace Esilog.Gelf4net.Transport
         private byte[] CreateChunkedMessagePart(string messageId, int index, int chunkCount)
         {
             var result = new List<byte>();
+			//Chunked GELF ID: 0x1e 0x0f (identifying this message as a chunked GELF message)
             result.Add(Convert.ToByte(30));
             result.Add(Convert.ToByte(15));
-
+			
+			//Message ID: 8 bytes 
             result.AddRange(Encoding.Default.GetBytes(messageId).ToArray<byte>());
-
-            var indexShifted = (int)((uint)index >> 8);
-            var chunkCountShifted = (int)((uint)chunkCount >> 8);
-
-            result.Add(Convert.ToByte(indexShifted));
+			
+			//Sequence Number: 1 byte (The sequence number of this chunk)
+            //var indexShifted = (int)((uint)index >> 8);
+			//result.Add(Convert.ToByte(indexShifted));
             result.Add(Convert.ToByte(index));
-
-            result.Add(Convert.ToByte(chunkCountShifted));
+			
+			//Total Number: 1 byte (How many chunks does this message consist of in total)
+            //var chunkCountShifted = (int)((uint)chunkCount >> 8);
+			//result.Add(Convert.ToByte(chunkCountShifted));
             result.Add(Convert.ToByte(chunkCount));
 
             return result.ToArray<byte>();
@@ -76,8 +81,9 @@ namespace Esilog.Gelf4net.Transport
             sb.Append(t);
             sb.Append(s);
             sb.Append(r);
-
-            return sb.ToString().Substring(0, 32) ;
+			
+			//Message ID: 8 bytes 
+            return sb.ToString().Substring(0, _maxHeaderSize) ;
         }
     }
 }

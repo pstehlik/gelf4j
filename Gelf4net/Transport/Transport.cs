@@ -25,7 +25,6 @@ namespace Esilog.Gelf4net.Transport
                 zip.Write(buffer, 0, buffer.Length);
             }
             ms.Position = 0;
-            MemoryStream outStream = new MemoryStream();
             byte[] compressed = new byte[ms.Length];
             ms.Read(compressed, 0, compressed.Length);
             return compressed;

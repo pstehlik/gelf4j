@@ -1,0 +1,35 @@
+﻿<Properties>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Gelf4net/Transport/UdpTransport.cs">
+    <Files>
+      <File FileName="Gelf4netTest/Gelf4NetAppenderTest.cs" Line="14" Column="18" />
+      <File FileName="Gelf4net/Transport/Transport.cs" Line="22" Column="28" />
+      <File FileName="Gelf4net/Appender/Gelf4NetAppender.cs" Line="231" Column="36" />
+      <File FileName="Gelf4net/Transport/UdpTransport.cs" Line="65" Column="15" />
+    </Files>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State expanded="True">
+          <Node name="Gelf4net" expanded="True">
+            <Node name="Appender" expanded="True" />
+            <Node name="Transport" expanded="True" />
+          </Node>
+          <Node name="Gelf4netTest" expanded="True" />
+          <Node name="RandomSentence" expanded="True" selected="True">
+            <Node name="References" expanded="True" />
+          </Node>
+        </State>
+      </Pad>
+      <Pad Id="ClassPad">
+        <State expanded="True" selected="True" />
+      </Pad>
+      <Pad Id="MonoDevelop.NUnit.TestPad">
+        <State expanded="True" selected="True" />
+      </Pad>
+    </Pads>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+</Properties>
