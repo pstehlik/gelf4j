@@ -19,21 +19,28 @@ namespace SandboxWindow
         {
             log4net.Config.XmlConfigurator.Configure();
             InitializeComponent();
+			this.FormBorderStyle =  FormBorderStyle.Fixed3D;
         }
 
         private void Form1_Load(object sender, EventArgs e)
         {
             log.Debug("Starting the randomizer sentece");
+			Size = new Size(800, 600);
             RandomizeSentence();
         }
+		
+		private string GetPath(string path, string file)
+		{
+			return String.Concat(path, Path.DirectorySeparatorChar, file);
+		}
 
         private void RandomizeSentence()
         {
-            var syntaxes = File.ReadAllLines(@"Resources\syntax.txt");
-            var nouns = File.ReadAllLines(@"Resources\nouns.txt");
-            var verbs = File.ReadAllLines(@"Resources\verbs.txt");
-            var adjectives = File.ReadAllLines(@"Resources\adjectives.txt");
-            var adverbs = File.ReadAllLines(@"Resources\adverbs.txt");
+            var syntaxes = File.ReadAllLines(GetPath("Resources", "syntax.txt"));
+            var nouns = File.ReadAllLines(GetPath("Resources", "nouns.txt"));
+            var verbs = File.ReadAllLines(GetPath("Resources", "verbs.txt"));
+            var adjectives = File.ReadAllLines(GetPath("Resources", "adjectives.txt"));
+            var adverbs = File.ReadAllLines(GetPath("Resources", "adverbs.txt"));
             var rand = new Random();
 
             var sentence = syntaxes[rand.Next(syntaxes.Length)];
