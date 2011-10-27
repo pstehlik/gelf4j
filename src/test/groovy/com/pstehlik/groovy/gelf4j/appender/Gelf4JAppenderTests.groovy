@@ -75,6 +75,25 @@ extends BaseUnitTest{
   }
 
   @Test
+  void testMessageBuildingWithExceptionsOfOver500StackTraceLines() {
+
+    registerMetaClass(Gelf4JAppender)
+    Gelf4JAppender.metaClass.getMaxLoggedLines = { -> 10 }
+
+    def ex = new Throwable('Some Exception')
+    assert ex.getStackTrace().length > 10
+    LoggingEvent le = new LoggingEvent(
+      this.class.name,
+      cat,
+      Priority.WARN,
+      'some message before exception',
+      ex
+    )
+    assertEquals 12, appender.createGelfMapFromLoggingEvent(le).full_message.split('\n').size()
+
+  }
+
+  @Test
   void testShortMessageHandling() {
     def longMessage = '''some long message. some long message. some long message. some long message. some long message.
 some long message. some long message. some long message. some long message. some long message.

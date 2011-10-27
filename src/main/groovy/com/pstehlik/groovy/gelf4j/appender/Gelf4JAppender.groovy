@@ -21,6 +21,8 @@ import org.apache.log4j.spi.ThrowableInformation
  */
 class Gelf4JAppender
 extends AppenderSkeleton {
+
+  public static final Integer MAX_LOGGED_LINES = 500
   public static final Integer SHORT_MESSAGE_LENGTH = 250
   public static final String UNKNOWN_HOST = 'unknown_host'
   private static final String GELF_VERSION = "1.0"
@@ -71,7 +73,7 @@ extends AppenderSkeleton {
   }
 
   Map createGelfMapFromLoggingEvent(LoggingEvent loggingEvent) {
-    String fullMessage = ''
+    StringBuilder fullMessage = new StringBuilder(100 * this.getMaxLoggedLines())
     String[] throwableAsString
 
     //detecting if the actual log-message is a throwable - because if so, might want the whole stacktrace
@@ -80,37 +82,37 @@ extends AppenderSkeleton {
         def tI = new ThrowableInformation(loggingEvent.message as Throwable)
         throwableAsString = tI.throwableStrRep
       } else {
-        fullMessage = layout ? layout.format(loggingEvent) : (loggingEvent.getMessage() as String)
+        fullMessage.append(layout ? layout.format(loggingEvent) : (loggingEvent.getMessage() as String))
       }
     } else {
-      fullMessage = layout ? layout.format(loggingEvent) : loggingEvent.getMessage()
+      fullMessage.append(layout ? layout.format(loggingEvent) : loggingEvent.getMessage())
     }
 
-    if (layout == null || layout.ignoresThrowable() || !fullMessage) {
+    if (layout == null || layout.ignoresThrowable() || !fullMessage.length()) {
       throwableAsString = throwableAsString?:loggingEvent.getThrowableStrRep()
       if (throwableAsString != null) {
         int len = throwableAsString.length
-        if(fullMessage){ // newline after the 'original log message' to have nicer formatting
-          fullMessage += Layout.LINE_SEP
+        if(fullMessage.length()){ // newline after the 'original log message' to have nicer formatting
+          fullMessage.append Layout.LINE_SEP
         }
-        for (int i = 0; i < len; i++) {
-          fullMessage += throwableAsString[i]
-          fullMessage += Layout.LINE_SEP
+        for (int i = 0; i < len && i <  this.getMaxLoggedLines(); i++) {
+          fullMessage.append throwableAsString[i]
+          fullMessage.append Layout.LINE_SEP
         }
       }
     }
 
-    if(!fullMessage){ //failsave to prevent a 'null' or empty message even though it should(!) not happen
-      fullMessage = loggingEvent.message as String
+    if(!fullMessage.length()){ //failsave to prevent a 'null' or empty message even though it should(!) not happen
+      fullMessage.append loggingEvent.message as String
     }
-    String shortMessage = fullMessage
+    String shortMessage = fullMessage.toString()
     if (shortMessage.length() > SHORT_MESSAGE_LENGTH) {
       shortMessage = shortMessage.substring(0, SHORT_MESSAGE_LENGTH)
     }
     def gelfMessage = [
       "facility": facility ?: 'GELF',
       "file": '',
-      "full_message": fullMessage,
+      "full_message": fullMessage.toString(),
       "host": loggingHostName,
       "level": "${loggingEvent.getLevel().getSyslogEquivalent()}" as String,
       "line": '',
@@ -197,4 +199,9 @@ extends AppenderSkeleton {
   public void setLogStackTraceFromMessage(String trueFalse) {
     logStackTraceFromMessage = Boolean.parseBoolean(trueFalse)
   }
+
+  private Integer getMaxLoggedLines() {
+    MAX_LOGGED_LINES
+  }
+
 }
