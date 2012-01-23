@@ -109,6 +109,7 @@ extends AppenderSkeleton {
     if (shortMessage.length() > SHORT_MESSAGE_LENGTH) {
       shortMessage = shortMessage.substring(0, SHORT_MESSAGE_LENGTH)
     }
+    int gelfTimeStamp = Math.floor(loggingEvent.getTimeStamp() / 1000)
     def gelfMessage = [
       "facility": facility ?: 'GELF',
       "file": '',
@@ -117,7 +118,7 @@ extends AppenderSkeleton {
       "level": "${loggingEvent.getLevel().getSyslogEquivalent()}" as String,
       "line": '',
       "short_message": shortMessage,
-      "timestamp": loggingEvent.getTimeStamp(),
+      "timestamp": gelfTimeStamp as String,
       "version": GELF_VERSION
     ]
     //only set location information if configured

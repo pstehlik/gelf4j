@@ -52,7 +52,8 @@ extends BaseUnitTest{
     assertEquals '4', res.level
     assertEquals '', res.line
     assert res.short_message.contains('someMessage')
-    assertEquals le.getTimeStamp(), res.timestamp
+    int gelfTimeStamp = Math.floor(le.getTimeStamp() / 1000)
+    assertEquals gelfTimeStamp as String, res.timestamp
     assertEquals '1.0', res.version
   }
 
