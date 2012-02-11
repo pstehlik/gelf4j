@@ -1,7 +1,9 @@
 apply plugin: 'groovy'
+apply plugin: 'maven'
 apply plugin: 'idea'
-version = 0.86
+version = '0.86'
 
+group='org.graylog2'
 repositories {
     mavenCentral()
 }

@@ -7,6 +7,7 @@ package com.pstehlik.groovy.gelf4j.net
 import com.pstehlik.groovy.gelf4j.appender.Gelf4JAppender
 import com.pstehlik.groovy.graylog.Graylog2UdpSender
 import java.nio.ByteBuffer
+import java.security.MessageDigest
 
 /**
  * Transports GELF messages over the wire to a graylog2 server based on the config on a <code>Gelf4JAppender</code>
@@ -45,11 +46,10 @@ class GelfTransport {
 
     //set up chunked transfer if larger than maxChunkSize
     if (appender.maxChunkSize < gzipMessage.size()) {
-
       Integer chunkCount = (((gzipMessage.size() / appender.maxChunkSize) + 0.5) as Double).round().toInteger()
       String messageId = generateMessageId()
       chunkCount.times {
-        byte[] messageChunkPrefix = createChunkedMessagePart(messageId, it + 1, chunkCount)
+        byte[] messageChunkPrefix = createChunkedMessagePart(messageId, it , chunkCount)
         Integer endOfChunk
         Integer messagePartSize
         if (gzipMessage.size() < ((it + 1) * appender.maxChunkSize)) {
@@ -95,19 +95,16 @@ class GelfTransport {
    * @return The prepared byte array
    */
   private byte[] createChunkedMessagePart(String messageId, Integer sequenceNo, Integer sequenceCount) {
-    sequenceNo = sequenceNo -1
     Collection ret = []
     ret << 30.byteValue()
     ret << 15.byteValue()
     messageId.getBytes('ISO-8859-1').each {
       ret << it
     }
-
-    ret << (byte)(sequenceNo >>> 8)
-    ret << (byte)(sequenceNo)
-
-    ret << (byte)(sequenceCount >>> 8)
-    ret << (byte)(sequenceCount)
+    ret << (sequenceNo.byteValue())
+    ret << (sequenceCount.byteValue())
+    println "${sequenceNo} ${sequenceCount}" 
+    println (ret as byte[])
     return ret as byte[]
   }
 
@@ -132,16 +129,10 @@ class GelfTransport {
    * @return
    */
   private String generateMessageId() {
-    return new StringBuffer(36)
-      .append(format(getIP()))
-      .append(sep)
-      .append(format(getJVM()))
-      .append(sep)
-      .append(format(getHiTime()))
-      .append(sep)
-      .append(format(getLoTime()))
-      .append(sep)
-      .append(format(getCount())).toString()
+     MessageDigest digest = MessageDigest.getInstance("MD5")
+     digest.update(System.currentTimeMillis().byteValue())
+     BigInteger big = new BigInteger(1,digest.digest())
+     big.toString(16).padLeft(32,"0")[0..7]
   }
 
   protected String format(int intval) {
