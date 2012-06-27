@@ -1,15 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using log4net.Appender;
 using System.Net.Sockets;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Net;
-using System.IO;
-using System.IO.Compression;
-using RabbitMQ.Client;
 using Esilog.Gelf4net.Transport;
 using System.Collections;
 using System.Text.RegularExpressions;
@@ -20,12 +16,12 @@ namespace Esilog.Gelf4net.Appender
 	{
 		public static int SHORT_MESSAGE_LENGTH = 250;
 		public static string UNKNOWN_HOST = "unknown_host";
-		private static string GELF_VERSION = "1.0";
+	    private const string GELF_VERSION = "1.0";
 
-		private UdpTransport udpTransport;
-		private AmqpTransport amqpTransport;
-
-		private string additionalFields;
+	    private readonly UdpTransport _udpTransport;
+		private readonly AmqpTransport _amqpTransport;
+		private string _additionalFields;
+        private int _maxChunkSize;
 
 		//---------------------------------------
 		//configuration settings for the appender
@@ -35,21 +31,17 @@ namespace Esilog.Gelf4net.Appender
 		{
 			get
 			{
-				return additionalFields;
+				return _additionalFields;
 			}
 			set
 			{
-				additionalFields = value;
+				_additionalFields = value;
 
-				if (additionalFields != null)
-				{
+				if (_additionalFields != null)
 					innerAdditionalFields = new Dictionary<string, string>();
-				}
 				else
-				{
 					innerAdditionalFields.Clear();
-				}
-				innerAdditionalFields = additionalFields.Split(',').ToDictionary(it => it.Split(':')[0], it => it.Split(':')[1]);
+				innerAdditionalFields = _additionalFields.Split(',').ToDictionary(it => it.Split(':')[0], it => it.Split(':')[1]);
 			}
 		}
 		public string Facility { get; set; }
@@ -59,27 +51,21 @@ namespace Esilog.Gelf4net.Appender
 		public string Host { get; set; }
 		public bool IncludeLocationInformation { get; set; }
 		public bool SendAsGelfOrAmqp { get; set; }
-
-		private int maxChunkSize;
-
 		public int MaxChunkSize
 		{
-			get { return maxChunkSize; }
+			get { return _maxChunkSize; }
 			set 
 			{ 
-				maxChunkSize = value;
-				if(udpTransport != null)
-					udpTransport.MaxChunkSize = value;
+				_maxChunkSize = value;
+				if(_udpTransport != null)
+					_udpTransport.MaxChunkSize = value;
 			}
 		}
-
-
 		public int GrayLogServerAmqpPort { get; set; }
 		public string GrayLogServerAmqpUser { get; set; }
 		public string GrayLogServerAmqpPassword { get; set; }
 		public string GrayLogServerAmqpVirtualHost { get; set; }
 		public string GrayLogServerAmqpQueue { get; set; }
-
 
 		public Gelf4NetAppender()
 			: base()
@@ -92,20 +78,14 @@ namespace Esilog.Gelf4net.Appender
 			IncludeLocationInformation = false;
 			MaxChunkSize = 1024;
 			SendAsGelfOrAmqp = true;
-
-
 			GrayLogServerAmqpPort = 5672;
 			GrayLogServerAmqpUser = "guest";
 			GrayLogServerAmqpPassword = "guest";
 			GrayLogServerAmqpVirtualHost = "/";
 			GrayLogServerAmqpQueue = "queue1";
 
-			udpTransport = new UdpTransport
-			{
-				MaxChunkSize = MaxChunkSize
-			};
-
-			amqpTransport = new AmqpTransport
+			_udpTransport = new UdpTransport { MaxChunkSize = MaxChunkSize };
+			_amqpTransport = new AmqpTransport
 			{
 				VirtualHost = GrayLogServerAmqpVirtualHost,
 				User = GrayLogServerAmqpUser,
@@ -114,20 +94,11 @@ namespace Esilog.Gelf4net.Appender
 			};
 		}
 
-		
-		/// <summary>
-		/// Test porpuse used only in the unit test
-		/// </summary>
-		/// <param name="loggingEvent"></param>
 		public void TestAppend(log4net.Core.LoggingEvent loggingEvent)
 		{
 			Append(loggingEvent);
 		}
 
-		/// <summary>
-		/// 
-		/// </summary>
-		/// <param name="loggingEvent"></param>
 		protected override void Append(log4net.Core.LoggingEvent loggingEvent)
 		{
 			String gelfJsonString = CreateGelfJsonFromLoggingEvent(loggingEvent);
@@ -137,9 +108,6 @@ namespace Esilog.Gelf4net.Appender
 				SendAmqpMessageToGrayLog(gelfJsonString);
 		}
 
-		/// <summary>
-		/// Get the HostName
-		/// </summary>
 		private String LoggingHostName
 		{
 			get
@@ -160,78 +128,39 @@ namespace Esilog.Gelf4net.Appender
 			}
 		}
 
-		/// <summary>
-		/// Get the UDP address of the Server with the format "udp://{GrayLogServerHost}:{GrayLogServerPort}"
-		/// </summary>
-		private string GrayLogServerUrl
-		{
-			get
-			{
-				return String.Format("udp://{0}:{1}", GrayLogServerHost, GrayLogServerPort);
-			}
-		}
-
-		/// <summary>
-		/// Sending the message to the graylog2 server via UDP
-		/// </summary>
-		/// <param name="message"></param>
 		private void SendGelfMessageToGrayLog(string message)
 		{
 			if (GrayLogServerHostIpAddress == string.Empty)
-			{
 				GrayLogServerHostIpAddress = GetIpAddressFromHostName();
-			}
-			udpTransport.Send(LoggingHostName, GrayLogServerHostIpAddress, GrayLogServerPort, message);
+			_udpTransport.Send(LoggingHostName, GrayLogServerHostIpAddress, GrayLogServerPort, message);
 		}
 
-		/// <summary>
-		/// Sending the message to the graylog2 server via AMQP
-		/// </summary>
-		/// <param name="message">Message to be sent</param>
 		private void SendAmqpMessageToGrayLog(string message)
 		{
 			if (GrayLogServerHostIpAddress == string.Empty)
 			{
 				GrayLogServerHostIpAddress = GetIpAddressFromHostName();
 			}
-			amqpTransport.Send(LoggingHostName, GrayLogServerHostIpAddress, GrayLogServerPort, message);
+			_amqpTransport.Send(LoggingHostName, GrayLogServerHostIpAddress, GrayLogServerPort, message);
 			
 		}
 
-		/// <summary>
-		/// Get the first IPAddress from the HostName
-		/// </summary>
-		/// <returns>IPAddress as string</returns>
-		private string GetIpAddressFromHostName()
+        private string GetIpAddressFromHostName()
 		{
 			IPAddress[] addresslist = Dns.GetHostAddresses(GrayLogServerHost);
 			return addresslist[0].ToString();
 		}
 
-		
-
-		/// <summary>
-		/// Creates the JSON String for a given <code>LoggingEvent</code>.
-		/// The "short_message" of the GELF message is max 50 chars long.
-		/// Message building and skipping of additional fields etc is based on
-		/// https://github.com/Graylog2/graylog2-docs/wiki/GELF from Jan 7th 2011.
-		/// </summary>
-		/// <param name="loggingEvent"> The logging event to base the JSON creation on</param>
-		/// <returns>GelfMessage as JSON</returns>
-		private string CreateGelfJsonFromLoggingEvent(log4net.Core.LoggingEvent loggingEvent)
+        private string CreateGelfJsonFromLoggingEvent(log4net.Core.LoggingEvent loggingEvent)
 		{
 			var fullMessage = loggingEvent.RenderedMessage;
 			if (loggingEvent.ExceptionObject != null)
-			{
 				fullMessage = String.Format("{0} - {1}. {2}. {3}.", fullMessage, loggingEvent.ExceptionObject.Source, loggingEvent.ExceptionObject.Message, loggingEvent.ExceptionObject.StackTrace);
-			}
 
 			var shortMessage = fullMessage;
 
 			if (shortMessage.Length > SHORT_MESSAGE_LENGTH)
-			{
 				shortMessage = shortMessage.Substring(0, SHORT_MESSAGE_LENGTH - 1);
-			}
 
 			var gelfMessage = new GelfMessage
 			{
@@ -282,34 +211,20 @@ namespace Esilog.Gelf4net.Appender
 			return jsonObject.ToString();
 		}
 
-		/// <summary>
-		/// Add    
-		/// </summary>
-		/// <param name="key"></param>
-		/// <param name="value"></param>
-		/// <param name="json"></param>
-		private void AddAdditionalFields(string key, string value, JObject jsonObject)
+        private void AddAdditionalFields(string key, string value, JObject jsonObject)
 		{
-			if (key != null)
-			{
-				if (!key.StartsWith("_"))
-				{
-					key = String.Format("_{0}", key);
-				}
+            if (key == null) return;
 
-				if (key != "_id")
-				{
-					key = Regex.Replace(key, "[\\W]", "");
-					jsonObject.Add(key, value);
-				}
-			}
+            if (!key.StartsWith("_"))
+                key = String.Format("_{0}", key);
+
+            if (key != "_id")
+            {
+                key = Regex.Replace(key, "[\\W]", "");
+                jsonObject.Add(key, value);
+            }
 		}
 
-		/// <summary>
-		/// Convert the log4net level to SyslogSeverity
-		/// </summary>
-		/// <param name="level">log4net level</param>
-		/// <returns>SyslogSeverity as integer</returns>
 		private int GetSyslogSeverity(log4net.Core.Level level)
 		{
 			if(level == log4net.Core.Level.Alert)
@@ -347,41 +262,5 @@ namespace Esilog.Gelf4net.Appender
 
 			return (int) LocalSyslogAppender.SyslogSeverity.Debug;
 		}
-
 	}
-
-	/// <summary>
-	/// GelfMessage Class
-	/// </summary>
-	[JsonObject(MemberSerialization.OptIn)]
-	class GelfMessage
-	{
-		[JsonProperty("facility")]
-		public string Facility { get; set; }
-
-		[JsonProperty("file")]
-		public string File { get; set; }
-
-		[JsonProperty("full_message")]
-		public string FullMesage { get; set; }
-
-		[JsonProperty("host")]
-		public string Host { get; set; }
-
-		[JsonProperty("level")]
-		public int Level { get; set; }
-
-		[JsonProperty("line")]
-		public string Line { get; set; }
-
-		[JsonProperty("short_message")]
-		public string ShortMessage { get; set; }
-
-		[JsonProperty("timestamp")]
-		public DateTime TimeStamp { get; set; }
-
-		[JsonProperty("version")]
-		public string Version { get; set; }
-	}
-
 }
