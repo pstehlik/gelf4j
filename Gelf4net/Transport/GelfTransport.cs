@@ -5,7 +5,7 @@ using System.IO.Compression;
 
 namespace Esilog.Gelf4net.Transport
 {
-    abstract class Transport
+    public abstract class GelfTransport
     {
         public abstract void Send(string serverHostName, string serverIpAddress, int serverPort, string message);
 

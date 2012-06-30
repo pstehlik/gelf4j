@@ -2,7 +2,7 @@
 
 namespace Esilog.Gelf4net.Transport
 {
-    class AmqpTransport : Transport
+    class AmqpTransport : GelfTransport
     {
         public string VirtualHost { get; set; }
         public string User { get; set; }
