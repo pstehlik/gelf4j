@@ -20,6 +20,18 @@
 - bool IncludeLocationInformation
 - bool SendAsGelfOrAmqp
 - int MaxChunkSize
+The amount of bytes a message chunk can contain.
+Default: 1024
+
+- bool LogStackTraceFromMessage
+Defines if a logged Throwable should be logged with the complete stack trace or just with the info returned by
+the toString() implementation on the Throwable (which is usually calling getMessage()).
+This applies to messages logged by doing things like
+  log.error(myException)
+message logged via
+  log.error("Oh... something bad happened", myException)
+have the stack trace logged and you can't change that.
+Default: true
 
 - int GrayLogServerAmqpPort
 - string GrayLogServerAmqpUser
