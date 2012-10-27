@@ -38,6 +38,7 @@ Default: true
 Accept LoggingEvent.Properties, to send the variables to graylog2 as additional fields
 
 **log4net Xml Configuration**
+
 	<?xml version="1.0"?>
 	<configuration>
 		<configSections>
