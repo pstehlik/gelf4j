@@ -215,11 +215,8 @@ namespace Esilog.Gelf4net.Appender
         /// <returns>GelfMessage</returns>
         protected virtual GelfMessage GetGelfMessage(LoggingEvent loggingEvent)
         {
-            string message = (Layout != null)
-                                 ? this.RenderLoggingEvent(loggingEvent)
-                                 : loggingEvent.RenderedMessage.ToString();
 
-            var fullMessage = GetFullMessage(message, loggingEvent);
+            var fullMessage = GetFullMessage(loggingEvent);
 
             var gelfMessage = new GelfMessage
             {
@@ -286,20 +283,23 @@ namespace Esilog.Gelf4net.Appender
 
         /// <summary>
         /// Get full message.
+        /// If a Layout was defined, the full message will use that.
         /// Append the log exception and stacktrace if <see cref="LogStackTraceFromMessage"/> is true.
         /// </summary>
-        /// <param name="message">message </param>
         /// <param name="loggingEvent">logging event. </param>
         /// <returns>Full message. </returns>
-        protected virtual string GetFullMessage(string message, LoggingEvent loggingEvent)
+        protected virtual string GetFullMessage(LoggingEvent loggingEvent)
         {
-            var fullMessage = message;
+            if (this.Layout != null)
+            {
+                return this.RenderLoggingEvent(loggingEvent);
+            }
+
+            string fullMessage = loggingEvent.RenderedMessage;
 
             if (this.LogStackTraceFromMessage && loggingEvent.ExceptionObject != null)
             {
-                fullMessage = string.Format("{0} - {1}. {2}. {3}.", fullMessage, loggingEvent.ExceptionObject.Source,
-                                            loggingEvent.ExceptionObject.Message,
-                                            loggingEvent.ExceptionObject.StackTrace);
+                fullMessage = string.Format("{0} - {1}.", fullMessage, loggingEvent.GetExceptionString());
             }
 
             return fullMessage;
