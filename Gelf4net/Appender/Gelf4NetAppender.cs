@@ -254,12 +254,13 @@ namespace Esilog.Gelf4net.Appender
 
             if (loggingEvent.Properties != null)
             {
-                foreach (DictionaryEntry item in loggingEvent.Properties)
+                foreach (DictionaryEntry item in loggingEvent.GetProperties())
                 {
                     var key = item.Key as string;
                     if (key != null)
                     {
-                        additionalFields.Add(key, item.Value as string);
+                        var val = item.Value == null ? null : item.Value.ToString();
+                        additionalFields.Add(key, val);
                     }
                 }
             }
