@@ -257,7 +257,7 @@ namespace Esilog.Gelf4net.Appender
                 foreach (DictionaryEntry item in loggingEvent.GetProperties())
                 {
                     var key = item.Key as string;
-                    if (key != null)
+                    if (key != null && !key.StartsWith("log4net:") /*exclude log4net built-in properties */ )
                     {
                         var val = item.Value == null ? null : item.Value.ToString();
                         additionalFields.Add(key, val);

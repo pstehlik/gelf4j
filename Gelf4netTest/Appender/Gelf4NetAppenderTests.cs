@@ -61,10 +61,9 @@ namespace Gelf4netTest
         [Test]
         public void VerifyAdditionalPropertiesAreAdded()
         {
-            var port = 9743;
             var gelfAppender = new TestGelf4NetAppenderWrapper();
             gelfAppender.GrayLogServerHost = "127.0.0.1";
-            gelfAppender.GrayLogServerPort = port;
+            gelfAppender.GrayLogServerPort = Port;
             gelfAppender.ActivateOptions();
 
             ThreadContext.Properties["Test"] = 1;
@@ -84,6 +83,7 @@ namespace Gelf4netTest
             Assert.IsNotNull(message);
             Assert.IsTrue(message.AdditionalProperties.ContainsKey("_Test"));
             Assert.AreEqual(message.AdditionalProperties["_Test"], "1");
+            Assert.IsFalse(message.AdditionalProperties.Keys.Any(x => x.StartsWith("log4net:")));
         }
 
         private static byte[] Decompress(byte[] gzip)
