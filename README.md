@@ -70,7 +70,7 @@ Accept LoggingEvent.Properties, to send the variables to graylog2 as additional 
 
 ## Copyright and License
 
-gelf4net created by Juan J. Chiw - Copyright 2011
+gelf4net created by Juan J. Chiw
 
 based on:
 gelf4j created by Philip Stehlik - Copyright 2011
