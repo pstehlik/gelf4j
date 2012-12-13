@@ -167,7 +167,7 @@ task CreatePackages -depends PrepareRelease  {
 	$packit.targeted_Frameworks = "net40";
 
 	#region Packing
-	$packit.package_description = "GELF log4net Appender - graylog2"
+	$packit.package_description = "GELF log4net Appender - graylog2. Built for log4net 1.2.10"
 	$script:packit.package_owners = "micahlmartin"
 	$script:packit.package_authors = "micahlmartin"
 	$script:packit.release_notes = ""
