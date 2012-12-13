@@ -13,6 +13,7 @@ using gelf4net.Layout;
 using log4net.Util;
 using System.Text;
 using System.Security.Cryptography;
+using gelf4net.Util.TypeConverters;
 
 namespace gelf4net.Appender
 {
@@ -27,6 +28,18 @@ namespace gelf4net.Appender
         {
             Encoding = Encoding.UTF8;
             MaxChunkSize = 1024;
+
+            log4net.Util.TypeConverters.ConverterRegistry.AddConverter(typeof(IPAddress), new IPAddressConverter());
+        }
+
+        public override void ActivateOptions()
+        {
+            base.ActivateOptions();
+        }
+
+        protected override void InitializeClientConnection()
+        {
+            base.InitializeClientConnection();
         }
 
         public int MaxChunkSize { get; set; }

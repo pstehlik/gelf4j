@@ -55,13 +55,9 @@
     </Compile>
     <Compile Include="Appender\GelfUdpAppenderTests.cs" />
     <Compile Include="Layout\GelfLayoutTests.cs" />
-    <Compile Include="LoremIpsum.Designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
-  <ItemGroup>
-    <EmbeddedResource Include="LoremIpsum.resx" />
-  </ItemGroup>
   <ItemGroup>
     <None Include="packages.config">
       <SubType>Designer</SubType>
