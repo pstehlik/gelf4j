@@ -44,9 +44,8 @@
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Appender\Gelf4NetAppenderTests.cs" />
+    <Compile Include="Appender\GelfUdpAppenderTests.cs" />
     <Compile Include="Layout\GelfLayoutTests.cs" />
-    <Compile Include="Transport\UdpTransportTests.cs" />
     <Compile Include="LoremIpsum.Designer.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

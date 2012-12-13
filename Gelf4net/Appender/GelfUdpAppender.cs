@@ -9,12 +9,12 @@ using log4net.Appender;
 using log4net.Core;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using Esilog.Gelf4net.Layout;
+using Gelf4net.Layout;
 using log4net.Util;
 using System.Text;
 using System.Security.Cryptography;
 
-namespace Esilog.Gelf4net.Appender
+namespace Gelf4net.Appender
 {
     /// <summary>
     /// Gelf Udp Appender

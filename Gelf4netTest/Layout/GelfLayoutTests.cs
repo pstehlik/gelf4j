@@ -1,6 +1,6 @@
-﻿using Esilog.Gelf4net.Appender;
-using Esilog.Gelf4net.Layout;
-using Esilog.Gelf4net;
+﻿using Gelf4net.Appender;
+using Gelf4net.Layout;
+using Gelf4net;
 using log4net;
 using log4net.Appender;
 using log4net.Core;

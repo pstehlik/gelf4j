@@ -8,8 +8,8 @@
     <ProjectGuid>{21601568-D8AD-433F-998D-1500A27F3FBD}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Esilog.Gelf4net</RootNamespace>
-    <AssemblyName>Esilog.Gelf4net</AssemblyName>
+    <RootNamespace>Gelf4net</RootNamespace>
+    <AssemblyName>Gelf4net</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>

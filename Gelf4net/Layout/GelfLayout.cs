@@ -1,4 +1,4 @@
-﻿using Esilog.Gelf4net.Appender;
+﻿using Gelf4net.Appender;
 using log4net.Appender;
 using log4net.Core;
 using log4net.Layout;
@@ -12,7 +12,7 @@ using System.Linq;
 using System.Net.Sockets;
 using System.Text;
 
-namespace Esilog.Gelf4net.Layout
+namespace Gelf4net.Layout
 {
     public class GelfLayout : LayoutSkeleton
     {

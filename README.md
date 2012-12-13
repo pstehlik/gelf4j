@@ -8,26 +8,23 @@
 
 ## Usage
 
-**Properties**
-
-- <strike>~~Dictionary<string, string> AdditionalFields~~</strike>
+**Layout Properties**  
 - string AdditionalFields // Key:Value CSV ex: app:MyApp,version:1.0
 - string Facility
-- string GrayLogServerHost
-- string GrayLogServerHostIpAddress
-- int GrayLogServerPort
-- string Host
 - bool IncludeLocationInformation
-- bool SendAsGelfOrAmqp
-- int MaxChunkSize
-// The amount of bytes a message chunk can contain.
-Default: 1024
-
-- bool LogStackTraceFromMessage
+- bool LogStackTraceFromMessage  
 
 Defines if a logged Throwable should be logged with the complete stack trace or just with the info returned by the toString() implementation on the Throwable (which is usually calling getMessage()).
 This applies to messages logged by doing things like "log.error(myException)" message logged via "log.error("Oh... something bad happened", myException)" have the stack trace logged and you can't change that.
 Default: true
+
+
+** GelfUdpAppender Properties **
+- string remoteAddress
+- int remotePort
+- int MaxChunkSize
+// The amount of bytes a message chunk can contain.
+Default: 1024
 
 - int GrayLogServerAmqpPort
 - string GrayLogServerAmqpUser
@@ -52,24 +49,24 @@ Accept LoggingEvent.Properties, to send the variables to graylog2 as additional 
 			  <appender-ref ref="GelfAmqpAppender"/>
 			</root>
 
-			<appender name="GelfUdpAppender" type="Esilog.Gelf4net.Appender.GelfUdpAppender, Esilog.Gelf4net">
+			<appender name="GelfUdpAppender" type="Gelf4net.Appender.GelfUdpAppender, Gelf4net">
 			  <remoteAddress value="127.0.0.1" />
 			  <remotePort value="12201" />
-			  <layout type="Esilog.Gelf4net.Layout.GelfLayout, Esilog.Gelf4net">
+			  <layout type="Gelf4net.Layout.GelfLayout, Gelf4net">
 				<param name="AdditionalFields" value="app:RandomSentence,version:1.0" />
 				<param name="Facility" value="RandomPhrases" />
 				<param name="IncludeLocationInformation" value="true"/>
 			  </layout>
 			</appender>
 
-			<appender name="GelfAmqpAppender" type="Esilog.Gelf4net.Appender.GelfAmqpAppender, Esilog.Gelf4net">
+			<appender name="GelfAmqpAppender" type="Gelf4net.Appender.GelfAmqpAppender, Gelf4net">
 			  <remoteAddress value="127.0.0.1" />
 			  <remotePort value="5672" />
 			  <username value="guest" />
 			  <password value="guest" />
 			  <virtualHost value="/" />
 			  <remoteQueue value="queue1" />
-			  <layout type="Esilog.Gelf4net.Layout.GelfLayout, Esilog.Gelf4net">
+			  <layout type="Gelf4net.Layout.GelfLayout, Gelf4net">
 				<param name="AdditionalFields" value="app:RandomSentence,version:1.0" />
 				<param name="Facility" value="RandomPhrases" />
 				<param name="IncludeLocationInformation" value="true"/>

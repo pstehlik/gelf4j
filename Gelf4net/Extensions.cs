@@ -7,7 +7,7 @@ using System.IO.Compression;
 using System.Linq;
 using System.Text;
 
-namespace Esilog.Gelf4net
+namespace Gelf4net
 {
     public static class Extensions
     {

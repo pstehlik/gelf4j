@@ -7,7 +7,7 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 
-namespace Esilog.Gelf4net.Appender
+namespace Gelf4net.Appender
 {
     public class GelfAmqpAppender : AppenderSkeleton
     {
