@@ -101,18 +101,18 @@ task InitEnvironment -depends DetectOperatingSystemArchitecture {
 }
  
 task CompileMain -depends InstallDependentPackages, InitEnvironment, Init {
- 	$solutionFile = "src\Gelf4net.sln"
+ 	$solutionFile = "src\gelf4net.sln"
 	exec { &$script:msBuild $solutionFile /p:OutDir="$buildBase\" }
 		
 	$assemblies = @()
-	$assemblies += dir $buildBase\Gelf4net.dll
+	$assemblies += dir $buildBase\gelf4net.dll
 	$assemblies += dir $buildBase\Newtonsoft.Json.dll
 	$assemblies += dir $buildBase\RabbitMQ.Client.dll
 	$assemblies += dir $buildBase\RabbitMQ.ServiceModel.dll
 
-	& $ilMergeTool /target:"dll" /out:"$binariesDir\gelf4net.dll" /internalize /targetplatform:"$script:ilmergeTargetFramework" /log:"$buildBase\Gelf4netMergeLog.txt" $assemblies
-	$mergeLogContent = Get-Content "$buildBase\Gelf4netMergeLog.txt"
-	echo "------------------------------Gelf4net Merge Log-----------------------"
+	& $ilMergeTool /target:"dll" /out:"$binariesDir\gelf4net.dll" /internalize /targetplatform:"$script:ilmergeTargetFramework" /log:"$buildBase\gelf4netMergeLog.txt" $assemblies
+	$mergeLogContent = Get-Content "$buildBase\gelf4netMergeLog.txt"
+	echo "------------------------------gelf4net Merge Log-----------------------"
 	echo $mergeLogContent
  }
  
@@ -172,7 +172,7 @@ task CreatePackages -depends PrepareRelease  {
 	$script:packit.package_authors = "micahlmartin"
 	$script:packit.release_notes = ""
 	$script:packit.package_licenseUrl = "http://www.apache.org/licenses/LICENSE-2.0.html"
-	$script:packit.package_projectUrl = "https://github.com/jjchiw/gelf4net"
+	$script:packit.package_projectUrl = "https://github.com/micahlmartin/gelf4net"
 	$script:packit.package_tags = "tools utilities"
 	$script:packit.package_iconUrl = "http://nuget.org/Content/Images/packageDefaultIcon.png"
 	$script:packit.versionAssemblyName = $script:packit.binaries_Location + "\gelf4net.dll"

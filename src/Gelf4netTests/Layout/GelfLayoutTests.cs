@@ -1,10 +1,8 @@
-﻿using Gelf4net.Appender;
-using Gelf4net.Layout;
-using Gelf4net;
+﻿using gelf4net.Layout;
+using gelf4net;
 using log4net;
 using log4net.Appender;
 using log4net.Core;
-using log4net.Layout;
 using log4net.Repository;
 using log4net.Util;
 using Newtonsoft.Json;
@@ -12,7 +10,6 @@ using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
 using System.Text;
 using System.IO;
 

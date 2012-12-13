@@ -1,9 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gelf4net", "Gelf4net\Gelf4net.csproj", "{21601568-D8AD-433F-998D-1500A27F3FBD}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "gelf4net", "gelf4net\gelf4net.csproj", "{21601568-D8AD-433F-998D-1500A27F3FBD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gelf4netTests", "Gelf4netTests\Gelf4netTests.csproj", "{713C9C99-6008-445A-A308-8EE32EA5A275}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "gelf4netTests", "gelf4netTests\gelf4netTests.csproj", "{713C9C99-6008-445A-A308-8EE32EA5A275}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

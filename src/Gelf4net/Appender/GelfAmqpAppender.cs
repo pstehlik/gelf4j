@@ -7,7 +7,7 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 
-namespace Gelf4net.Appender
+namespace gelf4net.Appender
 {
     public class GelfAmqpAppender : AppenderSkeleton
     {
