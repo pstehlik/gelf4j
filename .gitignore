@@ -7,7 +7,6 @@
 *.orig
 *.pidb
 *.userprefs
-AssemblyInfo.cs
 .DS_Store
 deploy/
 build/
@@ -21,3 +20,9 @@ _[Rr]e[Ss]harper.*/
 *.ncrunchproject
 *.ncrunchsolution
 TestResults
+.DS_Store
+*.dotcover
+*.userprefs
+packages/**/*
+binaries
+*testresult*
