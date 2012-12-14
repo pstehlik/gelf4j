@@ -135,6 +135,8 @@ namespace gelf4net.Layout
                 Version = GELF_VERSION,
             };
 
+            message.Add("LoggerName", loggingEvent.LoggerName);
+
             if (this.IncludeLocationInformation)
             {
                 message.File = loggingEvent.LocationInformation.FileName;
