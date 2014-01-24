@@ -7,169 +7,101 @@ namespace gelf4net
 {
     public class GelfMessage : Dictionary<string, object>
     {
+
+        private const string FacilityKey = "facility";
+        private const string FileKey = "file";
+        private const string FullMessageKey = "full_message";
+        private const string HostKey = "host";
+        private const string LevelKey = "level";
+        private const string LineKey = "line";
+        private const string ShortMessageKey = "short_message";
+        private const string VersionKey = "version";
+        private const string TimeStampKey = "timestamp";
+
+
         public string Facility
         {
-            get
-            {
-                if (!this.ContainsKey("facility"))
-                    return null;
-
-                return (string)this["facility"];
-            }
-            set
-            {
-                if (!this.ContainsKey("facility"))
-                    this.Add("facility", value);
-                else
-                    this["facility"] = value;
-            }
+            get { return PullStringValue(FacilityKey); }
+            set { StoreValue(FacilityKey, value); }
         }
 
         public string File
         {
-            get
-            {
-                if (!this.ContainsKey("file"))
-                    return null;
-
-                return (string)this["file"];
-            }
-            set
-            {
-                if (!this.ContainsKey("file"))
-                    this.Add("file", value);
-                else
-                    this["file"] = value;
-            }
+            get { return PullStringValue(FileKey); }
+            set { StoreValue(FileKey, value); }
         }
 
         public string FullMessage
         {
-            get 
-            {
-                if (!this.ContainsKey("full_message"))
-                    return null;
-
-                return (string)this["full_message"];
-            }
-            set
-            {
-                if (!this.ContainsKey("full_message"))
-                    this.Add("full_message", value);
-                else
-                    this["full_message"] = value;
-            }
+            get { return PullStringValue(FullMessageKey); }
+            set { StoreValue(FullMessageKey, value); }
         }
-
+        
         public string Host
         {
-            get
-            {
-                if (!this.ContainsKey("host"))
-                    return null;
-
-                return (string)this["host"];
-            }
-            set
-            {
-                if (!this.ContainsKey("host"))
-                    this.Add("host", value);
-                else
-                    this["host"] = value;
-            }
+            get { return PullStringValue(HostKey); }
+            set { StoreValue(HostKey, value); }
         }
-
+        
         public long Level
         {
             get
             {
-                if (!this.ContainsKey("level"))
+                if (!this.ContainsKey(LevelKey))
                     return int.MinValue;
 
-                return (long)this["level"];
+                return (long)this[LevelKey];
             }
-            set
-            {
-                if (!this.ContainsKey("level"))
-                    this.Add("level", value);
-                else
-                    this["level"] = value;
-            }
+            set { StoreValue(LevelKey, value); }
         }
 
         public string Line
         {
-            get
-            {
-                if (!this.ContainsKey("line"))
-                    return null;
-
-                return (string)this["line"];
-            }
-            set
-            {
-                if (!this.ContainsKey("line"))
-                    this.Add("line", value);
-                else
-                    this["line"] = value;
-            }
+            get { return PullStringValue(LineKey); }
+            set { StoreValue(LineKey, value); }
         }
 
         public string ShortMessage
         {
-            get
-            {
-                if (!this.ContainsKey("short_message"))
-                    return null;
-
-                return (string)this["short_message"];
-            }
-            set
-            {
-                if (!this.ContainsKey("short_message"))
-                    this.Add("short_message", value);
-                else
-                    this["short_message"] = value;
-            }
+            get { return PullStringValue(ShortMessageKey); }
+            set { StoreValue(ShortMessageKey, value); }
         }
 
         public DateTime TimeStamp
         {
             get
             {
-                if (!this.ContainsKey("timestamp"))
+                if (!this.ContainsKey(TimeStampKey))
                     return DateTime.MinValue;
 
-                var val = this["timestamp"];
+                var val = this[TimeStampKey];
                 double value;
                 var parsed = double.TryParse(val as string, NumberStyles.Any, CultureInfo.InvariantCulture, out value);
                 return parsed ? value.FromUnixTimestamp() : DateTime.MinValue;
             }
             set
             {
-                if (!this.ContainsKey("timestamp"))
-                    this.Add("timestamp", value.ToUnixTimestamp().ToString(CultureInfo.InvariantCulture));
-                else
-                    this["timestamp"] = value.ToUnixTimestamp().ToString(CultureInfo.InvariantCulture);
+                StoreValue(TimeStampKey, value.ToUnixTimestamp().ToString(CultureInfo.InvariantCulture));
             }
         }
 
         public string Version
         {
-            get
-            {
-                if (!this.ContainsKey("version"))
-                    return null;
+            get { return PullStringValue(VersionKey); }
+            set { StoreValue(VersionKey, value); }
+        }
 
-                return (string)this["version"];
-            }
-            set
-            {
-                if (!this.ContainsKey("version"))
-                    this.Add("version", value);
-                else
-                    this["version"] = value;
-            }
+        private string PullStringValue(String key)
+        {
+            return ContainsKey(key) ? this[key].ToString() : string.Empty;
+        }
+
+        private void StoreValue(string key, object value)
+        {
+            if (!ContainsKey(key))
+                Add(key, value);
+            else
+                this[key] = value;
         }
     }
 }
