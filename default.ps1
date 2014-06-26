@@ -25,7 +25,7 @@ $script:isEnvironmentInitialized = $false
 $script:ilmergeTargetFramework = ""
 $script:msBuildTargetFramework = ""	
 $script:packageVersion = "0.1.1.6"
-$nunitexec = "packages\nunit.runners.2.6.2\tools\nunit-console.exe"
+$nunitexec = "packages\nunit.runners.2.6.3\tools\nunit-console.exe"
 $script:nunitTargetFramework = "/framework=4.0";
 
 include $toolsDir\psake\buildutils.ps1
@@ -102,18 +102,20 @@ task InitEnvironment -depends DetectOperatingSystemArchitecture {
  
 task CompileMain -depends InstallDependentPackages, InitEnvironment, Init {
  	$solutionFile = "src\gelf4net.sln"
-	exec { &$script:msBuild $solutionFile /p:OutDir="$buildBase\" }
+	exec { &$script:msBuild $solutionFile /p:OutDir="$buildBase\" /p:Configuration=Release }
 		
 	$assemblies = @()
 	$assemblies += dir $buildBase\gelf4net.dll
 	$assemblies += dir $buildBase\Newtonsoft.Json.dll
 	$assemblies += dir $buildBase\RabbitMQ.Client.dll
 	$assemblies += dir $buildBase\RabbitMQ.ServiceModel.dll
+    
+    cp $buildBase\gelf4net.dll $binariesDir\gelf4net.dll
 
-	& $ilMergeTool /target:"dll" /out:"$binariesDir\gelf4net.dll" /internalize /targetplatform:"$script:ilmergeTargetFramework" /log:"$buildBase\gelf4netMergeLog.txt" $assemblies
-	$mergeLogContent = Get-Content "$buildBase\gelf4netMergeLog.txt"
-	echo "------------------------------gelf4net Merge Log-----------------------"
-	echo $mergeLogContent
+	# & $ilMergeTool /target:"dll" /out:"$binariesDir\gelf4net.dll" /internalize /targetplatform:"$script:ilmergeTargetFramework" /log:"$buildBase\gelf4netMergeLog.txt" $assemblies
+	# $mergeLogContent = Get-Content "$buildBase\gelf4netMergeLog.txt"
+	# echo "------------------------------gelf4net Merge Log-----------------------"
+	# echo $mergeLogContent
  }
  
  task CompileSamples -depends InstallDependentPackages, InitEnvironment, Init {
@@ -167,16 +169,16 @@ task CreatePackages -depends PrepareRelease  {
 	$packit.targeted_Frameworks = "net40";
 
 	#region Packing
-	$packit.package_description = "GELF log4net Appender - graylog2. Built for log4net 1.2.10"
+	$packit.package_description = "GELF log4net Appender - graylog2. Built for log4net"
 	$script:packit.package_owners = "micahlmartin"
 	$script:packit.package_authors = "micahlmartin"
 	$script:packit.release_notes = ""
 	$script:packit.package_licenseUrl = "http://www.apache.org/licenses/LICENSE-2.0.html"
-	$script:packit.package_projectUrl = "https://github.com/micahlmartin/gelf4net"
+	$script:packit.package_projectUrl = "https://github.com/jjchiw/gelf4net"
 	$script:packit.package_tags = "tools utilities"
 	$script:packit.package_iconUrl = "http://nuget.org/Content/Images/packageDefaultIcon.png"
 	$script:packit.versionAssemblyName = $script:packit.binaries_Location + "\gelf4net.dll"
-	invoke-packit $packageName $PackageVersion @{"log4net"="1.2.10"} "binaries\gelf4net.dll" @{} 
+    invoke-packit $packageName $PackageVersion @{"log4net"="2.0.3"} "binaries\gelf4net.dll" @{} 
 	#endregion
 		
 	remove-module packit
@@ -203,7 +205,7 @@ using System.Runtime.CompilerServices;
 [assembly: AssemblyCompany(""gelf4net"")]
 [assembly: AssemblyFileVersion(""$asmVersion"")]
 [assembly: AssemblyVersion(""$asmVersion"")]	
-[assembly: AssemblyCopyright(""Copyright ©  2011"")]
+[assembly: AssemblyCopyright(""Copyright ©  2014"")]
 [assembly: ComVisible(false)]	
 "
 

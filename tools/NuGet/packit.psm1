@@ -121,14 +121,7 @@ function Invoke-Packit
 			try
 			{
 				$versionAssemblyLocation = Resolve-Path -Path $script:packit.versionAssemblyName
-				[System.Reflection.Assembly]$versionAssembly = [System.Reflection.Assembly]::Loadfile($versionAssemblyLocation)
-				if($versionAssembly -ne $null)
-				{
-					$assmName = $versionAssembly.GetName();
-					if($assmName -ne $null){
-						$version = $assmName.version
-					}
-				}
+                $version = [System.Reflection.AssemblyName]::GetAssemblyName($versionAssemblyLocation).Version;
 			}
 			catch
 			{
@@ -265,8 +258,12 @@ function Invoke-Packit
   		$writer.Close()
 	
 		
-		if($createWithSymbol){&$script:packit.nugetCommand  pack $nuGetSpecFile -OutputDirectory $script:packit.packageOutPutDir -Verbose -Symbols}
-		else{&$script:packit.nugetCommand  pack $nuGetSpecFile -OutputDirectory $script:packit.packageOutPutDir -Verbose}
+		if($createWithSymbol) {
+            &$script:packit.nugetCommand  pack $nuGetSpecFile -OutputDirectory $script:packit.packageOutPutDir -Verbosity -Symbols
+        }
+		else{
+            &$script:packit.nugetCommand  pack $nuGetSpecFile -OutputDirectory $script:packit.packageOutPutDir -Verbosity
+        }
 		 
 		 if($script:packit.push_to_nuget){ 
 		 	$packageToPush = $packageName + "." + $version + ".nupkg"
