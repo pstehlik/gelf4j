@@ -129,8 +129,8 @@ namespace gelf4net.Layout
                     AddToMessage(gelfMessage, messageObject.ToDictionary());
                 }
 
-                gelfMessage.FullMessage = gelfMessage.FullMessage ?? messageObject.ToString();
-                gelfMessage.ShortMessage = gelfMessage.ShortMessage ?? gelfMessage.FullMessage.TruncateMessage(SHORT_MESSAGE_LENGTH);
+                gelfMessage.FullMessage = !string.IsNullOrEmpty(gelfMessage.FullMessage) ? gelfMessage.FullMessage :  messageObject.ToString();
+                gelfMessage.ShortMessage = !string.IsNullOrEmpty(gelfMessage.ShortMessage) ? gelfMessage.ShortMessage : gelfMessage.FullMessage.TruncateMessage(SHORT_MESSAGE_LENGTH);
             }
 
             if (LogStackTraceFromMessage && loggingEvent.ExceptionObject != null)
