@@ -262,7 +262,7 @@ function Invoke-Packit
             &$script:packit.nugetCommand  pack $nuGetSpecFile -OutputDirectory $script:packit.packageOutPutDir -Verbosity -Symbols
         }
 		else{
-            &$script:packit.nugetCommand  pack $nuGetSpecFile -OutputDirectory $script:packit.packageOutPutDir -Verbosity
+            &$script:packit.nugetCommand  pack $nuGetSpecFile -OutputDirectory $script:packit.packageOutPutDir -Verbosity detailed
         }
 		 
 		 if($script:packit.push_to_nuget){ 

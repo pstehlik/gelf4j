@@ -112,10 +112,10 @@ task CompileMain -depends InstallDependentPackages, InitEnvironment, Init {
     
     cp $buildBase\gelf4net.dll $binariesDir\gelf4net.dll
 
-	# & $ilMergeTool /target:"dll" /out:"$binariesDir\gelf4net.dll" /internalize /targetplatform:"$script:ilmergeTargetFramework" /log:"$buildBase\gelf4netMergeLog.txt" $assemblies
-	# $mergeLogContent = Get-Content "$buildBase\gelf4netMergeLog.txt"
-	# echo "------------------------------gelf4net Merge Log-----------------------"
-	# echo $mergeLogContent
+	& $ilMergeTool /target:"dll" /out:"$binariesDir\gelf4net.dll" /internalize /targetplatform:"$script:ilmergeTargetFramework" /log:"$buildBase\gelf4netMergeLog.txt" $assemblies
+	$mergeLogContent = Get-Content "$buildBase\gelf4netMergeLog.txt"
+	echo "------------------------------gelf4net Merge Log-----------------------"
+	echo $mergeLogContent
  }
  
  task CompileSamples -depends InstallDependentPackages, InitEnvironment, Init {
