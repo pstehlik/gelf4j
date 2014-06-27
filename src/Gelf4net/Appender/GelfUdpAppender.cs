@@ -24,6 +24,11 @@ namespace gelf4net.Appender
     {
         private const int MaxHeaderSize = 8;
 
+        /// <summary>
+        /// Gets or sets GrayLogServerHost.
+        /// </summary>
+        public string RemoteHostName { get; set; }
+
         public GelfUdpAppender()
         {
             Encoding = Encoding.UTF8;
@@ -34,6 +39,9 @@ namespace gelf4net.Appender
 
         public override void ActivateOptions()
         {
+            if (RemoteAddress == null)
+                RemoteAddress = IPAddress.Parse(GetIpAddressFromHostName());
+
             base.ActivateOptions();
         }
 
@@ -48,6 +56,7 @@ namespace gelf4net.Appender
         {
             try
             {
+
                 byte[] bytes = this.RenderLoggingEvent(loggingEvent).GzipMessage(this.Encoding);
 
                 if (MaxChunkSize < bytes.Length)
@@ -76,6 +85,12 @@ namespace gelf4net.Appender
             {
                 this.ErrorHandler.Error("Unable to send logging event to remote host " + this.RemoteAddress + " on port " + this.RemotePort + ".", ex, ErrorCode.WriteFailure);
             }
+        }
+
+        private string GetIpAddressFromHostName()
+        {
+            IPAddress[] addresslist = Dns.GetHostAddresses(RemoteHostName);
+            return addresslist[0].ToString();
         }
 
         public static string GenerateMessageId()
