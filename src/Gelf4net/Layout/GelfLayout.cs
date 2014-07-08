@@ -202,7 +202,7 @@ namespace gelf4net.Layout
                 var key = kvp.Key.StartsWith("_") ? kvp.Key : "_" + kvp.Key;
 
                 //If the value starts with a '%' then defer to the pattern layout
-                var value = kvp.Value.StartsWith("%") ? GetValueFromPattern(loggingEvent, kvp.Value) : kvp.Value;
+                var value = kvp.Value == null ? String.Empty : (kvp.Value.StartsWith("%") ? GetValueFromPattern(loggingEvent, kvp.Value) : kvp.Value);
                 message[key] = value;
             }
         }
