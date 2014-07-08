@@ -262,6 +262,19 @@ namespace Gelf4netTest.Layout
             Assert.IsNotNullOrEmpty(result.File);
         }
 
+        [Test]
+        public void NullPropertyValueDoesNotCauseException()
+        {
+            var layout = new GelfLayout();
+            layout.IncludeLocationInformation = true;
+
+            var message = "test";
+            var loggingEvent = GetLogginEvent(message);
+            loggingEvent.Properties["nullProperty"] = null;
+
+            Assert.DoesNotThrow(() => GetMessage(layout, loggingEvent));
+        }
+
         private GelfMessage GetMessage(GelfLayout layout, LoggingEvent message)
         {
             var sb = new StringBuilder();
