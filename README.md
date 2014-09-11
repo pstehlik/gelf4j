@@ -96,6 +96,16 @@ This will add the following fields to your GELF log:
 }
 ```  
 
+You can also use your own custom field and key/value separators to deal with the case when the additional fields contain commas or colons 
+```  
+<layout type="Gelf4net.Layout.GelfLayout, Gelf4net">
+    <param name="AdditionalFields" value="app¬:¬RandomSentence¬|¬version:1.0¬|¬Level¬:¬%level" />
+	<param name="FieldSeparator" value="¬|¬" />
+    <param name="KeyValueSeparator" value="¬:¬" />  
+</layout>
+```   
+
+
 **Custom Properties**  
 Any properties you add to the `log4net.ThreadContext.Properties` object 
 will automatically be added to the message as additional fields
