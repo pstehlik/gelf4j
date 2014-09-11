@@ -5,8 +5,8 @@ using System.Security;
 using System.Runtime.CompilerServices;
 
 [assembly: AssemblyCompany("gelf4net")]
-[assembly: AssemblyFileVersion("2.0.3.1")]
-[assembly: AssemblyVersion("2.0.3.1")]	
+[assembly: AssemblyFileVersion("2.0.3.2")]
+[assembly: AssemblyVersion("2.0.3.2")]	
 [assembly: AssemblyCopyright("Copyright ©  2014")]
 [assembly: ComVisible(false)]	
 
