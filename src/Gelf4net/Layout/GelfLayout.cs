@@ -47,6 +47,10 @@ namespace gelf4net.Layout
         /// </summary>
         public string Facility { get; set; }
 
+        public string FieldSeparator { get; set; }
+
+        public string KeyValueSeparator { get; set; }
+
         /// <summary>
         /// The additional fields configured in log4net config.
         /// </summary>
@@ -61,8 +65,30 @@ namespace gelf4net.Layout
                     innerAdditionalFields = new Dictionary<string, string>();
                 else
                     innerAdditionalFields.Clear();
-                innerAdditionalFields = _additionalFields.Split(',').ToDictionary(it => it.Split(':')[0],
-                                                                                  it => it.Split(':')[1]);
+
+
+
+                string[] fields;
+                if (!string.IsNullOrEmpty(FieldSeparator))
+                {
+                    fields = _additionalFields.Split(new[] {FieldSeparator}, StringSplitOptions.RemoveEmptyEntries);
+                }
+                else
+                {
+                    fields = _additionalFields.Split(',');
+                }
+
+                if (!string.IsNullOrEmpty(KeyValueSeparator))
+                {
+                    innerAdditionalFields = fields.ToDictionary(it => it.Split(new[] { KeyValueSeparator }, StringSplitOptions.RemoveEmptyEntries)[0],
+                        it => it.Split(new[] { KeyValueSeparator }, StringSplitOptions.RemoveEmptyEntries)[1]);
+
+                }
+                else
+                {
+                    innerAdditionalFields = fields.ToDictionary(it => it.Split(':')[0], it => it.Split(':')[1]);
+                }
+                
             }
         }
 
