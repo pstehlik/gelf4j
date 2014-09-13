@@ -18,7 +18,7 @@ namespace gelf4net.Layout
     {
         private const string GELF_VERSION = "1.0";
         private const int SHORT_MESSAGE_LENGTH = 250;
-        private Dictionary<string, string> innerAdditionalFields;
+        
         private string _additionalFields;
         private PatternLayout _patternLayout;
 
@@ -47,23 +47,17 @@ namespace gelf4net.Layout
         /// </summary>
         public string Facility { get; set; }
 
+        public string FieldSeparator { get; set; }
+
+        public string KeyValueSeparator { get; set; }
+
         /// <summary>
         /// The additional fields configured in log4net config.
         /// </summary>
         public string AdditionalFields
         {
             get { return _additionalFields; }
-            set
-            {
-                _additionalFields = value;
-
-                if (_additionalFields != null)
-                    innerAdditionalFields = new Dictionary<string, string>();
-                else
-                    innerAdditionalFields.Clear();
-                innerAdditionalFields = _additionalFields.Split(',').ToDictionary(it => it.Split(':')[0],
-                                                                                  it => it.Split(':')[1]);
-            }
+            set {_additionalFields = value;}
         }
 
         /// <summary>
@@ -83,6 +77,39 @@ namespace gelf4net.Layout
 
         public override void ActivateOptions()
         {
+        }
+
+
+        private Dictionary<string, string> ParseField(string value)
+        {
+            Dictionary<string, string> innerAdditionalFields= new Dictionary<string, string>();
+
+            if (value != null)
+            {
+                string[] fields;
+                if (!string.IsNullOrEmpty(FieldSeparator))
+                {
+                    fields = value.Split(new[] {FieldSeparator}, StringSplitOptions.RemoveEmptyEntries);
+                }
+                else
+                {
+                    fields = value.Split(',');
+                }
+
+                if (!string.IsNullOrEmpty(KeyValueSeparator))
+                {
+                    innerAdditionalFields =
+                        fields.ToDictionary(
+                            it => it.Split(new[] {KeyValueSeparator}, StringSplitOptions.RemoveEmptyEntries)[0],
+                            it => it.Split(new[] {KeyValueSeparator}, StringSplitOptions.RemoveEmptyEntries)[1]);
+
+                }
+                else
+                {
+                    innerAdditionalFields = fields.ToDictionary(it => it.Split(':')[0], it => it.Split(':')[1]);
+                }
+            }
+            return innerAdditionalFields;
         }
 
         public override void Format(System.IO.TextWriter writer, LoggingEvent loggingEvent)
@@ -183,10 +210,7 @@ namespace gelf4net.Layout
 
         private void AddAdditionalFields(LoggingEvent loggingEvent, GelfMessage message)
         {
-            Dictionary<string, string> additionalFields = innerAdditionalFields == null
-                                                  ? new Dictionary<string, string>()
-                                                  : new Dictionary<string, string>(innerAdditionalFields);
-
+            Dictionary<string, string> additionalFields = ParseField(AdditionalFields)??new Dictionary<string, string>();
             foreach (DictionaryEntry item in loggingEvent.GetProperties())
             {
                 var key = item.Key as string;

@@ -214,6 +214,64 @@ namespace Gelf4netTest.Layout
         }
 
         [Test]
+        public void PatternConversionInAdditionalPropertiesWithCustomSeparators()
+        {
+            var layout = new GelfLayout();
+            layout.FieldSeparator = "||";
+            layout.KeyValueSeparator = "=>";
+            layout.AdditionalFields = "Level=>%level||AppDomain=>%a||LoggerName=>%c{1}||ThreadName=>%t";            
+            var message = new { Message = "Test" };
+
+            var loggingEvent = GetLogginEvent(message);
+
+            var result = GetMessage(layout, loggingEvent);
+
+            Assert.AreEqual(result["_Level"], "DEBUG");
+            Assert.IsTrue(!string.IsNullOrWhiteSpace(result["_AppDomain"].ToString()));
+            Assert.IsTrue(!string.IsNullOrWhiteSpace(result["_ThreadName"].ToString()));
+            Assert.AreEqual("Class", result["_LoggerName"]);
+        }
+
+
+        [Test]
+        public void PatternConversionInAdditionalPropertiesWithCustomKeyValueSeparator()
+        {
+            var layout = new GelfLayout();           
+            layout.KeyValueSeparator = "=>";
+            layout.AdditionalFields = "Level=>%level,AppDomain=>%a,LoggerName=>%c{1},ThreadName=>%t";
+            var message = new { Message = "Test" };
+
+            var loggingEvent = GetLogginEvent(message);
+
+            var result = GetMessage(layout, loggingEvent);
+
+            Assert.AreEqual(result["_Level"], "DEBUG");
+            Assert.IsTrue(!string.IsNullOrWhiteSpace(result["_AppDomain"].ToString()));
+            Assert.IsTrue(!string.IsNullOrWhiteSpace(result["_ThreadName"].ToString()));
+            Assert.AreEqual("Class", result["_LoggerName"]);
+        }
+
+
+
+        [Test]
+        public void PatternConversionInAdditionalPropertiesWithCustomFieldSeparator()
+        {
+            var layout = new GelfLayout();
+            layout.FieldSeparator = "||";
+            layout.AdditionalFields = "Level:%level||AppDomain:%a||LoggerName:%c{1}||ThreadName:%t";
+            var message = new { Message = "Test" };
+
+            var loggingEvent = GetLogginEvent(message);
+
+            var result = GetMessage(layout, loggingEvent);
+
+            Assert.AreEqual(result["_Level"], "DEBUG");
+            Assert.IsTrue(!string.IsNullOrWhiteSpace(result["_AppDomain"].ToString()));
+            Assert.IsTrue(!string.IsNullOrWhiteSpace(result["_ThreadName"].ToString()));
+            Assert.AreEqual("Class", result["_LoggerName"]);
+        }
+
+        [Test]
         public void PatternConversionLayoutSpecified()
         {
             var layout = new GelfLayout();
