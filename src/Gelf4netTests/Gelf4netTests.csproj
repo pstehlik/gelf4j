@@ -3,8 +3,6 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>10.0.0</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{713C9C99-6008-445A-A308-8EE32EA5A275}</ProjectGuid>
     <OutputType>Library</OutputType>
     <RootNamespace>Gelf4netTests</RootNamespace>
@@ -33,21 +31,20 @@
     <Reference Include="log4net">
       <HintPath>..\..\packages\log4net.2.0.3\lib\net40-full\log4net.dll</HintPath>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\Newtonsoft.Json.6.0.3\lib\net40\Newtonsoft.Json.dll</HintPath>
-    </Reference>
-    <Reference Include="nunit.framework, Version=2.6.3.13283, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
+    <Reference Include="System" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="nunit.framework, Version=2.6.3.13283, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77">
       <HintPath>..\..\packages\NUnit.2.6.3\lib\nunit.framework.dll</HintPath>
     </Reference>
     <Reference Include="RabbitMQ.Client">
-      <HintPath>..\..\packages\RabbitMQ.Client.3.3.2\lib\net30\RabbitMQ.Client.dll</HintPath>
+      <HintPath>..\packages\RabbitMQ.Client.3.3.5\lib\net30\RabbitMQ.Client.dll</HintPath>
     </Reference>
     <Reference Include="RabbitMQ.ServiceModel">
-      <HintPath>..\..\packages\RabbitMQ.ServiceModel.3.3.2\lib\net30\RabbitMQ.ServiceModel.dll</HintPath>
+      <HintPath>..\packages\RabbitMQ.ServiceModel.3.3.5\lib\net30\RabbitMQ.ServiceModel.dll</HintPath>
     </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.ServiceModel" />
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\packages\Newtonsoft.Json.6.0.5\lib\net40\Newtonsoft.Json.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\..\SharedAssemblyInfo.cs">
@@ -65,7 +62,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\gelf4net\gelf4net.csproj">
-      <Project>{21601568-d8ad-433f-998d-1500a27f3fbd}</Project>
+      <Project>{21601568-D8AD-433F-998D-1500A27F3FBD}</Project>
       <Name>gelf4net</Name>
     </ProjectReference>
   </ItemGroup>
