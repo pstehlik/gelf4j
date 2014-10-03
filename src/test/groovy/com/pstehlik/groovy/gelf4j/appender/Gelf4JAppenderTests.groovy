@@ -1,5 +1,6 @@
 package com.pstehlik.groovy.gelf4j.appender
 
+import org.apache.log4j.MDC
 import org.junit.Test
 import static org.junit.Assert.assertEquals
 import static org.junit.Assert.assertNull
@@ -187,5 +188,26 @@ some long message. some long message. some long message. some long message. some
     }
     def res = appender.append(null)
     assertNull res
+  }
+
+  @Test
+  void testMdcFields() {
+    appender.mdcFields = ['mdc', 'someField']
+
+    MDC.put('someField', 100)
+
+    LoggingEvent le = new LoggingEvent(
+      this.class.name,
+      cat,
+      Priority.WARN,
+      'someMessage',
+      null
+    )
+
+    def res = appender.createGelfMapFromLoggingEvent(le)
+
+    assert res._someField == '100'
+    assert !res.containsKey('_mdc')
+
   }
 }
