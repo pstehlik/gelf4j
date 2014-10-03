@@ -60,6 +60,9 @@ Default: false (for backwards compatibility)
 The amount of bytes a message chunk can contain.
 Default: 8154
 
+'mdcFields'
+A list of fields to read from log4j MDC and append to the additional fields
+
 ---
 
 A working example of a GELF appender in a log4j.properties file would be
