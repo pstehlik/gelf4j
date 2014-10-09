@@ -37,6 +37,7 @@ extends AppenderSkeleton {
   public Boolean includeLocationInformation = false
   public Boolean logStackTraceFromMessage = false
   public Integer maxChunkSize = 8154
+  public List mdcFields = null
   //---------------------------------------
 
   private GelfTransport _gelfTransport
@@ -139,6 +140,16 @@ extends AppenderSkeleton {
         }
       }
     }
+
+    if (mdcFields != null) {
+      mdcFields.each {
+        def mdcValue = loggingEvent.getMDC(it)
+        if (mdcValue != null) {
+          gelfMessage['_' + it] = mdcValue as String
+        }
+      }
+    }
+
     return gelfMessage
   }
 
@@ -199,6 +210,10 @@ extends AppenderSkeleton {
 
   public void setLogStackTraceFromMessage(String trueFalse) {
     logStackTraceFromMessage = Boolean.parseBoolean(trueFalse)
+  }
+
+  public void setMdcFields(List mdcFields) {
+    this.mdcFields = mdcFields
   }
 
   private Integer getMaxLoggedLines() {
