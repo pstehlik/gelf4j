@@ -105,14 +105,14 @@ task CompileMain -depends InstallDependentPackages, InitEnvironment, Init {
 	exec { &$script:msBuild $solutionFile /p:OutDir="$buildBase\" /p:Configuration=Release }
 		
 	$assemblies = @()
-	$assemblies += dir $buildBase\gelf4net.dll
+	$assemblies += dir $buildBase\Gelf4Net.dll
 	$assemblies += dir $buildBase\Newtonsoft.Json.dll
 	$assemblies += dir $buildBase\RabbitMQ.Client.dll
 	$assemblies += dir $buildBase\RabbitMQ.ServiceModel.dll
     
-    cp $buildBase\gelf4net.dll $binariesDir\gelf4net.dll
+    cp $buildBase\gelf4net.dll $binariesDir\Gelf4Net.dll
 
-	& $ilMergeTool /target:"dll" /out:"$binariesDir\gelf4net.dll" /internalize /targetplatform:"$script:ilmergeTargetFramework" /log:"$buildBase\gelf4netMergeLog.txt" $assemblies
+	& $ilMergeTool /target:"dll" /out:"$binariesDir\Gelf4Net.dll" /internalize /targetplatform:"$script:ilmergeTargetFramework" /log:"$buildBase\gelf4netMergeLog.txt" $assemblies
 	$mergeLogContent = Get-Content "$buildBase\gelf4netMergeLog.txt"
 	echo "------------------------------gelf4net Merge Log-----------------------"
 	echo $mergeLogContent
@@ -150,7 +150,7 @@ task PrepareRelease -depends CompileMain, TestMain {
  
 task CreatePackages -depends PrepareRelease  {
 
-	$packageName = "gelf4net"
+	$packageName = "Gelf4Net"
 	if($isCIBuild) {
 		$packageName += "-CI"
 	}
@@ -177,8 +177,8 @@ task CreatePackages -depends PrepareRelease  {
 	$script:packit.package_projectUrl = "https://github.com/jjchiw/gelf4net"
 	$script:packit.package_tags = "tools utilities"
 	$script:packit.package_iconUrl = "http://nuget.org/Content/Images/packageDefaultIcon.png"
-	$script:packit.versionAssemblyName = $script:packit.binaries_Location + "\gelf4net.dll"
-    invoke-packit $packageName $PackageVersion @{"log4net"="2.0.3"} "binaries\gelf4net.dll" @{} 
+	$script:packit.versionAssemblyName = $script:packit.binaries_Location + "\Gelf4Net.dll"
+    invoke-packit $packageName $PackageVersion @{"log4net"="2.0.3"} "binaries\Gelf4Net.dll" @{} 
 	#endregion
 		
 	remove-module packit
@@ -202,7 +202,7 @@ using System.Runtime.InteropServices;
 using System.Security;
 using System.Runtime.CompilerServices;
 
-[assembly: AssemblyCompany(""gelf4net"")]
+[assembly: AssemblyCompany(""Gelf4Net"")]
 [assembly: AssemblyFileVersion(""$asmVersion"")]
 [assembly: AssemblyVersion(""$asmVersion"")]	
 [assembly: AssemblyCopyright(""Copyright ©  2014"")]
