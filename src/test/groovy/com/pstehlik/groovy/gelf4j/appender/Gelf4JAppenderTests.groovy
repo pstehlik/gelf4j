@@ -172,6 +172,22 @@ some long message. some long message. some long message. some long message. some
   }
 
   @Test
+  void testAdditionalFieldJsonHandling() {
+    LoggingEvent le = new LoggingEvent(
+      this.class.name,
+      cat,
+      Priority.WARN,
+      'someMessage',
+      null
+    )
+    appender.additionalFieldsJson = '{"someField":"someValue","id":"idValue","_prefixedField":"prefixedValue"}'
+    def res = appender.createGelfMapFromLoggingEvent(le)
+    assertEquals 'someValue',res._someField
+    assertNull res._id
+    assertEquals 'prefixedValue',res._prefixedField
+  }
+
+  @Test
   void testAllSurroundingCatch() {
     appender.metaClass.createGelfMapFromLoggingEvent = { LoggingEvent loggingEvent ->
       throw new IllegalStateException('error should not break stuff')
@@ -209,5 +225,25 @@ some long message. some long message. some long message. some long message. some
     assert res._someField == '100'
     assert !res.containsKey('_mdc')
 
+  }
+
+  @Test
+  void testMdcFieldsJson() {
+    appender.mdcFieldsJson = '["mdc", "someField"]'
+
+    MDC.put('someField', 100)
+
+    LoggingEvent le = new LoggingEvent(
+      this.class.name,
+      cat,
+      Priority.WARN,
+      'someMessage',
+      null
+    )
+
+    def res = appender.createGelfMapFromLoggingEvent(le)
+
+    assert res._someField == '100'
+    assert !res.containsKey('_mdc')
   }
 }
