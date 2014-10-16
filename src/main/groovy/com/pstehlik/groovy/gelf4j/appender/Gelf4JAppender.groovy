@@ -30,6 +30,7 @@ extends AppenderSkeleton {
   //---------------------------------------
   //configuration settings for the appender
   public Map additionalFields = null
+  public String additionalFieldsJson = null
   public String facility = null
   public String graylogServerHost = 'localhost'
   public Integer graylogServerPort = 12201
@@ -38,6 +39,7 @@ extends AppenderSkeleton {
   public Boolean logStackTraceFromMessage = false
   public Integer maxChunkSize = 8154
   public List mdcFields = null
+  public String mdcFieldsJson = null
   //---------------------------------------
 
   private GelfTransport _gelfTransport
@@ -181,6 +183,16 @@ extends AppenderSkeleton {
     additionalFields = fields
   }
 
+  public void setAdditionalFieldsJson(String json) {
+    this.additionalFieldsJson = json
+    if (this.additionalFieldsJson) {
+      this.additionalFields = [:]
+      JSONValue.parse(additionalFieldsJson).each {
+        this.additionalFields.put(it.key, it.value)
+      }
+    }
+  }
+
   public void setFacility(String fac) {
     facility = fac
   }
@@ -214,6 +226,16 @@ extends AppenderSkeleton {
 
   public void setMdcFields(List mdcFields) {
     this.mdcFields = mdcFields
+  }
+
+  public void setMdcFieldsJson(String json) {
+    this.mdcFieldsJson = json
+    if (this.mdcFieldsJson) {
+      this.mdcFields = []
+      JSONValue.parse(this.mdcFieldsJson).each {
+        this.mdcFields.add(it)
+      }
+    }
   }
 
   private Integer getMaxLoggedLines() {

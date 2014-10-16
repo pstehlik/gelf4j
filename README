@@ -28,6 +28,11 @@ Additional configuration options:
 Set as a java Collection in your config to include additional fields to send to graylog2 server.
 Default: empty/no additional fields added
 
+'additionalFieldsJson'
+Set as a json string of name/value pairs in your config to include additional fields to send to graylog2 server.
+Default: empty/no additional fields added
+Example: log4j.appender.GELF.additionalFieldsJson={"server_name":"localhost"}
+
 'facility'
 Set the facility number to use.
 Default: 'GELF'
@@ -62,6 +67,11 @@ Default: 8154
 
 'mdcFields'
 A list of fields to read from log4j MDC and append to the additional fields
+
+'mdcFieldsJson'
+Set as a json string of a list of fields to read from log4j MDC and append to the additional fields
+Default: empty/no additional fields added
+Example: log4j.appender.GELF.mdcFieldsJson=["server_name","user_name"]
 
 ---
 
