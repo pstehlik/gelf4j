@@ -1,6 +1,7 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
@@ -63,28 +64,57 @@ namespace gelf4net.Appender
                 {
                     var chunkCount = (bytes.Length / MaxChunkSize) + 1;
                     var messageId = GenerateMessageId();
-                    for (int i = 0; i < chunkCount; i++)
-                    {
-                        var messageChunkPrefix = CreateChunkedMessagePart(messageId, i, chunkCount);
-                        var skip = i * MaxChunkSize;
-                        var messageChunkSuffix = bytes.Skip(skip).Take(MaxChunkSize).ToArray<byte>();
-
-                        var messageChunkFull = new byte[messageChunkPrefix.Length + messageChunkSuffix.Length];
-                        messageChunkPrefix.CopyTo(messageChunkFull, 0);
-                        messageChunkSuffix.CopyTo(messageChunkFull, messageChunkPrefix.Length);
-
-                        Client.Send(messageChunkFull, messageChunkFull.Length, RemoteEndPoint);
-                    }
+                    var state = new UdpState() { SendClient = Client, Bytes = bytes, ChunkCount = chunkCount, MessageId = messageId, SendIndex = 0 };
+                    var messageChunkFull = GetMessageChunkFull(state.Bytes, state.MessageId, state.SendIndex, state.ChunkCount);
+                    Client.BeginSend(messageChunkFull, messageChunkFull.Length, RemoteEndPoint, SendCallback, state);
                 }
                 else
                 {
-                    Client.Send(bytes, bytes.Length, RemoteEndPoint);
+                    var state = new UdpState() { SendClient = Client, Bytes = bytes, ChunkCount = 0, MessageId = string.Empty, SendIndex = 0 };
+                    Client.BeginSend(bytes, bytes.Length, RemoteEndPoint, SendCallback, state);
                 }
             }
             catch (Exception ex)
             {
                 this.ErrorHandler.Error("Unable to send logging event to remote host " + this.RemoteAddress + " on port " + this.RemotePort + ".", ex, ErrorCode.WriteFailure);
             }
+        }
+
+        private byte[] GetMessageChunkFull(byte[] bytes, string messageId, int i, int chunkCount)
+        {
+            var messageChunkPrefix = CreateChunkedMessagePart(messageId, i, chunkCount);
+            var skip = i * MaxChunkSize;
+            var messageChunkSuffix = bytes.Skip(skip).Take(MaxChunkSize).ToArray<byte>();
+
+            var messageChunkFull = new byte[messageChunkPrefix.Length + messageChunkSuffix.Length];
+            messageChunkPrefix.CopyTo(messageChunkFull, 0);
+            messageChunkSuffix.CopyTo(messageChunkFull, messageChunkPrefix.Length);
+
+            return messageChunkFull;
+        }
+        private void SendCallback(IAsyncResult ar)
+        {
+            var state = (UdpState)ar.AsyncState;
+            var u = state.SendClient;
+
+            var bytesSent = u.EndSend(ar);
+            Debug.WriteLine("Async bytes sent {0} chunk {1} of {2}", bytesSent, state.SendIndex, state.ChunkCount);
+
+            state.SendIndex++;
+            if (state.SendIndex < state.ChunkCount)
+            {
+                var messageChunkFull = GetMessageChunkFull(state.Bytes, state.MessageId, state.SendIndex, state.ChunkCount);
+                state.SendClient.BeginSend(messageChunkFull, messageChunkFull.Length, RemoteEndPoint, SendCallback, state);
+            }
+        }
+
+        private class UdpState
+        {
+            public UdpClient SendClient { set; get; }
+            public int ChunkCount { set; get; }
+            public string MessageId { set; get; }
+            public int SendIndex { set; get; }
+            public byte[] Bytes { set; get; }
         }
 
         private string GetIpAddressFromHostName()
