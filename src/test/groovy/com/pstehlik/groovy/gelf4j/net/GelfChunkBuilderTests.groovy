@@ -23,15 +23,14 @@ class GelfChunkBuilderTests {
     byte[] message = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9].toArray() as byte[]
     def builder = new GelfChunkBuilder(3, 4)
     List<byte[]> chunks = []
-    builder.chunkNumber = 0
-    chunks << builder.buildChunk(message)
-    builder.chunkNumber = 1
-    chunks << builder.buildChunk(message)
-    builder.chunkNumber = 2
-    chunks << builder.buildChunk(message)
+    (0..2).each {
+      builder.chunkNumber = it
+      chunks << builder.buildChunk(message)
+    }
 
     assert chunks[0][2..9] == chunks[1][2..9]
     assert chunks[1][2..9] == chunks[2][2..9]
+
     (0..2).each { int it ->
       assert chunks[it][10] == it.byteValue()
     }
@@ -46,6 +45,17 @@ class GelfChunkBuilderTests {
     assert chunks[1].size() == 16
     assert chunks[2].size() == 14
 
+  }
+
+  @Test(expected = IllegalArgumentException)
+  void testSanityCheckOnCreation() {
+    new GelfChunkBuilder(129, 10)
+  }
+
+  @Test(expected = IllegalArgumentException)
+  void testSanityCheckOnChunkBuilding() {
+    def builder = new GelfChunkBuilder(4, 10)
+    builder.buildChunk(new byte[50])
   }
 
 }
