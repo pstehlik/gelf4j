@@ -19,18 +19,14 @@ import org.apache.log4j.spi.ThrowableInformation
  * @author Philip Stehlik
  * @since 0.7
  */
-class Gelf4JAppender
-extends AppenderSkeleton {
+class Gelf4JAppender extends AppenderSkeleton {
 
   public static final Integer MAX_LOGGED_LINES = 500
-  public static final Integer SHORT_MESSAGE_LENGTH = 250
   public static final String UNKNOWN_HOST = 'unknown_host'
-  private static final String GELF_VERSION = "1.0"
 
   //---------------------------------------
   //configuration settings for the appender
   public Map additionalFields = null
-  public String additionalFieldsJson = null
   public String facility = null
   public String graylogServerHost = 'localhost'
   public Integer graylogServerPort = 12201
@@ -76,83 +72,33 @@ extends AppenderSkeleton {
   }
 
   Map createGelfMapFromLoggingEvent(LoggingEvent loggingEvent) {
-    StringBuilder fullMessage = new StringBuilder(100 * this.getMaxLoggedLines())
-    String[] throwableAsString
 
-    //detecting if the actual log-message is a throwable - because if so, might want the whole stacktrace
-    if(loggingEvent.message instanceof Throwable){
-      if(logStackTraceFromMessage){
-        def tI = new ThrowableInformation(loggingEvent.message as Throwable)
-        throwableAsString = tI.throwableStrRep
-      } else {
-        fullMessage.append(layout ? layout.format(loggingEvent) : (loggingEvent.getMessage() as String))
-      }
-    } else {
-      fullMessage.append(layout ? layout.format(loggingEvent) : loggingEvent.getMessage())
-    }
+    GelfMessageBuilder messageBuilder = new GelfMessageBuilder(this, loggingEvent)
+    messageBuilder.setField('host', loggingHostName)
+    messageBuilder.setAdditionalField('facility', facility ?: 'GELF')
 
-    if (layout == null || layout.ignoresThrowable() || !fullMessage.length()) {
-      throwableAsString = throwableAsString?:loggingEvent.getThrowableStrRep()
-      if (throwableAsString != null) {
-        int len = throwableAsString.length
-        if(fullMessage.length()){ // newline after the 'original log message' to have nicer formatting
-          fullMessage.append Layout.LINE_SEP
-        }
-        for (int i = 0; i < len && i <  this.getMaxLoggedLines(); i++) {
-          fullMessage.append throwableAsString[i]
-          fullMessage.append Layout.LINE_SEP
-        }
-      }
-    }
-
-    if(!fullMessage.length()){ //failsave to prevent a 'null' or empty message even though it should(!) not happen
-      fullMessage.append loggingEvent.message as String
-    }
-    String shortMessage = fullMessage.toString()
-    if (shortMessage.length() > SHORT_MESSAGE_LENGTH) {
-      shortMessage = shortMessage.substring(0, SHORT_MESSAGE_LENGTH)
-    }
-    int gelfTimeStamp = Math.floor(loggingEvent.getTimeStamp() / 1000)
-    def gelfMessage = [
-      "facility": facility ?: 'GELF',
-      "file": '',
-      "full_message": fullMessage.toString(),
-      "host": loggingHostName,
-      "level": "${loggingEvent.getLevel().getSyslogEquivalent()}" as String,
-      "line": '',
-      "short_message": shortMessage,
-      "timestamp": gelfTimeStamp as String,
-      "version": GELF_VERSION
-    ]
-    //only set location information if configured
-    if (includeLocationInformation) {
-      gelfMessage.file = loggingEvent.getLocationInformation().fileName
-      gelfMessage.line = loggingEvent.getLocationInformation().lineNumber
-    }
     //add additional fields and prepend with _ if not present already
-    if (additionalFields != null) {
-      additionalFields.each {
-        String key = it.key
-        if (!key.startsWith('_')) {
-          key = '_' + key
-        }
-        //skip additional field called '_id'
-        if (key != '_id') {
-          gelfMessage[key] = it.value as String
-        }
+    additionalFields.each {
+      messageBuilder.setAdditionalField(it.key as String, it.value as String)
+    }
+
+    String ndc = loggingEvent.getNDC()
+    if (ndc) {
+      messageBuilder.setAdditionalField('ndc', ndc)
+    }
+
+    mdcFields.each {
+      def mdcValue = loggingEvent.getMDC(it as String)
+      if (mdcValue != null) {
+        messageBuilder.setAdditionalField(
+          'mdc_' + ((it as String) =~ /([A-Z])/).replaceAll('_$1').toLowerCase(),
+          mdcValue as String
+        )
       }
     }
 
-    if (mdcFields != null) {
-      mdcFields.each {
-        def mdcValue = loggingEvent.getMDC(it)
-        if (mdcValue != null) {
-          gelfMessage['_' + it] = mdcValue as String
-        }
-      }
-    }
+    messageBuilder.build()
 
-    return gelfMessage
   }
 
   /**
@@ -184,10 +130,9 @@ extends AppenderSkeleton {
   }
 
   public void setAdditionalFieldsJson(String json) {
-    this.additionalFieldsJson = json
-    if (this.additionalFieldsJson) {
+    if (json) {
       this.additionalFields = [:]
-      JSONValue.parse(additionalFieldsJson).each {
+      JSONValue.parse(json).each {
         this.additionalFields.put(it.key, it.value)
       }
     }
@@ -211,6 +156,10 @@ extends AppenderSkeleton {
 
   public void setIncludeLocationInformation(Boolean includeLocation) {
     includeLocationInformation = includeLocation
+  }
+
+  public void setIncludeLocationInformationString(String includeLocation) {
+    includeLocationInformation = includeLocation?.toLowerCase() == 'true'
   }
 
   public void setMaxChunkSize(Integer maxChunk) {
@@ -238,7 +187,7 @@ extends AppenderSkeleton {
     }
   }
 
-  private Integer getMaxLoggedLines() {
+  int getMaxLoggedLines() {
     MAX_LOGGED_LINES
   }
 
