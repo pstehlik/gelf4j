@@ -38,6 +38,8 @@ class Gelf4JAppender extends AppenderSkeleton {
   public String mdcFieldsJson = null
   //---------------------------------------
 
+  private Map<String,String> translatedMdcNames = [:]
+
   private GelfTransport _gelfTransport
 
   protected void append(LoggingEvent loggingEvent) {
@@ -87,13 +89,10 @@ class Gelf4JAppender extends AppenderSkeleton {
       messageBuilder.setAdditionalField('ndc', ndc)
     }
 
-    mdcFields.each {
-      def mdcValue = loggingEvent.getMDC(it as String)
+    translatedMdcNames.each { originalName, translated ->
+      def mdcValue = loggingEvent.getMDC(originalName)
       if (mdcValue != null) {
-        messageBuilder.setAdditionalField(
-          'mdc_' + ((it as String) =~ /([A-Z])/).replaceAll('_$1').toLowerCase(),
-          mdcValue as String
-        )
+        messageBuilder.setAdditionalField(translated, mdcValue as String)
       }
     }
 
@@ -175,15 +174,19 @@ class Gelf4JAppender extends AppenderSkeleton {
 
   public void setMdcFields(List mdcFields) {
     this.mdcFields = mdcFields
+    this.mdcFields.each {
+      this.translatedMdcNames.put(it as String, 'mdc_' + ((it as String) =~ /([A-Z])/).replaceAll('_$1').toLowerCase())
+    }
   }
 
   public void setMdcFieldsJson(String json) {
     this.mdcFieldsJson = json
     if (this.mdcFieldsJson) {
-      this.mdcFields = []
-      JSONValue.parse(this.mdcFieldsJson).each {
-        this.mdcFields.add(it)
+      def fieldNames = JSONValue.parse(this.mdcFieldsJson)
+      if (!fieldNames instanceof List) {
+        throw new IllegalArgumentException("mdcFieldJson value must be a parseable JSON list, but got: ${this.mdcFieldsJson}")
       }
+      this.setMdcFields(fieldNames as List)
     }
   }
 
