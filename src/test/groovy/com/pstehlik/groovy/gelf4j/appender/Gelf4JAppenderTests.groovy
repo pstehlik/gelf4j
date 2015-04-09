@@ -1,23 +1,27 @@
 package com.pstehlik.groovy.gelf4j.appender
 
+import com.pstehlik.groovy.test.BaseUnitTest
+import org.apache.log4j.Category
+import org.apache.log4j.Level
 import org.apache.log4j.MDC
+import org.apache.log4j.spi.LocationInfo
+import org.apache.log4j.spi.LoggingEvent
+import org.junit.After
+import org.junit.Before
 import org.junit.Test
+
 import static org.junit.Assert.assertEquals
 import static org.junit.Assert.assertNull
-import org.apache.log4j.spi.LoggingEvent
-import org.apache.log4j.Priority
-import org.apache.log4j.spi.LocationInfo
-import com.pstehlik.groovy.test.BaseUnitTest
 
 /**
  * @author Philip Stehlik
  * @since 0.82
  */
-class Gelf4JAppenderTests
-extends BaseUnitTest{
+class Gelf4JAppenderTests extends BaseUnitTest {
+
   Gelf4JAppender appender
 
-  @org.junit.Before
+  @Before
   void setUp() {
     super.setUp()
     registerMetaClass(Gelf4JAppender)
@@ -26,36 +30,37 @@ extends BaseUnitTest{
     appender.layout.conversionPattern = '%d{ABSOLUTE} %5p %c{1}:%L - %m%n'
   }
 
-  @org.junit.After
+  @After
   void tearDown() {
     super.tearDown()
     appender = null
   }
 
-  private org.apache.log4j.Category getCat() {
-    return new org.apache.log4j.Category('testCategory')
+  private Category getCat() {
+    new Category('testCategory')
   }
 
   @Test
   void testBasicMessageBuilding() {
+
     LoggingEvent le = new LoggingEvent(
       this.class.name,
       cat,
-      Priority.WARN,
+      Level.WARN,
       'someMessage',
       null
     )
     def res = appender.createGelfMapFromLoggingEvent(le)
-    assertEquals 'GELF', res.facility
-    assertEquals '', res.file
+    assert 'GELF' == res['_facility']
+    assert null == res.file
     assert res.full_message.contains('someMessage')
-    assertEquals InetAddress.getLocalHost().getHostName(), res.host
-    assertEquals '4', res.level
-    assertEquals '', res.line
+    assert InetAddress.getLocalHost().getHostName() == res.host
+    assert '4' == res.level
+    assert null == res['_line']
     assert res.short_message.contains('someMessage')
     int gelfTimeStamp = Math.floor(le.getTimeStamp() / 1000)
-    assertEquals gelfTimeStamp as String, res.timestamp
-    assertEquals '1.0', res.version
+    assert gelfTimeStamp as String == res.timestamp
+    assert '1.1' == res.version
   }
 
   @Test
@@ -66,7 +71,7 @@ extends BaseUnitTest{
       LoggingEvent le = new LoggingEvent(
         this.class.name,
         cat,
-        Priority.WARN,
+        Level.WARN,
         'some message before exception',
         ex
       )
@@ -87,7 +92,7 @@ extends BaseUnitTest{
     LoggingEvent le = new LoggingEvent(
       this.class.name,
       cat,
-      Priority.WARN,
+      Level.WARN,
       'some message before exception',
       ex
     )
@@ -95,30 +100,6 @@ extends BaseUnitTest{
 
   }
 
-  @Test
-  void testShortMessageHandling() {
-    def longMessage = '''some long message. some long message. some long message. some long message. some long message.
-some long message. some long message. some long message. some long message. some long message.
-some long message. some long message. some long message. some long message. some long message.
-some long message. some long message. some long message. some long message. some long message.
-some long message. some long message. some long message. some long message. some long message.
-some long message. some long message. some long message. some long message. some long message.
-some long message. some long message. some long message. some long message. some long message.
-some long message. some long message. some long message. some long message. some long message.
-some long message. some long message. some long message. some long message. some long message.
-some long message. some long message. some long message. some long message. some long message.
-some long message. some long message. some long message. some long message. some long message. '''
-    LoggingEvent le = new LoggingEvent(
-      this.class.name,
-      cat,
-      Priority.WARN,
-      longMessage,
-      null
-    )
-    def res = appender.createGelfMapFromLoggingEvent(le)
-    assert res.full_message.size() >= Gelf4JAppender.SHORT_MESSAGE_LENGTH
-    assertEquals Gelf4JAppender.SHORT_MESSAGE_LENGTH, res.short_message.size()
-  }
 
   @Test
   void testIncludeLocationInformation() {
@@ -126,7 +107,7 @@ some long message. some long message. some long message. some long message. some
       this.class.name,
       cat,
       System.currentTimeMillis(),
-      Priority.WARN,
+      Level.WARN,
       'someMessage',
       'thread name',
       null,
@@ -141,13 +122,13 @@ some long message. some long message. some long message. some long message. some
     )
     appender.includeLocationInformation = false
     def res = appender.createGelfMapFromLoggingEvent(le)
-    assertEquals '', res.file
-    assertEquals '', res.line
+    assert null == res.file
+    assert null == res.line
 
     appender.includeLocationInformation = true
     res = appender.createGelfMapFromLoggingEvent(le)
-    assertEquals 'mySourceFile.groovy', res.file
-    assertEquals '200', res.line
+    assert 'mySourceFile.groovy' == res['_code_location_file']
+    assert '200' == res['_code_location_line']
   }
 
 
@@ -156,7 +137,7 @@ some long message. some long message. some long message. some long message. some
     LoggingEvent le = new LoggingEvent(
       this.class.name,
       cat,
-      Priority.WARN,
+      Level.WARN,
       'someMessage',
       null
     )
@@ -176,7 +157,7 @@ some long message. some long message. some long message. some long message. some
     LoggingEvent le = new LoggingEvent(
       this.class.name,
       cat,
-      Priority.WARN,
+      Level.WARN,
       'someMessage',
       null
     )
@@ -215,15 +196,15 @@ some long message. some long message. some long message. some long message. some
     LoggingEvent le = new LoggingEvent(
       this.class.name,
       cat,
-      Priority.WARN,
+      Level.WARN,
       'someMessage',
       null
     )
 
     def res = appender.createGelfMapFromLoggingEvent(le)
 
-    assert res._someField == '100'
-    assert !res.containsKey('_mdc')
+    assert res._mdc_some_field == '100'
+    assert !res.containsKey('_mdc_mdc')
 
   }
 
@@ -236,14 +217,14 @@ some long message. some long message. some long message. some long message. some
     LoggingEvent le = new LoggingEvent(
       this.class.name,
       cat,
-      Priority.WARN,
+      Level.WARN,
       'someMessage',
       null
     )
 
     def res = appender.createGelfMapFromLoggingEvent(le)
 
-    assert res._someField == '100'
-    assert !res.containsKey('_mdc')
+    assert res._mdc_some_field == '100'
+    assert !res.containsKey('_mdc_mdc')
   }
 }
