@@ -47,6 +47,14 @@ namespace gelf4net.Layout
         /// </summary>
         public string Facility { get; set; }
 
+        /// <summary>
+        /// Gets or sets the name of the host.
+        /// </summary>
+        /// <value>
+        /// The name of the host.
+        /// </value>
+        public string HostName { get; set; }
+        
         public string FieldSeparator { get; set; }
 
         public string KeyValueSeparator { get; set; }
@@ -172,7 +180,7 @@ namespace gelf4net.Layout
             {
                 Facility = Facility ?? "GELF",
                 File = string.Empty,
-                Host = Environment.MachineName,
+                Host = HostName ?? Environment.MachineName,
                 Level = GetSyslogSeverity(loggingEvent.Level),
                 Line = string.Empty,
                 TimeStamp = loggingEvent.TimeStamp,
