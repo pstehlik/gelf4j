@@ -23,12 +23,12 @@ using gelf4net;
 
 namespace Gelf4netTest
 {
-	/// <summary>
-	/// Summary description for UnitTest1
-	/// </summary>
-	[TestFixture]
-	public class GelfUdpAppenderTest
-	{
+    /// <summary>
+    /// Summary description for UnitTest1
+    /// </summary>
+    [TestFixture]
+    public class GelfUdpAppenderTest
+    {
         [Test]
         public void TestMessageId()
         {
@@ -90,5 +90,5 @@ namespace Gelf4netTest
             Assert.That(result[10], Is.EqualTo(index));
             Assert.That(result[11], Is.EqualTo(chunkCount));
         }
-	}
+    }
 }
