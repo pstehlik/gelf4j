@@ -208,8 +208,8 @@ If the custom object does not have a `Message` or `ShortMessage` field than the 
 output of the `ToString()` of that object.
 
 ## License
-This project is licensed under the [Apache 2.0](2) license
+This project is licensed under the [MIT](2) license
 
 [1]: https://github.com/Graylog2/graylog2-docs/wiki/GELF
-[2]: http://www.apache.org/licenses/LICENSE-2.0.html
+[2]: https://opensource.org/licenses/MIT
 [3]: http://logging.apache.org/log4net/release/sdk/log4net.Layout.PatternLayout.html
