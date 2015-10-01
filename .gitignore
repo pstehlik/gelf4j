@@ -27,3 +27,4 @@ packages/**/*
 binaries
 *testresult*
 src/packages/
+examples/packages
