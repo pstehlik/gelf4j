@@ -25,7 +25,10 @@ namespace gelf4net.Appender
         public string Username { get; set; }
         public string Password { get; set; }
         public Encoding Encoding { get; set; }
-
+        protected IConnection Connection {get;set;}
+        protected IModel Channel {get;set;}
+        private static volatile object _syncLock = new object();
+        
         public override void ActivateOptions()
         {
             base.ActivateOptions();
@@ -44,18 +47,24 @@ namespace gelf4net.Appender
                 UserName = Username,
                 Password = Password
             };
+            Connection = ConnectionFactory.CreateConnection();
+            Channel = Connection.CreateModel();
         }
 
         protected override void Append(log4net.Core.LoggingEvent loggingEvent)
         {
             var message = RenderLoggingEvent(loggingEvent).GzipMessage(Encoding);
-
-            using (IConnection conn = ConnectionFactory.CreateConnection())
-            {
-                var model = conn.CreateModel();
-                byte[] messageBodyBytes = message;
-                model.BasicPublish(Exchange, Key, null, messageBodyBytes);
-            }
+            byte[] messageBodyBytes = message;
+            lock(_syncLock)
+                Channel.BasicPublish(Exchange, Key, null, messageBodyBytes);
+        }
+        
+        protected override void OnClose()
+        {
+            Channel.Close();
+            Channel.Dispose();
+            Connection.Close();
+            Connection.Dispose();
         }
     }
 }
