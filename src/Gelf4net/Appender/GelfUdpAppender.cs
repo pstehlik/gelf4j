@@ -30,12 +30,18 @@ namespace gelf4net.Appender
         /// </summary>
         public string RemoteHostName { get; set; }
 
+        private static readonly Random Random;
         public GelfUdpAppender()
         {
             Encoding = Encoding.UTF8;
             MaxChunkSize = 1024;
 
             log4net.Util.TypeConverters.ConverterRegistry.AddConverter(typeof(IPAddress), new IPAddressConverter());
+        }
+
+        static GelfUdpAppender()
+        {
+            Random = new Random();
         }
 
         public override void ActivateOptions()
@@ -126,11 +132,10 @@ namespace gelf4net.Appender
         public static string GenerateMessageId()
         {
             var md5String = String.Join("", MD5.Create().ComputeHash(Encoding.Default.GetBytes(Environment.MachineName)).Select(it => it.ToString("x2")).ToArray<string>());
-            var random = new Random((int)DateTime.Now.Ticks);
             var sb = new StringBuilder();
             var t = DateTime.Now.Ticks % 1000000000;
             var s = String.Format("{0}{1}", md5String.Substring(0, 10), md5String.Substring(20, 10));
-            var r = random.Next(10000000).ToString("00000000");
+            var r = Random.Next(10000000).ToString("00000000");
 
             sb.Append(t);
             sb.Append(s);
