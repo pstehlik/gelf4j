@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Text;
+using System.Threading;
 
 namespace gelf4net.Appender
 {
@@ -40,12 +41,12 @@ namespace gelf4net.Appender
         {
             ConnectionFactory = new ConnectionFactory()
             {
-                Protocol = Protocols.FromEnvironment(),
                 HostName = RemoteAddress,
                 Port = RemotePort,
                 VirtualHost = VirtualHost,
                 UserName = Username,
-                Password = Password
+                Password = Password,
+                AutomaticRecoveryEnabled = true
             };
             Connection = ConnectionFactory.CreateConnection();
             Channel = Connection.CreateModel();
@@ -55,10 +56,21 @@ namespace gelf4net.Appender
         {
             var message = RenderLoggingEvent(loggingEvent).GzipMessage(Encoding);
             byte[] messageBodyBytes = message;
-            lock(_syncLock)
-                Channel.BasicPublish(Exchange, Key, null, messageBodyBytes);
+            if (WaitForConnectionToConnectOrReconnect(new TimeSpan(0, 0, 0, 0, 500)))
+            {
+                lock (_syncLock)
+                    Channel.BasicPublish(Exchange, Key, null, messageBodyBytes);
+            }
         }
-        
+
+        private bool WaitForConnectionToConnectOrReconnect(TimeSpan timeToWait)
+        {
+            if (Connection.IsOpen) return true;
+            var dt = DateTime.Now;
+            while (!Connection.IsOpen && (DateTime.Now - dt) < timeToWait) Thread.Sleep(1);
+            return Connection.IsOpen;
+        }
+
         protected override void OnClose()
         {
             Channel.Close();
