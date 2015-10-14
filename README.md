@@ -3,7 +3,8 @@ gelf4net is a log4net adapter that formats logs to the [GELF][1] specification a
 
 ## Installation
 
-You can install the latest stable release using the nuget package `gelf4net`.  
+You can install the latest stable release using the nuget package [`gelf4net`](https://www.nuget.org/packages/Gelf4Net/).
+
 If you want to use the daily builds you can install the `gelf4net-ci` package.
 
 ## Configuration
