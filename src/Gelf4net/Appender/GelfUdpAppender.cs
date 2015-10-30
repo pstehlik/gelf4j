@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
@@ -97,7 +96,6 @@ namespace gelf4net.Appender
             var u = state.SendClient;
 
             var bytesSent = u.EndSend(ar);
-            Debug.WriteLine("Async bytes sent {0} chunk {1} of {2}", bytesSent, state.SendIndex, state.ChunkCount);
 
             state.SendIndex++;
             if (state.SendIndex < state.ChunkCount)
