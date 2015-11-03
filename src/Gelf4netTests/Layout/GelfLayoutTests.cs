@@ -74,7 +74,7 @@ namespace Gelf4netTest.Layout
             var result = GetMessage(layout, loggingEvent);
 
             Assert.AreEqual(result.FullMessage, message);
-            Assert.AreEqual(result["_TraceID"], "1");
+            Assert.AreEqual(result["_TraceID"], 1);
         }
 
         [Test]
@@ -108,7 +108,7 @@ namespace Gelf4netTest.Layout
             var result = GetMessage(layout, loggingEvent);
 
             Assert.AreEqual(result.FullMessage, message);
-            Assert.AreEqual(result["_TraceID"], "1");
+            Assert.AreEqual(result["_TraceID"], 1);
         }
 
         [Test]

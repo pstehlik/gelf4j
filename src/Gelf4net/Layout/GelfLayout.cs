@@ -88,9 +88,9 @@ namespace gelf4net.Layout
         }
 
 
-        private Dictionary<string, string> ParseField(string value)
+        private Dictionary<string, object> ParseField(string value)
         {
-            Dictionary<string, string> innerAdditionalFields= new Dictionary<string, string>();
+            var innerAdditionalFields= new Dictionary<string, object>();
 
             if (value != null)
             {
@@ -106,15 +106,16 @@ namespace gelf4net.Layout
 
                 if (!string.IsNullOrEmpty(KeyValueSeparator))
                 {
-                    innerAdditionalFields =
-                        fields.ToDictionary(
-                            it => it.Split(new[] {KeyValueSeparator}, StringSplitOptions.RemoveEmptyEntries)[0],
-                            it => it.Split(new[] {KeyValueSeparator}, StringSplitOptions.RemoveEmptyEntries)[1]);
+                    innerAdditionalFields = fields
+                        .Select(it => it.Split(new[] {KeyValueSeparator}, StringSplitOptions.RemoveEmptyEntries))
+                        .ToDictionary(it => it[0], it => (object) it[1]);
 
                 }
                 else
                 {
-                    innerAdditionalFields = fields.ToDictionary(it => it.Split(':')[0], it => it.Split(':')[1]);
+                    innerAdditionalFields = fields
+                        .Select(it => it.Split(':'))
+                        .ToDictionary(it => it[0], it => (object) it[1]);
                 }
             }
             return innerAdditionalFields;
@@ -218,14 +219,13 @@ namespace gelf4net.Layout
 
         private void AddAdditionalFields(LoggingEvent loggingEvent, GelfMessage message)
         {
-            Dictionary<string, string> additionalFields = ParseField(AdditionalFields)??new Dictionary<string, string>();
+            var additionalFields = ParseField(AdditionalFields)??new Dictionary<string, object>();
             foreach (DictionaryEntry item in loggingEvent.GetProperties())
             {
                 var key = item.Key as string;
                 if (key != null && !key.StartsWith("log4net:") /*exclude log4net built-in properties */ )
                 {
-                    var val = item.Value == null ? null : item.Value.ToString();
-                    additionalFields.Add(key, val);
+                    additionalFields.Add(key, item.Value);
                 }
             }
 
@@ -234,7 +234,8 @@ namespace gelf4net.Layout
                 var key = kvp.Key.StartsWith("_") ? kvp.Key : "_" + kvp.Key;
 
                 //If the value starts with a '%' then defer to the pattern layout
-                var value = kvp.Value == null ? String.Empty : (kvp.Value.StartsWith("%") ? GetValueFromPattern(loggingEvent, kvp.Value) : kvp.Value);
+                var patternValue = kvp.Value as string;
+                var value = patternValue != null && patternValue.StartsWith("%") ? GetValueFromPattern(loggingEvent, patternValue) : kvp.Value;
                 message[key] = value;
             }
         }
