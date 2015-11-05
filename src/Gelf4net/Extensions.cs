@@ -4,13 +4,30 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.IO.Compression;
-using System.Linq;
 using System.Text;
 
 namespace gelf4net
 {
     public static class Extensions
     {
+        private static HashSet<Type> _numericTypes = new HashSet<Type>
+        {
+            typeof(decimal),
+            typeof(double),
+            typeof(float),
+            typeof(int),
+            typeof(uint),
+            typeof(long),
+            typeof(ulong),
+            typeof(short),
+            typeof(ushort)
+        };
+
+        public static bool IsNumeric(this Type type)
+        {
+            return _numericTypes.Contains(type);
+        }
+
         public static IDictionary ToDictionary(this object values)
         {
             var dict = new Dictionary<string, object>(StringComparer.OrdinalIgnoreCase);
@@ -44,7 +61,7 @@ namespace gelf4net
         {
             byte[] buffer = encoding.GetBytes(message);
             var ms = new MemoryStream();
-            using (var zip = new System.IO.Compression.GZipStream(ms, CompressionMode.Compress, true))
+            using (var zip = new GZipStream(ms, CompressionMode.Compress, true))
             {
                 zip.Write(buffer, 0, buffer.Length);
             }

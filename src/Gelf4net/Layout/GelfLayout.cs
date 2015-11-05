@@ -212,7 +212,7 @@ namespace gelf4net.Layout
                 else
                 {
                     key = key.StartsWith("_") ? key : "_" + key;
-                    gelfMessage[key] = value;
+                    gelfMessage[key] = FormatAdditionalField(entry.Value);
                 }
             }
         }
@@ -225,7 +225,7 @@ namespace gelf4net.Layout
                 var key = item.Key as string;
                 if (key != null && !key.StartsWith("log4net:") /*exclude log4net built-in properties */ )
                 {
-                    additionalFields.Add(key, item.Value);
+                    additionalFields.Add(key, FormatAdditionalField(item.Value));
                 }
             }
 
@@ -238,6 +238,11 @@ namespace gelf4net.Layout
                 var value = patternValue != null && patternValue.StartsWith("%") ? GetValueFromPattern(loggingEvent, patternValue) : kvp.Value;
                 message[key] = value;
             }
+        }
+
+        private object FormatAdditionalField(object value)
+        {
+            return value == null || value.GetType().IsNumeric() ? value : value.ToString();
         }
 
         private string GetValueFromPattern(LoggingEvent loggingEvent, string pattern)

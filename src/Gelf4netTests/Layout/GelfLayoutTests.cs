@@ -56,7 +56,7 @@ namespace Gelf4netTest.Layout
 
             var result = GetMessage(layout, loggingEvent);
 
-            Assert.AreEqual(result["_Test"], message.Test.ToString());
+            Assert.AreEqual(result["_Test"], message.Test);
             Assert.AreEqual(result["_Test2"], message.Test2);
         }
 
@@ -75,6 +75,57 @@ namespace Gelf4netTest.Layout
 
             Assert.AreEqual(result.FullMessage, message);
             Assert.AreEqual(result["_TraceID"], 1);
+        }
+
+        [Test]
+        public void ObjectPropertiesConvertedToStrings()
+        {
+            var layout = new GelfLayout();
+
+            var message = "test";
+
+            var someObject = new object();
+            ThreadContext.Properties["obj"] = someObject;
+
+            var loggingEvent = GetLogginEvent(message);
+
+            var result = GetMessage(layout, loggingEvent);
+
+            Assert.AreEqual(result["_obj"], someObject.ToString());
+        }
+
+        [Test]
+        public void NumericPropertiesAreNotConvertedToStrings()
+        {
+            var layout = new GelfLayout();
+
+            var message = "test";
+
+            ThreadContext.Properties["decimal"] = 1m;
+            ThreadContext.Properties["double"] = 1d;
+            ThreadContext.Properties["float"] = 1f;
+            ThreadContext.Properties["int"] = 1;
+            ThreadContext.Properties["uint"] = (uint)1;
+            ThreadContext.Properties["long"] = 1L;
+            ThreadContext.Properties["ulong"] = 1ul;
+            ThreadContext.Properties["short"] = (short)1;
+            ThreadContext.Properties["ushort"] = (ushort)1;
+            ThreadContext.Properties["nullable"] = (int?)1;
+
+            var loggingEvent = GetLogginEvent(message);
+
+            var result = GetMessage(layout, loggingEvent);
+
+            Assert.AreEqual(result["_decimal"], 1);
+            Assert.AreEqual(result["_double"], 1);
+            Assert.AreEqual(result["_float"], 1);
+            Assert.AreEqual(result["_int"], 1);
+            Assert.AreEqual(result["_uint"], 1);
+            Assert.AreEqual(result["_long"], 1);
+            Assert.AreEqual(result["_ulong"], 1);
+            Assert.AreEqual(result["_short"], 1);
+            Assert.AreEqual(result["_ushort"], 1);
+            Assert.AreEqual(result["_nullable"], 1);
         }
 
         [Test]
@@ -121,7 +172,7 @@ namespace Gelf4netTest.Layout
             var result = GetMessage(layout, loggingEvent);
 
             Assert.AreEqual(result.FullMessage, message.Message);
-            Assert.AreEqual(result["_Test"], message.Test.ToString());
+            Assert.AreEqual(result["_Test"], message.Test);
 
             var message2 = new { FullMessage = "Success", Test = 1 };
             loggingEvent = GetLogginEvent(message2);
@@ -129,21 +180,21 @@ namespace Gelf4netTest.Layout
 
 
             Assert.AreEqual(result.FullMessage, message2.FullMessage);
-            Assert.AreEqual(result["_Test"], message2.Test.ToString());
+            Assert.AreEqual(result["_Test"], message2.Test);
 
             var message3 = new { message = "Success", Test = 1 };
             loggingEvent = GetLogginEvent(message3);
             result = GetMessage(layout, loggingEvent);
 
             Assert.AreEqual(result.FullMessage, message3.message);
-            Assert.AreEqual(result["_Test"], message3.Test.ToString());
+            Assert.AreEqual(result["_Test"], message3.Test);
 
             var message4 = new { full_Message = "Success", Test = 1 };
             loggingEvent = GetLogginEvent(message4);
             result = GetMessage(layout, loggingEvent);
 
             Assert.AreEqual(result.FullMessage, message4.full_Message);
-            Assert.AreEqual(result["_Test"], message4.Test.ToString());
+            Assert.AreEqual(result["_Test"], message4.Test);
         }
 
         [Test]
@@ -156,14 +207,14 @@ namespace Gelf4netTest.Layout
             var result = GetMessage(layout, loggingEvent);
 
             Assert.AreEqual(result.ShortMessage, message.ShortMessage);
-            Assert.AreEqual(result["_Test"], message.Test.ToString());
+            Assert.AreEqual(result["_Test"], message.Test);
 
             var message2 = new { short_message = "Success", Test = 1 };
             loggingEvent = GetLogginEvent(message2);
             result = GetMessage(layout, loggingEvent);
 
             Assert.AreEqual(result.ShortMessage, message2.short_message);
-            Assert.AreEqual(result["_Test"], message2.Test.ToString());
+            Assert.AreEqual(result["_Test"], message2.Test);
 
             var message3 = new { message = "Success", Test = 1 };
             loggingEvent = GetLogginEvent(message3);
@@ -171,7 +222,7 @@ namespace Gelf4netTest.Layout
 
             Assert.AreEqual(result.FullMessage, message3.message);
             Assert.AreEqual(result.ShortMessage, message3.message);
-            Assert.AreEqual(result["_Test"], message3.Test.ToString());
+            Assert.AreEqual(result["_Test"], message3.Test);
 
             var message4 = new { message = "Success", short_message = "test", Test = 1 };
             loggingEvent = GetLogginEvent(message4);
@@ -179,7 +230,7 @@ namespace Gelf4netTest.Layout
 
             Assert.AreEqual(result.FullMessage, message4.message);
             Assert.AreEqual(result.ShortMessage, message4.short_message);
-            Assert.AreEqual(result["_Test"], message4.Test.ToString());
+            Assert.AreEqual(result["_Test"], message4.Test);
         }
 
         [Test]
@@ -297,8 +348,8 @@ namespace Gelf4netTest.Layout
 
             var result = GetMessage(layout, loggingEvent);
 
-            Assert.AreEqual(result["_Test"], message.Test.ToString());
-            Assert.AreEqual(result["_Test2"], message.Test2.ToString());
+            Assert.AreEqual(result["_Test"], message.Test);
+            Assert.AreEqual(result["_Test2"], message.Test2);
             Assert.AreEqual(result.FullMessage, message.ToString());
             Assert.AreEqual(result.ShortMessage, message.ToString().TruncateMessage(250));
         }
