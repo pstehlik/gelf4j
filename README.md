@@ -150,7 +150,7 @@ This will add the following additional fields to the output:
 ``` 
 
 Under the hood the `GelfLayout` class takes any object that is not a string and adds it's public 
-properties to a dictionary and converts their values in to strings. You can also pass in a dictionary 
+properties to a dictionary. All non-numeric values are then converted in to strings. You can also pass in a dictionary 
 directly and get the same output. When passing in a dictionary rather than using the public properties 
 of the object it uses the Key/Value pairs stored internally.
 
