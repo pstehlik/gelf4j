@@ -30,7 +30,7 @@ namespace Gelf4netTest
     public class GelfUdpAppenderTest
     {
         [Test]
-        public void TestMessageId()
+        public void GenerateMessageId_TestLength()
         {
             const int expectedLength = 8;
             var actual = GelfUdpAppender.GenerateMessageId();
@@ -38,10 +38,28 @@ namespace Gelf4netTest
         }
 
         [Test]
+        public void GenerateMessageId_NoCollision()
+        {
+            // Arrange
+            int maxIterations = 10000;
+            var generatedIds = new Dictionary<long, long>();
+
+            // Act
+            for (var i = 0; i < maxIterations; i++)
+            {
+                var id = BitConverter.ToInt64(GelfUdpAppender.GenerateMessageId(), 0);
+                generatedIds.Add(id, id);
+            }
+
+            // Assert
+            Assert.That(generatedIds.Count, Is.EqualTo(maxIterations));
+        }
+
+        [Test]
         public void CreateChunkedMessagePart_StartsWithCorrectHeader()
         {
             // Arrange
-            string messageId = "A1B2C3D4";
+            byte[] messageId = Encoding.UTF8.GetBytes("A1B2C3D4");
             int index = 1;
             int chunkCount = 1;
 
@@ -57,7 +75,7 @@ namespace Gelf4netTest
         public void CreateChunkedMessagePart_ContainsMessageId()
         {
             // Arrange
-            string messageId = "A1B2C3D4";
+            byte[] messageId = Encoding.UTF8.GetBytes("A1B2C3D4");
             int index = 1;
             int chunkCount = 1;
 
@@ -79,7 +97,7 @@ namespace Gelf4netTest
         public void CreateChunkedMessagePart_EndsWithIndexAndCount()
         {
             // Arrange
-            string messageId = "A1B2C3D4";
+            byte[] messageId = Encoding.UTF8.GetBytes("A1B2C3D4");
             int index = 1;
             int chunkCount = 2;
 
