@@ -5,7 +5,7 @@ using System.Net;
 using System.Net.Sockets;
 using log4net.Core;
 using System.Text;
-using System.Security.Cryptography;
+using System.Threading;
 using gelf4net.Util.TypeConverters;
 
 namespace gelf4net.Appender
@@ -15,25 +15,22 @@ namespace gelf4net.Appender
     /// </summary>
     public class GelfUdpAppender : log4net.Appender.UdpAppender
     {
-        private const int MaxHeaderSize = 8;
+        /// <summary>
+        /// The MessageId used in Chunked mode.
+        /// </summary>
+        private static long ChunkMessageId;
 
         /// <summary>
         /// Gets or sets GrayLogServerHost.
         /// </summary>
         public string RemoteHostName { get; set; }
 
-        private static readonly Random Random;
         public GelfUdpAppender()
         {
             Encoding = Encoding.UTF8;
             MaxChunkSize = 1024;
-
+            ChunkMessageId = DateTime.Now.Ticks%(2 ^ 16);
             log4net.Util.TypeConverters.ConverterRegistry.AddConverter(typeof(IPAddress), new IPAddressConverter());
-        }
-
-        static GelfUdpAppender()
-        {
-            Random = new Random();
         }
 
         public override void ActivateOptions()
@@ -68,7 +65,7 @@ namespace gelf4net.Appender
                 }
                 else
                 {
-                    var state = new UdpState() { SendClient = Client, Bytes = bytes, ChunkCount = 0, MessageId = string.Empty, SendIndex = 0 };
+                    var state = new UdpState() { SendClient = Client, Bytes = bytes, ChunkCount = 0, MessageId = null, SendIndex = 0 };
                     Client.BeginSend(bytes, bytes.Length, RemoteEndPoint, SendCallback, state);
                 }
             }
@@ -78,7 +75,7 @@ namespace gelf4net.Appender
             }
         }
 
-        private byte[] GetMessageChunkFull(byte[] bytes, string messageId, int i, int chunkCount)
+        private byte[] GetMessageChunkFull(byte[] bytes, byte[] messageId, int i, int chunkCount)
         {
             var messageChunkPrefix = CreateChunkedMessagePart(messageId, i, chunkCount);
             var skip = i * MaxChunkSize;
@@ -95,7 +92,7 @@ namespace gelf4net.Appender
             var state = (UdpState)ar.AsyncState;
             var u = state.SendClient;
 
-            var bytesSent = u.EndSend(ar);
+            u.EndSend(ar);
 
             state.SendIndex++;
             if (state.SendIndex < state.ChunkCount)
@@ -109,7 +106,7 @@ namespace gelf4net.Appender
         {
             public UdpClient SendClient { set; get; }
             public int ChunkCount { set; get; }
-            public string MessageId { set; get; }
+            public byte[] MessageId { set; get; }
             public int SendIndex { set; get; }
             public byte[] Bytes { set; get; }
         }
@@ -120,28 +117,18 @@ namespace gelf4net.Appender
             return addresslist[0].ToString();
         }
 
-        public static string GenerateMessageId()
+        public static byte[] GenerateMessageId()
         {
-            var md5String = String.Join("", MD5.Create().ComputeHash(Encoding.Default.GetBytes(Environment.MachineName)).Select(it => it.ToString("x2")).ToArray<string>());
-            var sb = new StringBuilder();
-            var t = DateTime.Now.Ticks % 1000000000;
-            var s = String.Format("{0}{1}", md5String.Substring(0, 10), md5String.Substring(20, 10));
-            var r = Random.Next(10000000).ToString("00000000");
-
-            sb.Append(t);
-            sb.Append(s);
-            sb.Append(r);
-
-            //Message ID: 8 bytes 
-            return sb.ToString().Substring(0, MaxHeaderSize);
+            Interlocked.Increment(ref ChunkMessageId);
+            return BitConverter.GetBytes(ChunkMessageId);
         }
 
-        public static byte[] CreateChunkedMessagePart(string messageId, int index, int chunkCount)
+        public static byte[] CreateChunkedMessagePart(byte[] messageId, int index, int chunkCount)
         {
             var result = new List<byte>();
             var gelfHeader = new byte[2] { Convert.ToByte(30), Convert.ToByte(15) };
             result.AddRange(gelfHeader);
-            result.AddRange(Encoding.Default.GetBytes(messageId).ToArray<byte>());
+            result.AddRange(messageId);
             result.Add(Convert.ToByte(index));
             result.Add(Convert.ToByte(chunkCount));
 
