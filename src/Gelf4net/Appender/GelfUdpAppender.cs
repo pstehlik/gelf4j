@@ -1,12 +1,12 @@
+using gelf4net.Util.TypeConverters;
+using log4net.Core;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
-using log4net.Core;
 using System.Text;
 using System.Threading;
-using gelf4net.Util.TypeConverters;
 
 namespace gelf4net.Appender
 {
@@ -29,14 +29,16 @@ namespace gelf4net.Appender
         {
             Encoding = Encoding.UTF8;
             MaxChunkSize = 1024;
-            ChunkMessageId = DateTime.Now.Ticks%(2 ^ 16);
+            ChunkMessageId = DateTime.Now.Ticks % (2 ^ 16);
             log4net.Util.TypeConverters.ConverterRegistry.AddConverter(typeof(IPAddress), new IPAddressConverter());
         }
 
         public override void ActivateOptions()
         {
             if (RemoteAddress == null)
+            {
                 RemoteAddress = IPAddress.Parse(GetIpAddressFromHostName());
+            }
 
             base.ActivateOptions();
         }
@@ -87,6 +89,7 @@ namespace gelf4net.Appender
 
             return messageChunkFull;
         }
+
         private void SendCallback(IAsyncResult ar)
         {
             var state = (UdpState)ar.AsyncState;
