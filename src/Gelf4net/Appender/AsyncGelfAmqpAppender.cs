@@ -22,16 +22,23 @@ namespace gelf4net.Appender
         protected override void Append(LoggingEvent[] loggingEvents)
         {
             foreach (var loggingEvent in loggingEvents)
+            {
                 Append(loggingEvent);
+            }
         }
         protected override void Append(LoggingEvent loggingEvent)
         {
             if (FilterEvent(loggingEvent))
+            {
                 _pendingTasks.Enqueue(loggingEvent);
+            }
         }
         private void Start()
         {
-            if (_onClosing)return;
+            if (_onClosing)
+            {
+                return;
+            }
             var thread = new Thread(LogMessages);
             thread.Start();
         }

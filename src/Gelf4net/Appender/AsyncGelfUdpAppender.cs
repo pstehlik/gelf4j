@@ -1,19 +1,19 @@
-﻿using System;
+﻿using log4net.Core;
+using System;
 using System.Collections.Concurrent;
 using System.Diagnostics;
 using System.Threading;
-using log4net.Core;
 
 namespace gelf4net.Appender
 {
     public class AsyncGelfUdpAppender : GelfUdpAppender
-     {
-        
+    {
+
         private readonly ConcurrentQueue<LoggingEvent> _pendingTasks;
         private readonly ManualResetEvent _manualResetEvent;
         private bool _onClosing;
 
-        public AsyncGelfUdpAppender() 
+        public AsyncGelfUdpAppender()
         {
             _pendingTasks = new ConcurrentQueue<LoggingEvent>();
             _manualResetEvent = new ManualResetEvent(false);
@@ -22,16 +22,24 @@ namespace gelf4net.Appender
         protected override void Append(LoggingEvent[] loggingEvents)
         {
             foreach (var loggingEvent in loggingEvents)
+            {
                 Append(loggingEvent);
+            }
         }
         protected override void Append(LoggingEvent loggingEvent)
         {
             if (FilterEvent(loggingEvent))
+            {
                 _pendingTasks.Enqueue(loggingEvent);
+            }
         }
         private void Start()
         {
-            if (_onClosing)return;
+            Debug.WriteLine("[Gelf4net] Start Async Appender");
+            if (_onClosing)
+            {
+                return;
+            }
             var thread = new Thread(LogMessages);
             thread.Start();
         }
@@ -47,6 +55,7 @@ namespace gelf4net.Appender
                     {
                         try
                         {
+                            Debug.WriteLine("[Gelf4net] Appending");
                             base.Append(_pendingTasks.ToArray());
                             break;
                         }
@@ -66,10 +75,10 @@ namespace gelf4net.Appender
         }
         protected override void OnClose()
         {
-            Debug.WriteLine("Closing Async Appender");
+            Debug.WriteLine("[Gelf4net] Closing Async Appender");
             _onClosing = true;
             _manualResetEvent.WaitOne(TimeSpan.FromSeconds(10));
-            Debug.WriteLine("Logging thread has stopped");
+            Debug.WriteLine("[Gelf4net] Logging thread has stopped");
             base.OnClose();
         }
     }
