@@ -38,6 +38,7 @@ namespace gelf4net.Appender
             Debug.WriteLine("[Gelf4net] Start Async Appender");
             if (_onClosing)
             {
+                Debug.WriteLine("[Gelf4net] Closing");
                 return;
             }
             var thread = new Thread(LogMessages);
@@ -68,6 +69,7 @@ namespace gelf4net.Appender
                 }
                 if (loggingEvent != null)
                 {
+                    Debug.WriteLine("[Gelf4net] Appending 2");
                     base.Append(loggingEvent);
                 }
             }
