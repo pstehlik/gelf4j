@@ -59,6 +59,7 @@
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="Appender\GelfAmqpAppender.cs" />
+    <Compile Include="Appender\GelfHttpAppender.cs" />
     <Compile Include="Appender\GelfUdpAppender.cs" />
     <Compile Include="GelfMessage.cs" />
     <Compile Include="Extensions.cs" />
