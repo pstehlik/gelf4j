@@ -2,19 +2,24 @@
 using log4net.Core;
 using System;
 using System.Net;
+using System.Text;
 
 namespace gelf4net.Appender
 {
     public class GelfHttpAppender : AppenderSkeleton
     {
-        private WebClient _webClient;
         private Uri _baseUrl;
+        private string _credentials;
 
         public string Url { get; set; }
 
+        public string User { get; set; }
+
+        public string Password { get; set; }
+
         public GelfHttpAppender()
         {
-            _webClient = new WebClient();
+
         }
 
         public override void ActivateOptions()
@@ -23,6 +28,11 @@ namespace gelf4net.Appender
 
             _baseUrl = new Uri(Url);
             ServicePointManager.FindServicePoint(_baseUrl).Expect100Continue = false;
+
+            if(!string.IsNullOrEmpty(User) || !string.IsNullOrEmpty(Password))
+            {
+                _credentials = Convert.ToBase64String(Encoding.ASCII.GetBytes(User + ":" + Password));
+            }
         }
 
         protected override void Append(LoggingEvent loggingEvent)
@@ -30,7 +40,12 @@ namespace gelf4net.Appender
             try
             {
                 var payload = this.RenderLoggingEvent(loggingEvent);
-                _webClient.UploadStringAsync(_baseUrl, payload);
+                var webClient = new WebClient();
+                if(!string.IsNullOrEmpty(_credentials))
+                {
+                    webClient.Headers[HttpRequestHeader.Authorization] = string.Format("Basic {0}", _credentials);
+                }
+                webClient.UploadStringAsync(_baseUrl, payload);
             }
             catch (Exception ex)
             {

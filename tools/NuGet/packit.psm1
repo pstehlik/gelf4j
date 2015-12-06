@@ -121,6 +121,7 @@ function Invoke-Packit
 			try
 			{
 				$versionAssemblyLocation = Resolve-Path -Path $script:packit.versionAssemblyName
+                Write-Host $versionAssemblyLocation;
                 $version = [System.Reflection.AssemblyName]::GetAssemblyName($versionAssemblyLocation).Version;
 			}
 			catch

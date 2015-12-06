@@ -1,5 +1,4 @@
-﻿using gelf4net.Appender;
-using log4net.Appender;
+﻿using log4net.Appender;
 using log4net.Core;
 using log4net.Layout;
 using log4net.Util;
@@ -7,9 +6,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
-using System.Net.Sockets;
 using System.Text;
 
 namespace gelf4net.Layout

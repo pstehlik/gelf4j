@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.40629.0
+# Visual Studio 14
+VisualStudioVersion = 14.0.24720.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "gelf4net", "gelf4net\gelf4net.csproj", "{21601568-D8AD-433F-998D-1500A27F3FBD}"
 EndProject
@@ -11,6 +11,14 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{14E74B
 	ProjectSection(SolutionItems) = preProject
 		.nuget\packages.config = .nuget\packages.config
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gelf4Net.Core", "Gelf4Net.Core\Gelf4Net.Core.csproj", "{C477F0C6-F132-438F-A6C3-302C48927224}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gelf4Net.UdpAppender", "Gelf4Net.UdpAppender\Gelf4Net.UdpAppender.csproj", "{3133D184-E5EC-4858-9818-66024E557F7B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gelf4Net.AmqpAppender", "Gelf4Net.AmqpAppender\Gelf4Net.AmqpAppender.csproj", "{55267E06-F6F3-4061-8528-6324D44B8CB9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gelf4Net.HttpAppender", "Gelf4Net.HttpAppender\Gelf4Net.HttpAppender.csproj", "{33476840-A5C5-4E5A-8A48-F350E84F4BDC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -26,6 +34,22 @@ Global
 		{713C9C99-6008-445A-A308-8EE32EA5A275}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{713C9C99-6008-445A-A308-8EE32EA5A275}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{713C9C99-6008-445A-A308-8EE32EA5A275}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C477F0C6-F132-438F-A6C3-302C48927224}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C477F0C6-F132-438F-A6C3-302C48927224}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C477F0C6-F132-438F-A6C3-302C48927224}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C477F0C6-F132-438F-A6C3-302C48927224}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3133D184-E5EC-4858-9818-66024E557F7B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3133D184-E5EC-4858-9818-66024E557F7B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3133D184-E5EC-4858-9818-66024E557F7B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3133D184-E5EC-4858-9818-66024E557F7B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{55267E06-F6F3-4061-8528-6324D44B8CB9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{55267E06-F6F3-4061-8528-6324D44B8CB9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{55267E06-F6F3-4061-8528-6324D44B8CB9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{55267E06-F6F3-4061-8528-6324D44B8CB9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{33476840-A5C5-4E5A-8A48-F350E84F4BDC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{33476840-A5C5-4E5A-8A48-F350E84F4BDC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{33476840-A5C5-4E5A-8A48-F350E84F4BDC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{33476840-A5C5-4E5A-8A48-F350E84F4BDC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

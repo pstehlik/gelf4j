@@ -70,6 +70,10 @@ gelf4net gives you the ability to log messages either through Udp or Amqp.
         
         <appender name="GelfHttpAppender" type="Gelf4net.Appender.GelfHttpAppender, Gelf4net">
             <url value="http://192.168.33.10:12201/gelf" />
+            <!--
+            <user value="user"/>
+            <password value="password"/>
+            -->
             <layout type="Gelf4net.Layout.GelfLayout, Gelf4net">
                 <param name="AdditionalFields" value="app:RandomSentence,version:1.0,Environment:Dev,Level:%level" />
                 <param name="Facility" value="RandomPhrases" />

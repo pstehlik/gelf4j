@@ -112,9 +112,45 @@ task CompileMain -depends InstallDependentPackages, InitEnvironment, Init {
     
     cp $buildBase\gelf4net.dll $binariesDir\Gelf4Net.dll
 
+    #Legacy
 	& $ilMergeTool /target:"dll" /out:"$binariesDir\Gelf4Net.dll" /internalize /targetplatform:"$script:ilmergeTargetFramework" /log:"$buildBase\gelf4netMergeLog.txt" $assemblies
 	$mergeLogContent = Get-Content "$buildBase\gelf4netMergeLog.txt"
 	echo "------------------------------gelf4net Merge Log-----------------------"
+	echo $mergeLogContent
+    
+    #AMQP
+    $assemblies = @()
+	$assemblies += dir $buildBase\Gelf4Net.Core.dll
+	$assemblies += dir $buildBase\Gelf4Net.AmqpAppender.dll
+	$assemblies += dir $buildBase\Newtonsoft.Json.dll
+	$assemblies += dir $buildBase\RabbitMQ.Client.dll
+	$assemblies += dir $buildBase\RabbitMQ.ServiceModel.dll
+    
+    & $ilMergeTool /target:"dll" /out:"$binariesDir\Gelf4Net.AmqpAppender.dll" /internalize /targetplatform:"$script:ilmergeTargetFramework" /log:"$buildBase\gelf4netAmqpAppenderMergeLog.txt" $assemblies
+	$mergeLogContent = Get-Content "$buildBase\gelf4netAmqpAppenderMergeLog.txt"
+	echo "------------------------------gelf4net Amqp Appender Merge Log-----------------------"
+	echo $mergeLogContent
+    
+    #UDP
+    $assemblies = @()
+	$assemblies += dir $buildBase\Gelf4Net.Core.dll
+    $assemblies += dir $buildBase\Gelf4Net.UdpAppender.dll
+	$assemblies += dir $buildBase\Newtonsoft.Json.dll
+    
+    & $ilMergeTool /target:"dll" /out:"$binariesDir\Gelf4Net.UdpAppender.dll" /internalize /targetplatform:"$script:ilmergeTargetFramework" /log:"$buildBase\gelf4netUdpAppenderMergeLog.txt" $assemblies
+	$mergeLogContent = Get-Content "$buildBase\gelf4netUdpAppenderMergeLog.txt"
+	echo "------------------------------gelf4net Udp Appender Merge Log-----------------------"
+	echo $mergeLogContent
+    
+    #Http
+    $assemblies = @()
+	$assemblies += dir $buildBase\Gelf4Net.Core.dll
+    $assemblies += dir $buildBase\Gelf4Net.HttpAppender.dll
+	$assemblies += dir $buildBase\Newtonsoft.Json.dll
+    
+    & $ilMergeTool /target:"dll" /out:"$binariesDir\Gelf4Net.HttpAppender.dll" /internalize /targetplatform:"v4,C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5" /log:"$buildBase\gelf4netHttpAppenderMergeLog.txt" $assemblies
+	$mergeLogContent = Get-Content "$buildBase\gelf4netHttpAppenderMergeLog.txt"
+	echo "------------------------------gelf4net Http Appender Merge Log-----------------------"
 	echo $mergeLogContent
  }
  
@@ -145,7 +181,8 @@ task PrepareRelease -depends CompileMain, TestMain {
 	}
 	Create-Directory $releaseDir
 	
-	Copy-Item -Force -Recurse "$baseDir\binaries" $releaseDir\binaries -ErrorAction SilentlyContinue  
+	Copy-Item -Force -Recurse "$baseDir\binaries" $releaseDir\binaries -ErrorAction SilentlyContinue
+	Copy-Item -Force -Recurse "$baseDir\binaries" $releaseRoot\net45\binaries -ErrorAction SilentlyContinue
 }
  
 task CreatePackages -depends PrepareRelease  {
@@ -157,31 +194,36 @@ task CreatePackages -depends PrepareRelease  {
 	if(($UploadPackage) -and ($NugetKey -eq "")){
 		throw "Could not find the NuGet access key Package Cannot be uploaded without access key"
 	}
+    
+    Package-Legacy
+    Package-Amqp-Appender
+    Package-Udp-Appender
+    Package-Http-Appender
 		
-	import-module $toolsDir\NuGet\packit.psm1
-	Write-Output "Loading the module for packing.............."
-	$packit.push_to_nuget = $UploadPackage 
-	$packit.nugetKey  = $NugetKey
-	
-	$packit.framework_Isolated_Binaries_Loc = "$baseDir\release"
-	$packit.PackagingArtifactsRoot = "$baseDir\release\PackagingArtifacts"
-	$packit.packageOutPutDir = "$baseDir\release\packages"
-	$packit.targeted_Frameworks = "net40";
-
-	#region Packing
-	$packit.package_description = "GELF log4net Appender - graylog2. Built for log4net"
-	$script:packit.package_owners = "micahlmartin"
-	$script:packit.package_authors = "micahlmartin"
-	$script:packit.release_notes = ""
-	$script:packit.package_licenseUrl = "http://www.apache.org/licenses/LICENSE-2.0.html"
-	$script:packit.package_projectUrl = "https://github.com/jjchiw/gelf4net"
-	$script:packit.package_tags = "tools utilities"
-	$script:packit.package_iconUrl = "http://nuget.org/Content/Images/packageDefaultIcon.png"
-	$script:packit.versionAssemblyName = $script:packit.binaries_Location + "\Gelf4Net.dll"
-    invoke-packit $packageName $PackageVersion @{"log4net"="2.0.0"} "binaries\Gelf4Net.dll" @{} 
-	#endregion
-		
-	remove-module packit
+# 	import-module $toolsDir\NuGet\packit.psm1
+# 	Write-Output "Loading the module for packing.............."
+# 	$packit.push_to_nuget = $UploadPackage 
+# 	$packit.nugetKey  = $NugetKey
+# 	
+# 	$packit.framework_Isolated_Binaries_Loc = "$baseDir\release"
+# 	$packit.PackagingArtifactsRoot = "$baseDir\release\PackagingArtifacts"
+# 	$packit.packageOutPutDir = "$baseDir\release\packages"
+# 	$packit.targeted_Frameworks = "net40";
+# 
+# 	#region Packing
+# 	$packit.package_description = "GELF log4net Appender - graylog2. Built for log4net"
+# 	$script:packit.package_owners = "micahlmartin"
+# 	$script:packit.package_authors = "micahlmartin"
+# 	$script:packit.release_notes = ""
+# 	$script:packit.package_licenseUrl = "http://www.apache.org/licenses/LICENSE-2.0.html"
+# 	$script:packit.package_projectUrl = "https://github.com/jjchiw/gelf4net"
+# 	$script:packit.package_tags = "tools utilities"
+# 	$script:packit.package_iconUrl = "http://nuget.org/Content/Images/packageDefaultIcon.png"
+# 	$script:packit.versionAssemblyName = $script:packit.binaries_Location + "\Gelf4Net.dll"
+#     invoke-packit $packageName $PackageVersion @{"log4net"="2.0.0"} "binaries\Gelf4Net.dll" @{} 
+# 	#endregion
+# 		
+# 	remove-module packit
  } 
  
  task GenerateAssemblyInfo {

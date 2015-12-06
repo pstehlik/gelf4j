@@ -11,7 +11,7 @@ namespace gelf4net.Util.TypeConverters
     /// The built-in IPAddressConverter in log4net does not perform well and errors out unecessarily when parsing external IP address.
     /// This converter tries to parse the IP first and doesn't care if it actually exists or has a valid host entry.
     /// </summary>
-    internal class IPAddressConverter : IConvertFrom
+    public class IPAddressConverter : IConvertFrom
     {
         public bool CanConvertFrom(Type sourceType)
         {

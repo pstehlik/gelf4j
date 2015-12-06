@@ -139,3 +139,111 @@ using System.Runtime.CompilerServices;
 	Write-Host "Generating assembly info file: $file"
 	Write-Output $asmInfo > $file
 }
+
+function Package-Legacy(){
+    import-module $toolsDir\NuGet\packit.psm1
+	Write-Output "Loading the module for packing.............."
+	$packit.push_to_nuget = $UploadPackage 
+	$packit.nugetKey  = $NugetKey
+	
+	$packit.framework_Isolated_Binaries_Loc = "$baseDir\release"
+	$packit.PackagingArtifactsRoot = "$baseDir\release\PackagingArtifacts"
+	$packit.packageOutPutDir = "$baseDir\release\packages"
+	$packit.targeted_Frameworks = "net40";
+
+	#region Packing
+	$packit.package_description = "GELF log4net Appender - graylog2. Built for log4net"
+	$script:packit.package_owners = "micahlmartin"
+	$script:packit.package_authors = "micahlmartin"
+	$script:packit.release_notes = ""
+	$script:packit.package_licenseUrl = "http://www.apache.org/licenses/LICENSE-2.0.html"
+	$script:packit.package_projectUrl = "https://github.com/jjchiw/gelf4net"
+	$script:packit.package_tags = "tools utilities"
+	$script:packit.package_iconUrl = "http://nuget.org/Content/Images/packageDefaultIcon.png"
+	$script:packit.versionAssemblyName = $script:packit.binaries_Location + "\Gelf4Net.dll"
+    invoke-packit "Gelf4Net" $PackageVersion @{"log4net"="2.0.0"} "binaries\Gelf4Net.dll" @{} 
+	#endregion
+		
+	remove-module packit
+}
+
+function Package-Amqp-Appender(){
+    import-module $toolsDir\NuGet\packit.psm1
+	Write-Output "Loading the module for packing.............."
+	$packit.push_to_nuget = $UploadPackage 
+	$packit.nugetKey  = $NugetKey
+	
+	$packit.framework_Isolated_Binaries_Loc = "$baseDir\release"
+	$packit.PackagingArtifactsRoot = "$baseDir\release\PackagingArtifacts"
+	$packit.packageOutPutDir = "$baseDir\release\packages"
+	$packit.targeted_Frameworks = "net40";
+
+	#region Packing
+	$packit.package_description = "GELF log4net Appender - graylog2. Built for log4net"
+	$script:packit.package_owners = "micahlmartin"
+	$script:packit.package_authors = "micahlmartin"
+	$script:packit.release_notes = ""
+	$script:packit.package_licenseUrl = "http://www.apache.org/licenses/LICENSE-2.0.html"
+	$script:packit.package_projectUrl = "https://github.com/jjchiw/gelf4net"
+	$script:packit.package_tags = "tools utilities"
+	$script:packit.package_iconUrl = "http://nuget.org/Content/Images/packageDefaultIcon.png"
+	$script:packit.versionAssemblyName = $script:packit.binaries_Location + "\Gelf4Net.AmqpAppender.dll"
+    invoke-packit "Gelf4Net.AmqpAppender" $PackageVersion @{"log4net"="2.0.0"} "binaries\Gelf4Net.AmqpAppender.dll" @{} 
+	#endregion
+		
+	remove-module packit
+}
+
+function Package-Udp-Appender(){
+    import-module $toolsDir\NuGet\packit.psm1
+	Write-Output "Loading the module for packing.............."
+	$packit.push_to_nuget = $UploadPackage 
+	$packit.nugetKey  = $NugetKey
+	
+	$packit.framework_Isolated_Binaries_Loc = "$baseDir\release"
+	$packit.PackagingArtifactsRoot = "$baseDir\release\PackagingArtifacts"
+	$packit.packageOutPutDir = "$baseDir\release\packages"
+	$packit.targeted_Frameworks = "net40";
+
+	#region Packing
+	$packit.package_description = "GELF log4net Appender - graylog2. Built for log4net"
+	$script:packit.package_owners = "micahlmartin"
+	$script:packit.package_authors = "micahlmartin"
+	$script:packit.release_notes = ""
+	$script:packit.package_licenseUrl = "http://www.apache.org/licenses/LICENSE-2.0.html"
+	$script:packit.package_projectUrl = "https://github.com/jjchiw/gelf4net"
+	$script:packit.package_tags = "tools utilities"
+	$script:packit.package_iconUrl = "http://nuget.org/Content/Images/packageDefaultIcon.png"
+	$script:packit.versionAssemblyName = $script:packit.binaries_Location + "\Gelf4Net.UdpAppender.dll"
+    invoke-packit "Gelf4Net.UdpAppender" $PackageVersion @{"log4net"="2.0.0"} "binaries\Gelf4Net.UdpAppender.dll" @{} 
+	#endregion
+		
+	remove-module packit
+}
+
+function Package-Http-Appender(){
+    import-module $toolsDir\NuGet\packit.psm1
+	Write-Output "Loading the module for packing.............."
+	$packit.push_to_nuget = $UploadPackage 
+	$packit.nugetKey  = $NugetKey
+	
+	$packit.framework_Isolated_Binaries_Loc = "$baseDir\release"
+	$packit.PackagingArtifactsRoot = "$baseDir\release\PackagingArtifacts"
+	$packit.packageOutPutDir = "$baseDir\release\packages"
+	$packit.targeted_Frameworks = "net45";
+
+	#region Packing
+	$packit.package_description = "GELF log4net Appender - graylog2. Built for log4net"
+	$script:packit.package_owners = "micahlmartin"
+	$script:packit.package_authors = "micahlmartin"
+	$script:packit.release_notes = ""
+	$script:packit.package_licenseUrl = "http://www.apache.org/licenses/LICENSE-2.0.html"
+	$script:packit.package_projectUrl = "https://github.com/jjchiw/gelf4net"
+	$script:packit.package_tags = "tools utilities"
+	$script:packit.package_iconUrl = "http://nuget.org/Content/Images/packageDefaultIcon.png"
+	$script:packit.versionAssemblyName = $script:packit.binaries_Location + "\Gelf4Net.HttpAppender.dll"
+    invoke-packit "Gelf4Net.HttpAppender" $PackageVersion @{"log4net"="2.0.0"; "Microsoft.Net.Http"="2.2.29"} "binaries\Gelf4Net.HttpAppender.dll" @{} 
+	#endregion
+		
+	remove-module packit
+}

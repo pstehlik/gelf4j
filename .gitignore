@@ -28,3 +28,4 @@ binaries
 *testresult*
 src/packages/
 examples/packages
+upload.ps1
