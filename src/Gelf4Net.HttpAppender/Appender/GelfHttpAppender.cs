@@ -31,7 +31,7 @@ namespace gelf4net.Appender
 
             _baseUrl = new Uri(Url);
 
-            if (!string.IsNullOrEmpty(User) || !string.IsNullOrEmpty(Password))
+            if (!string.IsNullOrEmpty(User) && !string.IsNullOrEmpty(Password))
             {
                 var byteArray = Encoding.ASCII.GetBytes(User + ":" + Password);
                 _httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Basic", Convert.ToBase64String(byteArray));
@@ -40,7 +40,7 @@ namespace gelf4net.Appender
 
         protected override void Append(LoggingEvent loggingEvent)
         {
-            Task.Factory.StartNew(async () =>
+            Task.Run(async () =>
             {
                 try
                 {

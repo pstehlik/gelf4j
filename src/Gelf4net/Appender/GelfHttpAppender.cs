@@ -29,7 +29,7 @@ namespace gelf4net.Appender
             _baseUrl = new Uri(Url);
             ServicePointManager.FindServicePoint(_baseUrl).Expect100Continue = false;
 
-            if(!string.IsNullOrEmpty(User) || !string.IsNullOrEmpty(Password))
+            if(!string.IsNullOrEmpty(User) && !string.IsNullOrEmpty(Password))
             {
                 _credentials = Convert.ToBase64String(Encoding.ASCII.GetBytes(User + ":" + Password));
             }
