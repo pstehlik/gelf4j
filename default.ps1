@@ -195,10 +195,10 @@ task CreatePackages -depends PrepareRelease  {
 		throw "Could not find the NuGet access key Package Cannot be uploaded without access key"
 	}
     
-    Package-Legacy
-    Package-Amqp-Appender
-    Package-Udp-Appender
-    Package-Http-Appender
+    Package-Legacy $UploadPackage
+    Package-Amqp-Appender $UploadPackage
+    Package-Udp-Appender $UploadPackage
+    Package-Http-Appender $UploadPackage
 		
 # 	import-module $toolsDir\NuGet\packit.psm1
 # 	Write-Output "Loading the module for packing.............."

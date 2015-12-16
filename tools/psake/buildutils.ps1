@@ -140,7 +140,7 @@ using System.Runtime.CompilerServices;
 	Write-Output $asmInfo > $file
 }
 
-function Package-Legacy(){
+function Package-Legacy($UploadPackage){
     import-module $toolsDir\NuGet\packit.psm1
 	Write-Output "Loading the module for packing.............."
 	$packit.push_to_nuget = $UploadPackage 
@@ -152,9 +152,9 @@ function Package-Legacy(){
 	$packit.targeted_Frameworks = "net40";
 
 	#region Packing
-	$packit.package_description = "GELF log4net Appender - graylog2. Built for log4net"
-	$script:packit.package_owners = "micahlmartin"
-	$script:packit.package_authors = "micahlmartin"
+	$packit.package_description = "GELF log4net UdpAppender, AmqpAppender, HttpAppender - graylog2. Built for log4net"
+	$script:packit.package_owners = "micahlmartin, jjchiw, contributors"
+	$script:packit.package_authors = "micahlmartin, jjchiw, contributors"
 	$script:packit.release_notes = ""
 	$script:packit.package_licenseUrl = "http://www.apache.org/licenses/LICENSE-2.0.html"
 	$script:packit.package_projectUrl = "https://github.com/jjchiw/gelf4net"
@@ -167,7 +167,7 @@ function Package-Legacy(){
 	remove-module packit
 }
 
-function Package-Amqp-Appender(){
+function Package-Amqp-Appender($UploadPackage){
     import-module $toolsDir\NuGet\packit.psm1
 	Write-Output "Loading the module for packing.............."
 	$packit.push_to_nuget = $UploadPackage 
@@ -179,9 +179,9 @@ function Package-Amqp-Appender(){
 	$packit.targeted_Frameworks = "net40";
 
 	#region Packing
-	$packit.package_description = "GELF log4net Appender - graylog2. Built for log4net"
-	$script:packit.package_owners = "micahlmartin"
-	$script:packit.package_authors = "micahlmartin"
+	$packit.package_description = "GELF log4net AmqpAppender - graylog2. Built for log4net"
+	$script:packit.package_owners = "micahlmartin, jjchiw, contributors"
+	$script:packit.package_authors = "micahlmartin, jjchiw, contributors"
 	$script:packit.release_notes = ""
 	$script:packit.package_licenseUrl = "http://www.apache.org/licenses/LICENSE-2.0.html"
 	$script:packit.package_projectUrl = "https://github.com/jjchiw/gelf4net"
@@ -194,7 +194,7 @@ function Package-Amqp-Appender(){
 	remove-module packit
 }
 
-function Package-Udp-Appender(){
+function Package-Udp-Appender($UploadPackage){
     import-module $toolsDir\NuGet\packit.psm1
 	Write-Output "Loading the module for packing.............."
 	$packit.push_to_nuget = $UploadPackage 
@@ -206,9 +206,9 @@ function Package-Udp-Appender(){
 	$packit.targeted_Frameworks = "net40";
 
 	#region Packing
-	$packit.package_description = "GELF log4net Appender - graylog2. Built for log4net"
-	$script:packit.package_owners = "micahlmartin"
-	$script:packit.package_authors = "micahlmartin"
+	$packit.package_description = "GELF log4net UdpAppender - graylog2. Built for log4net"
+	$script:packit.package_owners = "micahlmartin, jjchiw, contributors"
+	$script:packit.package_authors = "micahlmartin, jjchiw, contributors"
 	$script:packit.release_notes = ""
 	$script:packit.package_licenseUrl = "http://www.apache.org/licenses/LICENSE-2.0.html"
 	$script:packit.package_projectUrl = "https://github.com/jjchiw/gelf4net"
@@ -221,7 +221,7 @@ function Package-Udp-Appender(){
 	remove-module packit
 }
 
-function Package-Http-Appender(){
+function Package-Http-Appender($UploadPackage){
     import-module $toolsDir\NuGet\packit.psm1
 	Write-Output "Loading the module for packing.............."
 	$packit.push_to_nuget = $UploadPackage 
@@ -233,9 +233,9 @@ function Package-Http-Appender(){
 	$packit.targeted_Frameworks = "net45";
 
 	#region Packing
-	$packit.package_description = "GELF log4net Appender - graylog2. Built for log4net"
-	$script:packit.package_owners = "micahlmartin"
-	$script:packit.package_authors = "micahlmartin"
+	$packit.package_description = "GELF log4net HttpAppender - graylog2. Built for log4net"
+	$script:packit.package_owners = "micahlmartin, jjchiw, contributors"
+	$script:packit.package_authors = "micahlmartin, jjchiw, contributors"
 	$script:packit.release_notes = ""
 	$script:packit.package_licenseUrl = "http://www.apache.org/licenses/LICENSE-2.0.html"
 	$script:packit.package_projectUrl = "https://github.com/jjchiw/gelf4net"
