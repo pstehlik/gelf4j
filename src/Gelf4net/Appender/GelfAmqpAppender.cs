@@ -65,18 +65,24 @@ namespace gelf4net.Appender
 
         private bool WaitForConnectionToConnectOrReconnect(TimeSpan timeToWait)
         {
-            if (Connection.IsOpen) return true;
+            if (Connection != null && Connection.IsOpen) return true;
             var dt = DateTime.Now;
-            while (!Connection.IsOpen && (DateTime.Now - dt) < timeToWait) Thread.Sleep(1);
-            return Connection.IsOpen;
+            while (Connection != null && !Connection.IsOpen && (DateTime.Now - dt) < timeToWait) Thread.Sleep(1);
+            return Connection?.IsOpen ?? false;
         }
 
         protected override void OnClose()
         {
-            Channel.Close();
-            Channel.Dispose();
-            Connection.Close();
-            Connection.Dispose();
+            if (Channel != null)
+            {
+                Channel.Close();
+                Channel.Dispose();
+            }
+            if (Connection != null)
+            {
+                Connection.Close();
+                Connection.Dispose();
+            }
         }
     }
 }
