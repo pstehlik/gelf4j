@@ -1,10 +1,6 @@
 ﻿using log4net.Appender;
-using log4net.Util;
 using RabbitMQ.Client;
 using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
 using System.Text;
 using System.Threading;
 
@@ -26,10 +22,10 @@ namespace gelf4net.Appender
         public string Username { get; set; }
         public string Password { get; set; }
         public Encoding Encoding { get; set; }
-        protected IConnection Connection {get;set;}
-        protected IModel Channel {get;set;}
+        protected IConnection Connection { get; set; }
+        protected IModel Channel { get; set; }
         private static volatile object _syncLock = new object();
-        
+
         public override void ActivateOptions()
         {
             base.ActivateOptions();
@@ -65,10 +61,20 @@ namespace gelf4net.Appender
 
         private bool WaitForConnectionToConnectOrReconnect(TimeSpan timeToWait)
         {
-            if (Connection != null && Connection.IsOpen) return true;
+            if (Connection != null && Connection.IsOpen)
+            {
+                return true;
+            }
             var dt = DateTime.Now;
-            while (Connection != null && !Connection.IsOpen && (DateTime.Now - dt) < timeToWait) Thread.Sleep(1);
-            return Connection?.IsOpen ?? false;
+            while (Connection != null && !Connection.IsOpen && (DateTime.Now - dt) < timeToWait)
+            {
+                Thread.Sleep(1);
+            }
+            if (Connection != null)
+            {
+                return Connection.IsOpen;
+            }
+            return false;
         }
 
         protected override void OnClose()

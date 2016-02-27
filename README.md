@@ -33,7 +33,7 @@ gelf4net gives you the ability to log messages either through Udp or Amqp.
 		  <appender-ref ref="GelfAmqpAppender"/>
 		</root>
 
-		<appender name="GelfUdpAppender" type="Gelf4net.Appender.GelfUdpAppender, Gelf4net">
+		<appender name="GelfUdpAppender" type="gelf4net.Appender.GelfUdpAppender, Gelf4net">
 		  <remoteAddress value="127.0.0.1"/>
 		  <remotePort value="12201" />
 		  <layout type="Gelf4net.Layout.GelfLayout, Gelf4net">
@@ -45,7 +45,7 @@ gelf4net gives you the ability to log messages either through Udp or Amqp.
 		  </layout>
 		</appender>
 
-	<appender name="GelfUdpHostNameAppender" type="Gelf4net.Appender.GelfUdpAppender, Gelf4net">
+	<appender name="GelfUdpHostNameAppender" type="gelf4net.Appender.GelfUdpAppender, Gelf4net">
 		  <remoteHostName value="my.graylog2.local"/>
 		  <remotePort value="12201" />
 		  <layout type="Gelf4net.Layout.GelfLayout, Gelf4net">
@@ -57,7 +57,7 @@ gelf4net gives you the ability to log messages either through Udp or Amqp.
 		  </layout>
 		</appender>
 
-		<appender name="GelfAmqpAppender" type="Gelf4net.Appender.GelfAmqpAppender, Gelf4net">
+		<appender name="GelfAmqpAppender" type="gelf4net.Appender.GelfAmqpAppender, Gelf4net">
 		  <remoteAddress value="127.0.0.1" />
 		  <remotePort value="5672" />
 		  <username value="guest" />
@@ -74,7 +74,7 @@ gelf4net gives you the ability to log messages either through Udp or Amqp.
 		  </layout>
 		</appender>
         
-        <appender name="GelfHttpAppender" type="Gelf4net.Appender.GelfHttpAppender, Gelf4net">
+        <appender name="GelfHttpAppender" type="gelf4net.Appender.GelfHttpAppender, Gelf4net">
             <url value="http://192.168.33.10:12201/gelf" />
             <!--
             <user value="user"/>

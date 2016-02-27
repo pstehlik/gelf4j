@@ -126,7 +126,7 @@ task CompileMain -depends InstallDependentPackages, InitEnvironment, Init {
 	$assemblies += dir $buildBase\RabbitMQ.Client.dll
 	$assemblies += dir $buildBase\RabbitMQ.ServiceModel.dll
     
-    & $ilMergeTool /target:"dll" /out:"$binariesDir\Gelf4Net.AmqpAppender.dll" /internalize /targetplatform:"$script:ilmergeTargetFramework" /log:"$buildBase\gelf4netAmqpAppenderMergeLog.txt" $assemblies
+    & $ilMergeTool /target:"dll" /out:"$binariesDir\Gelf4Net.AmqpAppender.dll" /targetplatform:"$script:ilmergeTargetFramework" /log:"$buildBase\gelf4netAmqpAppenderMergeLog.txt" $assemblies /internalize:excludeinternalize.txt
 	$mergeLogContent = Get-Content "$buildBase\gelf4netAmqpAppenderMergeLog.txt"
 	echo "------------------------------gelf4net Amqp Appender Merge Log-----------------------"
 	echo $mergeLogContent
@@ -137,7 +137,7 @@ task CompileMain -depends InstallDependentPackages, InitEnvironment, Init {
     $assemblies += dir $buildBase\Gelf4Net.UdpAppender.dll
 	$assemblies += dir $buildBase\Newtonsoft.Json.dll
     
-    & $ilMergeTool /target:"dll" /out:"$binariesDir\Gelf4Net.UdpAppender.dll" /internalize /targetplatform:"$script:ilmergeTargetFramework" /log:"$buildBase\gelf4netUdpAppenderMergeLog.txt" $assemblies
+    & $ilMergeTool /target:"dll" /out:"$binariesDir\Gelf4Net.UdpAppender.dll" /targetplatform:"$script:ilmergeTargetFramework" /log:"$buildBase\gelf4netUdpAppenderMergeLog.txt" $assemblies /internalize:excludeinternalize.txt
 	$mergeLogContent = Get-Content "$buildBase\gelf4netUdpAppenderMergeLog.txt"
 	echo "------------------------------gelf4net Udp Appender Merge Log-----------------------"
 	echo $mergeLogContent
@@ -148,7 +148,7 @@ task CompileMain -depends InstallDependentPackages, InitEnvironment, Init {
     $assemblies += dir $buildBase\Gelf4Net.HttpAppender.dll
 	$assemblies += dir $buildBase\Newtonsoft.Json.dll
     
-    & $ilMergeTool /target:"dll" /out:"$binariesDir\Gelf4Net.HttpAppender.dll" /internalize /targetplatform:"v4,C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5" /log:"$buildBase\gelf4netHttpAppenderMergeLog.txt" $assemblies
+    & $ilMergeTool /target:"dll" /out:"$binariesDir\Gelf4Net.HttpAppender.dll" /targetplatform:"v4,C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5" /log:"$buildBase\gelf4netHttpAppenderMergeLog.txt" $assemblies /internalize:excludeinternalize.txt
 	$mergeLogContent = Get-Content "$buildBase\gelf4netHttpAppenderMergeLog.txt"
 	echo "------------------------------gelf4net Http Appender Merge Log-----------------------"
 	echo $mergeLogContent
