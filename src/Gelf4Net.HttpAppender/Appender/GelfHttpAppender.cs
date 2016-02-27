@@ -10,7 +10,7 @@ namespace gelf4net.Appender
 {
     public class GelfHttpAppender : AppenderSkeleton
     {
-        private HttpClient _httpClient;
+        private readonly HttpClient _httpClient;
 
         private Uri _baseUrl;
 
