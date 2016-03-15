@@ -1,7 +1,6 @@
 ﻿using log4net.Appender;
 using log4net.Core;
 using System;
-using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
@@ -30,6 +29,8 @@ namespace gelf4net.Appender
             base.ActivateOptions();
 
             _baseUrl = new Uri(Url);
+
+            _httpClient.DefaultRequestHeaders.ExpectContinue = false;
 
             if (!string.IsNullOrEmpty(User) && !string.IsNullOrEmpty(Password))
             {
