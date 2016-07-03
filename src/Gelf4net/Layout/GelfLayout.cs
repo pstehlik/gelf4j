@@ -15,7 +15,7 @@ namespace gelf4net.Layout
     {
         private const string GELF_VERSION = "1.0";
         private const int SHORT_MESSAGE_LENGTH = 250;
-        
+
         private string _additionalFields;
         private PatternLayout _patternLayout;
 
@@ -51,7 +51,7 @@ namespace gelf4net.Layout
         /// The name of the host.
         /// </value>
         public string HostName { get; set; }
-        
+
         public string FieldSeparator { get; set; }
 
         public string KeyValueSeparator { get; set; }
@@ -62,7 +62,7 @@ namespace gelf4net.Layout
         public string AdditionalFields
         {
             get { return _additionalFields; }
-            set {_additionalFields = value;}
+            set { _additionalFields = value; }
         }
 
         /// <summary>
@@ -87,14 +87,14 @@ namespace gelf4net.Layout
 
         private Dictionary<string, object> ParseField(string value)
         {
-            var innerAdditionalFields= new Dictionary<string, object>();
+            var innerAdditionalFields = new Dictionary<string, object>();
 
             if (value != null)
             {
                 string[] fields;
                 if (!string.IsNullOrEmpty(FieldSeparator))
                 {
-                    fields = value.Split(new[] {FieldSeparator}, StringSplitOptions.RemoveEmptyEntries);
+                    fields = value.Split(new[] { FieldSeparator }, StringSplitOptions.RemoveEmptyEntries);
                 }
                 else
                 {
@@ -104,15 +104,15 @@ namespace gelf4net.Layout
                 if (!string.IsNullOrEmpty(KeyValueSeparator))
                 {
                     innerAdditionalFields = fields
-                        .Select(it => it.Split(new[] {KeyValueSeparator}, StringSplitOptions.RemoveEmptyEntries))
-                        .ToDictionary(it => it[0], it => (object) it[1]);
+                        .Select(it => it.Split(new[] { KeyValueSeparator }, StringSplitOptions.RemoveEmptyEntries))
+                        .ToDictionary(it => it[0], it => (object)it[1]);
 
                 }
                 else
                 {
                     innerAdditionalFields = fields
                         .Select(it => it.Split(':'))
-                        .ToDictionary(it => it[0], it => (object) it[1]);
+                        .ToDictionary(it => it[0], it => (object)it[1]);
                 }
             }
             return innerAdditionalFields;
@@ -143,6 +143,18 @@ namespace gelf4net.Layout
                 var messageObject = loggingEvent.MessageObject;
                 if (messageObject == null)
                 {
+                    if (!string.IsNullOrEmpty(loggingEvent.RenderedMessage))
+                    {
+                        if (loggingEvent.RenderedMessage.ValidateJSON())
+                        {
+                            AddToMessage(gelfMessage, loggingEvent.RenderedMessage.ToJson().ToDictionary());
+                        }
+
+                        gelfMessage.FullMessage = !string.IsNullOrEmpty(gelfMessage.FullMessage) ? gelfMessage.FullMessage : loggingEvent.RenderedMessage;
+                        gelfMessage.ShortMessage = !string.IsNullOrEmpty(gelfMessage.ShortMessage) ? gelfMessage.ShortMessage : gelfMessage.FullMessage.TruncateMessage(SHORT_MESSAGE_LENGTH);
+
+                        return;
+                    }
                     gelfMessage.FullMessage = SystemInfo.NullText;
                     gelfMessage.ShortMessage = SystemInfo.NullText;
                 }
@@ -162,7 +174,7 @@ namespace gelf4net.Layout
                     AddToMessage(gelfMessage, messageObject.ToDictionary());
                 }
 
-                gelfMessage.FullMessage = !string.IsNullOrEmpty(gelfMessage.FullMessage) ? gelfMessage.FullMessage :  messageObject.ToString();
+                gelfMessage.FullMessage = !string.IsNullOrEmpty(gelfMessage.FullMessage) ? gelfMessage.FullMessage : messageObject.ToString();
                 gelfMessage.ShortMessage = !string.IsNullOrEmpty(gelfMessage.ShortMessage) ? gelfMessage.ShortMessage : gelfMessage.FullMessage.TruncateMessage(SHORT_MESSAGE_LENGTH);
             }
 
@@ -216,7 +228,7 @@ namespace gelf4net.Layout
 
         private void AddAdditionalFields(LoggingEvent loggingEvent, GelfMessage message)
         {
-            var additionalFields = ParseField(AdditionalFields)??new Dictionary<string, object>();
+            var additionalFields = ParseField(AdditionalFields) ?? new Dictionary<string, object>();
             foreach (DictionaryEntry item in loggingEvent.GetProperties())
             {
                 var key = item.Key as string;
@@ -250,7 +262,7 @@ namespace gelf4net.Layout
 
             //Write the results
             var sb = new StringBuilder();
-            using(var writer = new System.IO.StringWriter(sb))
+            using (var writer = new System.IO.StringWriter(sb))
             {
                 _patternLayout.Format(writer, loggingEvent);
                 writer.Flush();

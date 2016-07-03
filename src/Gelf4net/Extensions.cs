@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -54,6 +56,24 @@ namespace gelf4net
                        : message;
         }
 
+        public static bool ValidateJSON(this string s)
+        {
+            try
+            {
+                JToken.Parse(s);
+                return true;
+            }
+            catch (JsonReaderException ex)
+            {
+                return false;
+            }
+        }
+
+        public static object ToJson(this string s)
+        {
+            return JsonConvert.DeserializeObject(s);
+        }
+
         /// <summary>
         /// Gzips a string
         /// </summary>
@@ -73,17 +93,17 @@ namespace gelf4net
 
         public static double ToUnixTimestamp(this DateTime d)
         {
-          var duration = d.ToUniversalTime() - new DateTime(1970, 1, 1, 0, 0, 0);
+            var duration = d.ToUniversalTime() - new DateTime(1970, 1, 1, 0, 0, 0);
 
-          return duration.TotalSeconds;
+            return duration.TotalSeconds;
         }
 
         public static DateTime FromUnixTimestamp(this double d)
         {
 
-          var datetime = new DateTime(1970, 1, 1, 0, 0, 0).AddMilliseconds(d*1000).ToLocalTime();
+            var datetime = new DateTime(1970, 1, 1, 0, 0, 0).AddMilliseconds(d * 1000).ToLocalTime();
 
-          return datetime;
+            return datetime;
         }
     }
 }

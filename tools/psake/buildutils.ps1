@@ -158,7 +158,7 @@ function Package-Legacy($UploadPackage){
 	$script:packit.release_notes = ""
 	$script:packit.package_licenseUrl = "http://www.apache.org/licenses/LICENSE-2.0.html"
 	$script:packit.package_projectUrl = "https://github.com/jjchiw/gelf4net"
-	$script:packit.package_tags = "tools utilities"
+	$script:packit.package_tags = "tools utilities gelf graylog log4net"
 	$script:packit.package_iconUrl = "http://nuget.org/Content/Images/packageDefaultIcon.png"
 	$script:packit.versionAssemblyName = $script:packit.binaries_Location + "\Gelf4Net.dll"
     invoke-packit "Gelf4Net" $PackageVersion @{"log4net"="2.0.0"} "binaries\Gelf4Net.dll" @{} 
@@ -185,7 +185,7 @@ function Package-Amqp-Appender($UploadPackage){
 	$script:packit.release_notes = ""
 	$script:packit.package_licenseUrl = "http://www.apache.org/licenses/LICENSE-2.0.html"
 	$script:packit.package_projectUrl = "https://github.com/jjchiw/gelf4net"
-	$script:packit.package_tags = "tools utilities"
+	$script:packit.package_tags = "tools utilities gelf graylog log4net"
 	$script:packit.package_iconUrl = "http://nuget.org/Content/Images/packageDefaultIcon.png"
 	$script:packit.versionAssemblyName = $script:packit.binaries_Location + "\Gelf4Net.AmqpAppender.dll"
     invoke-packit "Gelf4Net.AmqpAppender" $PackageVersion @{"log4net"="2.0.0"} "binaries\Gelf4Net.AmqpAppender.dll" @{} 
@@ -212,7 +212,7 @@ function Package-Udp-Appender($UploadPackage){
 	$script:packit.release_notes = ""
 	$script:packit.package_licenseUrl = "http://www.apache.org/licenses/LICENSE-2.0.html"
 	$script:packit.package_projectUrl = "https://github.com/jjchiw/gelf4net"
-	$script:packit.package_tags = "tools utilities"
+	$script:packit.package_tags = "tools utilities gelf graylog log4net"
 	$script:packit.package_iconUrl = "http://nuget.org/Content/Images/packageDefaultIcon.png"
 	$script:packit.versionAssemblyName = $script:packit.binaries_Location + "\Gelf4Net.UdpAppender.dll"
     invoke-packit "Gelf4Net.UdpAppender" $PackageVersion @{"log4net"="2.0.0"} "binaries\Gelf4Net.UdpAppender.dll" @{} 
@@ -239,7 +239,7 @@ function Package-Http-Appender($UploadPackage){
 	$script:packit.release_notes = ""
 	$script:packit.package_licenseUrl = "http://www.apache.org/licenses/LICENSE-2.0.html"
 	$script:packit.package_projectUrl = "https://github.com/jjchiw/gelf4net"
-	$script:packit.package_tags = "tools utilities"
+	$script:packit.package_tags = "tools utilities gelf graylog log4net"
 	$script:packit.package_iconUrl = "http://nuget.org/Content/Images/packageDefaultIcon.png"
 	$script:packit.versionAssemblyName = $script:packit.binaries_Location + "\Gelf4Net.HttpAppender.dll"
     invoke-packit "Gelf4Net.HttpAppender" $PackageVersion @{"log4net"="2.0.0"; "Microsoft.Net.Http"="2.2.29"} "binaries\Gelf4Net.HttpAppender.dll" @{} 
