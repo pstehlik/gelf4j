@@ -28,7 +28,7 @@ namespace SimpleConsoleApplication
             while (text != "q")
             {
                 stop.Start();
-                log.Debug(String.Format("Randomizer Sentence: {0}", text));
+                //log.Debug(String.Format("Randomizer Sentence: {0}", text));
                 log.Debug(new
                 {
                     Message = String.Format("Randomizer Sentence: {0}", text),
