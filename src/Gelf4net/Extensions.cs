@@ -100,7 +100,6 @@ namespace gelf4net
 
         public static DateTime FromUnixTimestamp(this double d)
         {
-
             var datetime = new DateTime(1970, 1, 1, 0, 0, 0).AddMilliseconds(d * 1000).ToLocalTime();
 
             return datetime;
