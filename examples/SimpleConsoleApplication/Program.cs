@@ -19,7 +19,7 @@ namespace SimpleConsoleApplication
             stop.Start();
             log4net.Config.XmlConfigurator.Configure();
             stop.Stop();
-            Console.WriteLine($"Time elapsed configuration {stop.ElapsedMilliseconds}");
+            Console.WriteLine(string.Format("Time elapsed configuration {0}", stop.ElapsedMilliseconds));
 
             Console.WriteLine("Write a sentence, q to quit");
 
@@ -35,7 +35,7 @@ namespace SimpleConsoleApplication
                     Open = DateTime.UtcNow
                 });
                 stop.Stop();
-                Console.WriteLine($"Time elapsed configuration {stop.ElapsedMilliseconds}");
+                Console.WriteLine(string.Format("Time elapsed configuration {0}", stop.ElapsedMilliseconds));
                 Console.WriteLine("Sent {0}", text);
 
                 text = Console.ReadLine();

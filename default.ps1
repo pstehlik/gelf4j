@@ -25,7 +25,7 @@ $script:isEnvironmentInitialized = $false
 $script:ilmergeTargetFramework = ""
 $script:msBuildTargetFramework = ""	
 $script:packageVersion = "0.1.1.7"
-$nunitexec = "packages\nunit.runners.2.6.3\tools\nunit-console.exe"
+$nunitexec = "packages\nunit.runners.2.6.4\tools\nunit-console.exe"
 $script:nunitTargetFramework = "/framework=4.0";
 
 include $toolsDir\psake\buildutils.ps1

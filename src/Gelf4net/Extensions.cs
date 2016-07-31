@@ -63,7 +63,7 @@ namespace gelf4net
                 JToken.Parse(s);
                 return true;
             }
-            catch (JsonReaderException ex)
+            catch
             {
                 return false;
             }

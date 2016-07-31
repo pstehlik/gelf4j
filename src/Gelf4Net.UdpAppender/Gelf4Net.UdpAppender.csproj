@@ -45,6 +45,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\Gelf4net\Appender\AsyncGelfUdpAppender.cs">
+      <Link>Appender\AsyncGelfUdpAppender.cs</Link>
+    </Compile>
     <Compile Include="..\Gelf4net\Appender\GelfUdpAppender.cs">
       <Link>Appender\GelfUdpAppender.cs</Link>
     </Compile>
