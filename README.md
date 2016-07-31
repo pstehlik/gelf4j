@@ -31,9 +31,23 @@ gelf4net gives you the ability to log messages either through Udp or Amqp.
 		  <level value="ALL"/>
 		  <appender-ref ref="GelfUdpAppender"/>
 		  <appender-ref ref="GelfAmqpAppender"/>
+		  <appender-ref ref="AsyncGelfUdpAppender"/>
+		  <appender-ref ref="AsyncGelfAmqpAppender"/>
 		</root>
 
-		<appender name="GelfUdpAppender" type="gelf4net.Appender.GelfUdpAppender, Gelf4net">
+		<appender name="GelfUdpAppender" type="Gelf4net.Appender.GelfUdpAppender, Gelf4net">
+		  <remoteAddress value="127.0.0.1"/>
+		  <remotePort value="12201" />
+		  <layout type="Gelf4net.Layout.GelfLayout, Gelf4net">
+			<param name="AdditionalFields" value="app:RandomSentence,version:1.0,Level:%level" />
+			<param name="Facility" value="RandomPhrases" />
+			<param name="IncludeLocationInformation" value="true"/>
+			<!-- Sets the full_message and short_message to the specified pattern-->
+			<!--<param name="ConversionPattern" value="[%t] %c{1} - %m" />-->
+		  </layout>
+		</appender>
+		
+		<appender name="AsyncGelfUdpAppender" type="Gelf4net.Appender.AsyncGelfUdpAppender, Gelf4net">
 		  <remoteAddress value="127.0.0.1"/>
 		  <remotePort value="12201" />
 		  <layout type="Gelf4net.Layout.GelfLayout, Gelf4net">
@@ -45,7 +59,7 @@ gelf4net gives you the ability to log messages either through Udp or Amqp.
 		  </layout>
 		</appender>
 
-	<appender name="GelfUdpHostNameAppender" type="gelf4net.Appender.GelfUdpAppender, Gelf4net">
+	<appender name="GelfUdpHostNameAppender" type="Gelf4net.Appender.GelfUdpAppender, Gelf4net">
 		  <remoteHostName value="my.graylog2.local"/>
 		  <remotePort value="12201" />
 		  <layout type="Gelf4net.Layout.GelfLayout, Gelf4net">
@@ -57,7 +71,24 @@ gelf4net gives you the ability to log messages either through Udp or Amqp.
 		  </layout>
 		</appender>
 
-		<appender name="GelfAmqpAppender" type="gelf4net.Appender.GelfAmqpAppender, Gelf4net">
+		<appender name="GelfAmqpAppender" type="Gelf4net.Appender.GelfAmqpAppender, Gelf4net">
+		  <remoteAddress value="127.0.0.1" />
+		  <remotePort value="5672" />
+		  <username value="guest" />
+		  <password value="guest" />
+		  <virtualHost value="/" />
+		  <exchange value="sendExchange" />
+		  <key value="key" />
+		  <layout type="Gelf4net.Layout.GelfLayout, Gelf4net">
+			<param name="AdditionalFields" value="app:RandomSentence,version:1.0,Level:%level" />
+			<param name="Facility" value="RandomPhrases" />
+			<param name="IncludeLocationInformation" value="true"/>
+			<!-- Sets the full_message and short_message to the specified pattern-->
+			<!--<param name="ConversionPattern" value="[%t] %c{1} - %m" />-->
+		  </layout>
+		</appender>
+		
+		<appender name="AsyncGelfAmqpAppender" type="Gelf4net.Appender.AsyncGelfAmqpAppender, Gelf4net">
 		  <remoteAddress value="127.0.0.1" />
 		  <remotePort value="5672" />
 		  <username value="guest" />

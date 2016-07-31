@@ -1,8 +1,10 @@
 ﻿using log4net;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace SimpleConsoleApplication
@@ -19,7 +21,7 @@ namespace SimpleConsoleApplication
 
             var text = Console.ReadLine();
 
-            while(text != "q")
+            while (text != "q")
             {
                 log.Debug(String.Format("Randomizer Sentence: {0}", text));
                 log.Debug(new

@@ -6,7 +6,9 @@ using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
-using System.Threading;
+using System.Security.Cryptography;
+using gelf4net.Util.TypeConverters;
+using System.Diagnostics;
 
 namespace gelf4net.Appender
 {
@@ -25,6 +27,8 @@ namespace gelf4net.Appender
         /// </summary>
         public string RemoteHostName { get; set; }
 
+        private static readonly Random Random;
+        
         public GelfUdpAppender()
         {
             Encoding = Encoding.UTF8;
@@ -54,7 +58,7 @@ namespace gelf4net.Appender
         {
             try
             {
-
+                var rendered = this.RenderLoggingEvent(loggingEvent);
                 byte[] bytes = this.RenderLoggingEvent(loggingEvent).GzipMessage(this.Encoding);
 
                 if (MaxChunkSize < bytes.Length)
@@ -89,7 +93,7 @@ namespace gelf4net.Appender
 
             return messageChunkFull;
         }
-
+        
         private void SendCallback(IAsyncResult ar)
         {
             var state = (UdpState)ar.AsyncState;
