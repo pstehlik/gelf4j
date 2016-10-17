@@ -1,15 +1,17 @@
 ﻿using log4net.Appender;
 using log4net.Core;
 using System;
-using System.Net;
+using System.Net.Http;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace gelf4net.Appender
 {
     public class GelfHttpAppender : AppenderSkeleton
     {
+        private readonly HttpClient _httpClient;
+
         private Uri _baseUrl;
-        private string _credentials;
 
         public string Url { get; set; }
 
@@ -19,7 +21,7 @@ namespace gelf4net.Appender
 
         public GelfHttpAppender()
         {
-
+            _httpClient = new HttpClient();
         }
 
         public override void ActivateOptions()
@@ -27,30 +29,31 @@ namespace gelf4net.Appender
             base.ActivateOptions();
 
             _baseUrl = new Uri(Url);
-            ServicePointManager.FindServicePoint(_baseUrl).Expect100Continue = false;
 
-            if(!string.IsNullOrEmpty(User) && !string.IsNullOrEmpty(Password))
+            _httpClient.DefaultRequestHeaders.ExpectContinue = false;
+
+            if (!string.IsNullOrEmpty(User) && !string.IsNullOrEmpty(Password))
             {
-                _credentials = Convert.ToBase64String(Encoding.ASCII.GetBytes(User + ":" + Password));
+                var byteArray = Encoding.ASCII.GetBytes(User + ":" + Password);
+                _httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Basic", Convert.ToBase64String(byteArray));
             }
         }
 
         protected override void Append(LoggingEvent loggingEvent)
         {
-            try
+            Task.Run(async () =>
             {
-                var payload = this.RenderLoggingEvent(loggingEvent);
-                var webClient = new WebClient();
-                if(!string.IsNullOrEmpty(_credentials))
+                try
                 {
-                    webClient.Headers[HttpRequestHeader.Authorization] = string.Format("Basic {0}", _credentials);
+                    var payload = this.RenderLoggingEvent(loggingEvent);
+                    var content = new StringContent(payload, System.Text.Encoding.UTF8, "application/json");
+                    await _httpClient.PostAsync(_baseUrl, content);
                 }
-                webClient.UploadStringAsync(_baseUrl, payload);
-            }
-            catch (Exception ex)
-            {
-                this.ErrorHandler.Error("Unable to send logging event to remote host " + this.Url, ex);
-            }
+                catch (Exception ex)
+                {
+                    this.ErrorHandler.Error("Unable to send logging event to remote host " + this.Url, ex);
+                }
+            });
         }
     }
 }

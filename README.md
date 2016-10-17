@@ -15,7 +15,7 @@ If you want to use the daily builds you can install the `gelf4net-ci` package.
 
 ## Configuration
 
-gelf4net gives you the ability to log messages either through Udp or Amqp.
+gelf4net gives you the ability to log messages either through Udp, Amqp or Http.
 
 **Sample Configuration**
 
@@ -46,7 +46,7 @@ gelf4net gives you the ability to log messages either through Udp or Amqp.
 			<!--<param name="ConversionPattern" value="[%t] %c{1} - %m" />-->
 		  </layout>
 		</appender>
-		
+
 		<appender name="AsyncGelfUdpAppender" type="Gelf4net.Appender.AsyncGelfUdpAppender, Gelf4net">
 		  <remoteAddress value="127.0.0.1"/>
 		  <remotePort value="12201" />
@@ -87,7 +87,7 @@ gelf4net gives you the ability to log messages either through Udp or Amqp.
 			<!--<param name="ConversionPattern" value="[%t] %c{1} - %m" />-->
 		  </layout>
 		</appender>
-		
+
 		<appender name="AsyncGelfAmqpAppender" type="Gelf4net.Appender.AsyncGelfAmqpAppender, Gelf4net">
 		  <remoteAddress value="127.0.0.1" />
 		  <remotePort value="5672" />
