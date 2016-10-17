@@ -215,7 +215,7 @@ task CreatePackages -depends PrepareRelease  {
 # 	$script:packit.package_owners = "micahlmartin"
 # 	$script:packit.package_authors = "micahlmartin"
 # 	$script:packit.release_notes = ""
-# 	$script:packit.package_licenseUrl = "http://www.apache.org/licenses/LICENSE-2.0.html"
+# 	$script:packit.package_licenseUrl = "https://opensource.org/licenses/MIT"
 # 	$script:packit.package_projectUrl = "https://github.com/jjchiw/gelf4net"
 # 	$script:packit.package_tags = "tools utilities"
 # 	$script:packit.package_iconUrl = "http://nuget.org/Content/Images/packageDefaultIcon.png"
