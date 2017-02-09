@@ -7,6 +7,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace gelf4net.Appender
 {
@@ -33,11 +34,11 @@ namespace gelf4net.Appender
             log4net.Util.TypeConverters.ConverterRegistry.AddConverter(typeof(IPAddress), new IPAddressConverter());
         }
 
-        public override void ActivateOptions()
+        public override async void ActivateOptions()
         {
             if (RemoteAddress == null)
             {
-                RemoteAddress = IPAddress.Parse(GetIpAddressFromHostName());
+                RemoteAddress = IPAddress.Parse(await GetIpAddressFromHostName());
             }
 
             base.ActivateOptions();
@@ -50,25 +51,18 @@ namespace gelf4net.Appender
 
         public int MaxChunkSize { get; set; }
 
-        protected override void Append(LoggingEvent loggingEvent)
+        protected override async void Append(LoggingEvent loggingEvent)
         {
             try
             {
                 byte[] bytes = this.RenderLoggingEvent(loggingEvent).GzipMessage(this.Encoding);
 
-                if (MaxChunkSize < bytes.Length)
-                {
-                    var chunkCount = (bytes.Length / MaxChunkSize) + 1;
-                    var messageId = GenerateMessageId();
-                    var state = new UdpState() { SendClient = Client, Bytes = bytes, ChunkCount = chunkCount, MessageId = messageId, SendIndex = 0 };
-                    var messageChunkFull = GetMessageChunkFull(state.Bytes, state.MessageId, state.SendIndex, state.ChunkCount);
-                    Client.BeginSend(messageChunkFull, messageChunkFull.Length, RemoteEndPoint, SendCallback, state);
-                }
-                else
-                {
-                    var state = new UdpState() { SendClient = Client, Bytes = bytes, ChunkCount = 0, MessageId = null, SendIndex = 0 };
-                    Client.BeginSend(bytes, bytes.Length, RemoteEndPoint, SendCallback, state);
-                }
+                var chunkCount = (bytes.Length / MaxChunkSize) + 1;
+                var messageId = GenerateMessageId();
+                var state = new UdpState() { SendClient = Client, Bytes = bytes, ChunkCount = chunkCount, MessageId = messageId, SendIndex = 0 };
+                var messageChunkFull = GetMessageChunkFull(state.Bytes, state.MessageId, state.SendIndex, state.ChunkCount);
+                await Client.SendAsync(messageChunkFull, messageChunkFull.Length, RemoteEndPoint);
+                
             }
             catch (Exception ex)
             {
@@ -89,21 +83,6 @@ namespace gelf4net.Appender
             return messageChunkFull;
         }
 
-        private void SendCallback(IAsyncResult ar)
-        {
-            var state = (UdpState)ar.AsyncState;
-            var u = state.SendClient;
-
-            u.EndSend(ar);
-
-            state.SendIndex++;
-            if (state.SendIndex < state.ChunkCount)
-            {
-                var messageChunkFull = GetMessageChunkFull(state.Bytes, state.MessageId, state.SendIndex, state.ChunkCount);
-                state.SendClient.BeginSend(messageChunkFull, messageChunkFull.Length, RemoteEndPoint, SendCallback, state);
-            }
-        }
-
         private class UdpState
         {
             public UdpClient SendClient { set; get; }
@@ -113,9 +92,9 @@ namespace gelf4net.Appender
             public byte[] Bytes { set; get; }
         }
 
-        private string GetIpAddressFromHostName()
+        private async Task<string> GetIpAddressFromHostName()
         {
-            IPAddress[] addresslist = Dns.GetHostAddresses(RemoteHostName);
+            IPAddress[] addresslist = await Dns.GetHostAddressesAsync(RemoteHostName);
             return addresslist[0].ToString();
         }
 

@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.IO.Compression;
+using System.Reflection;
 using System.Text;
 
 namespace gelf4net
@@ -36,7 +37,7 @@ namespace gelf4net
 
             if (values != null)
             {
-                foreach (PropertyDescriptor propertyDescriptor in TypeDescriptor.GetProperties(values))
+                foreach (var propertyDescriptor in values.GetType().GetTypeInfo().GetProperties())
                 {
                     object obj = propertyDescriptor.GetValue(values);
                     dict.Add(propertyDescriptor.Name, obj);
