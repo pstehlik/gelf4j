@@ -759,7 +759,7 @@ namespace Gelf4netTest.Layout
                 Message = message,
                 LoggerName = "Test.Logger.Class",
                 Level = Level.Debug,
-                TimeStamp = DateTime.Now
+                TimeStamp = DateTime.UtcNow
             };
             return new LoggingEvent(loggingEventData);
         }

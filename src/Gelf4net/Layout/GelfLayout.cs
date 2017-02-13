@@ -84,7 +84,6 @@ namespace Gelf4net.Layout
         {
         }
 
-
         private Dictionary<string, object> ParseField(string value)
         {
             var innerAdditionalFields = new Dictionary<string, object>();
@@ -106,7 +105,6 @@ namespace Gelf4net.Layout
                     innerAdditionalFields = fields
                         .Select(it => it.Split(new[] { KeyValueSeparator }, StringSplitOptions.RemoveEmptyEntries))
                         .ToDictionary(it => it[0], it => (object)it[1]);
-
                 }
                 else
                 {
@@ -200,6 +198,11 @@ namespace Gelf4net.Layout
             message.Add("LoggerName", loggingEvent.LoggerName);
 
             if (this.IncludeLocationInformation)
+            {
+                message.File = loggingEvent.LocationInformation.FileName;
+                message.Line = loggingEvent.LocationInformation.LineNumber;
+            }
+            else
             {
                 message.File = loggingEvent.LocationInformation.FileName;
                 message.Line = loggingEvent.LocationInformation.LineNumber;

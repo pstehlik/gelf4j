@@ -27,7 +27,6 @@ namespace Gelf4net.Util.TypeConverters
                     if (!IPAddress.TryParse(hostNameOrAddress, out address))
                     {
                         var task = Dns.GetHostEntryAsync(hostNameOrAddress);
-                        task.Wait();
                         IPHostEntry hostEntry = task.Result;
                         if (hostEntry != null && hostEntry.AddressList != null && hostEntry.AddressList.Length > 0 && hostEntry.AddressList[0] != null)
                             address = hostEntry.AddressList[0];

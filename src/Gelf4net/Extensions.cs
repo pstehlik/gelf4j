@@ -3,9 +3,9 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.IO.Compression;
-using System.Reflection;
 using System.Text;
 
 namespace Gelf4net
@@ -36,7 +36,7 @@ namespace Gelf4net
 
             if (values != null)
             {
-                foreach (var propertyDescriptor in values.GetType().GetTypeInfo().GetProperties())
+                foreach (PropertyDescriptor propertyDescriptor in TypeDescriptor.GetProperties(values))
                 {
                     object obj = propertyDescriptor.GetValue(values);
                     dict.Add(propertyDescriptor.Name, obj);

@@ -11,8 +11,16 @@
         <licenseUrl>https://opensource.org/licenses/MIT</licenseUrl>
         <description>GELF log4net HttpAppender - graylog2. Built for log4net</description>
         <dependencies>
-            <dependency id="log4net" version="2.0.5" />
-            <dependency id="Microsoft.Net.Http" version="2.2.29" />
+            <group targetFramework=".NETFramework4.5">
+                <dependency id="log4net" version="2.0.0" />
+                <dependency id="Newtonsoft.Json" version="7.0.1" />
+                <dependency id="Microsoft.Net.Http" version="2.2.13" />
+            </group>
+            <group targetFramework=".NETStandard1.5">
+                <dependency id="log4net" version="2.0.7" />
+                <dependency id="Newtonsoft.Json" version="9.0.1" />
+                <dependency id="System.ComponentModel.TypeConverter" version="4.3.0" />
+            </group>
         </dependencies>
     </metadata>
 </package>

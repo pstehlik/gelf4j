@@ -57,12 +57,25 @@ namespace Gelf4net.Appender
             {
                 byte[] bytes = this.RenderLoggingEvent(loggingEvent).GzipMessage(this.Encoding);
 
-                var chunkCount = (bytes.Length / MaxChunkSize) + 1;
-                var messageId = GenerateMessageId();
-                var state = new UdpState() { SendClient = Client, Bytes = bytes, ChunkCount = chunkCount, MessageId = messageId, SendIndex = 0 };
-                var messageChunkFull = GetMessageChunkFull(state.Bytes, state.MessageId, state.SendIndex, state.ChunkCount);
-                await Client.SendAsync(messageChunkFull, messageChunkFull.Length, RemoteEndPoint);
-                
+                if (MaxChunkSize < bytes.Length)
+                {
+                    var state = new UdpState() { SendClient = Client, Bytes = bytes, ChunkCount = 0, MessageId = null, SendIndex = 0 };
+                    while (state.SendIndex <= state.ChunkCount)
+                    {
+                        var messageChunkFull = GetMessageChunkFull(state.Bytes, state.MessageId, state.SendIndex, state.ChunkCount);
+                        await Client.SendAsync(messageChunkFull, messageChunkFull.Length, RemoteEndPoint);
+                        state.SendIndex++;
+                    }
+                }
+                else
+                {
+                    var chunkCount = (bytes.Length / MaxChunkSize) + 1;
+                    var messageId = GenerateMessageId();
+                    var state = new UdpState() { SendClient = Client, Bytes = bytes, ChunkCount = chunkCount, MessageId = messageId, SendIndex = 0 };
+                    var messageChunkFull = GetMessageChunkFull(state.Bytes, state.MessageId, state.SendIndex, state.ChunkCount);
+                    //Client.BeginSend(messageChunkFull, messageChunkFull.Length, RemoteEndPoint, SendCallback, state);
+                    await Client.SendAsync(messageChunkFull, messageChunkFull.Length, RemoteEndPoint);
+                }
             }
             catch (Exception ex)
             {
