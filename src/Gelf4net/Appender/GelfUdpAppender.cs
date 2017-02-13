@@ -1,4 +1,4 @@
-using gelf4net.Util.TypeConverters;
+using Gelf4net.Util.TypeConverters;
 using log4net.Core;
 using System;
 using System.Collections.Generic;
@@ -9,7 +9,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace gelf4net.Appender
+namespace Gelf4net.Appender
 {
     /// <summary>
     /// Gelf Udp Appender

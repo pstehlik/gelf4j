@@ -7,8 +7,8 @@
     <ProjectGuid>{33476840-A5C5-4E5A-8A48-F350E84F4BDC}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Gelf4Net.HttpAppender</RootNamespace>
-    <AssemblyName>Gelf4Net.HttpAppender</AssemblyName>
+    <RootNamespace>Gelf4net.HttpAppender</RootNamespace>
+    <AssemblyName>Gelf4net.HttpAppender</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
@@ -35,8 +35,8 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="log4net, Version=1.2.15.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
-      <HintPath>..\packages\log4net.2.0.5\lib\net45-full\log4net.dll</HintPath>
+    <Reference Include="log4net, Version=2.0.7.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+      <HintPath>..\packages\log4net.2.0.7\lib\net45-full\log4net.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
@@ -67,12 +67,13 @@
     <None Include="app.config">
       <SubType>Designer</SubType>
     </None>
+    <None Include="package.nuspec" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Gelf4Net.Core\Gelf4Net.Core.csproj">
+    <ProjectReference Include="..\Gelf4net.Core\Gelf4net.Core.csproj">
       <Project>{c477f0c6-f132-438f-a6c3-302c48927224}</Project>
-      <Name>Gelf4Net.Core</Name>
+      <Name>Gelf4net.Core</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

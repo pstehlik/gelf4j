@@ -32,3 +32,4 @@ upload.ps1
 /.gelf4netcore.xproj.swp
 /project.lock.json
 /.vs
+tools/

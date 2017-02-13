@@ -1,5 +1,5 @@
-﻿using gelf4net;
-using gelf4net.Layout;
+﻿using Gelf4net;
+using Gelf4net.Layout;
 using log4net;
 using log4net.Appender;
 using log4net.Core;
@@ -178,7 +178,6 @@ namespace Gelf4netTest.Layout
             loggingEvent = GetLogginEvent(message2);
             result = GetMessage(layout, loggingEvent);
 
-
             Assert.AreEqual(result.FullMessage, message2.FullMessage);
             Assert.AreEqual(result["_Test"], message2.Test);
 
@@ -283,7 +282,6 @@ namespace Gelf4netTest.Layout
             Assert.AreEqual("Class", result["_LoggerName"]);
         }
 
-
         [Test]
         public void PatternConversionInAdditionalPropertiesWithCustomKeyValueSeparator()
         {
@@ -301,8 +299,6 @@ namespace Gelf4netTest.Layout
             Assert.IsTrue(!string.IsNullOrWhiteSpace(result["_ThreadName"].ToString()));
             Assert.AreEqual("Class", result["_LoggerName"]);
         }
-
-
 
         [Test]
         public void PatternConversionInAdditionalPropertiesWithCustomFieldSeparator()
@@ -556,7 +552,6 @@ namespace Gelf4netTest.Layout
             loggingEvent = GetLogginEventRenderedMessage(message2Json);
             result = GetMessage(layout, loggingEvent);
 
-
             Assert.AreEqual(result.FullMessage, message2.FullMessage);
             Assert.AreEqual(result["_Test"], message2.Test.ToString());
 
@@ -653,7 +648,6 @@ namespace Gelf4netTest.Layout
             Assert.AreEqual("Class", result["_LoggerName"]);
         }
 
-
         [Test]
         public void PatternConversionInAdditionalPropertiesWithCustomKeyValueSeparator_WithRenderedMessage()
         {
@@ -671,8 +665,6 @@ namespace Gelf4netTest.Layout
             Assert.IsTrue(!string.IsNullOrWhiteSpace(result["_ThreadName"].ToString()));
             Assert.AreEqual("Class", result["_LoggerName"]);
         }
-
-
 
         [Test]
         public void PatternConversionInAdditionalPropertiesWithCustomFieldSeparator_WithRenderedMessage()
@@ -770,7 +762,6 @@ namespace Gelf4netTest.Layout
                 TimeStamp = DateTime.Now
             };
             return new LoggingEvent(loggingEventData);
-
         }
     }
 }

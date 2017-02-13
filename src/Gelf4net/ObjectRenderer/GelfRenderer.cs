@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace gelf4net.ObjectRenderer
+namespace Gelf4net.ObjectRenderer
 {
     public class GelfRenderer : IObjectRenderer
     {

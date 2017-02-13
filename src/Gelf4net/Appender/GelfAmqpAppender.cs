@@ -4,7 +4,7 @@ using System;
 using System.Text;
 using System.Threading;
 
-namespace gelf4net.Appender
+namespace Gelf4net.Appender
 {
     public class GelfAmqpAppender : AppenderSkeleton
     {

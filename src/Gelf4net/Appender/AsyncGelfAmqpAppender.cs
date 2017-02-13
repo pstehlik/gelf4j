@@ -4,7 +4,7 @@ using System.Diagnostics;
 using System.Threading;
 using log4net.Core;
 
-namespace gelf4net.Appender
+namespace Gelf4net.Appender
 {
     public class AsyncGelfAmqpAppender : GelfAmqpAppender
     {

@@ -2,7 +2,7 @@
 using System.Text;
 using System.Collections.Generic;
 using System.Linq;
-using gelf4net.Appender;
+using Gelf4net.Appender;
 using log4net.Core;
 using System.Security.Cryptography;
 using System.IO;
@@ -19,7 +19,7 @@ using log4net.Appender;
 using log4net.Repository;
 using log4net.Util;
 using System.Globalization;
-using gelf4net;
+using Gelf4net;
 
 namespace Gelf4netTest
 {

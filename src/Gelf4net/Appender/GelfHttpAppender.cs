@@ -5,7 +5,7 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace gelf4net.Appender
+namespace Gelf4net.Appender
 {
     public class GelfHttpAppender : AppenderSkeleton
     {

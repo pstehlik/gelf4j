@@ -4,7 +4,7 @@ using System.Collections.Concurrent;
 using System.Diagnostics;
 using System.Threading;
 
-namespace gelf4net.Appender
+namespace Gelf4net.Appender
 {
     public class AsyncGelfUdpAppender : GelfUdpAppender
     {

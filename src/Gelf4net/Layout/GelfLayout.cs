@@ -9,7 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace gelf4net.Layout
+namespace Gelf4net.Layout
 {
     public class GelfLayout : LayoutSkeleton
     {

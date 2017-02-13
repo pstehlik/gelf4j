@@ -3,13 +3,12 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.IO;
 using System.IO.Compression;
 using System.Reflection;
 using System.Text;
 
-namespace gelf4net
+namespace Gelf4net
 {
     public static class Extensions
     {
