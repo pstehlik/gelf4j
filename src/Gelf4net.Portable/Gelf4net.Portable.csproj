@@ -8,8 +8,8 @@
     <ProjectGuid>{8BC7712D-7E31-44FD-BA71-30D3B8A94F60}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Gelf4net.Portable</RootNamespace>
-    <AssemblyName>Gelf4net</AssemblyName>
+    <RootNamespace>Gelf4Net</RootNamespace>
+    <AssemblyName>Gelf4Net</AssemblyName>
     <DefaultLanguage>en-US</DefaultLanguage>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{786C830F-07A1-408B-BD7F-6EE04809D6DB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -39,34 +39,34 @@
     <None Include="project.json" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\Gelf4net\Appender\AsyncGelfAmqpAppender.cs">
+    <Compile Include="..\Gelf4Net\Appender\AsyncGelfAmqpAppender.cs">
       <Link>Appender\AsyncGelfAmqpAppender.cs</Link>
     </Compile>
-    <Compile Include="..\Gelf4net\Appender\AsyncGelfUdpAppender.cs">
+    <Compile Include="..\Gelf4Net\Appender\AsyncGelfUdpAppender.cs">
       <Link>Appender\AsyncGelfUdpAppender.cs</Link>
     </Compile>
-    <Compile Include="..\Gelf4net\Appender\GelfAmqpAppender.cs">
+    <Compile Include="..\Gelf4Net\Appender\GelfAmqpAppender.cs">
       <Link>Appender\GelfAmqpAppender.cs</Link>
     </Compile>
-    <Compile Include="..\Gelf4net\Appender\GelfHttpAppender.cs">
+    <Compile Include="..\Gelf4Net\Appender\GelfHttpAppender.cs">
       <Link>Appender\GelfHttpAppender.cs</Link>
     </Compile>
-    <Compile Include="..\Gelf4net\Appender\GelfUdpAppender.cs">
+    <Compile Include="..\Gelf4Net\Appender\GelfUdpAppender.cs">
       <Link>Appender\GelfUdpAppender.cs</Link>
     </Compile>
-    <Compile Include="..\Gelf4net\Extensions.cs">
+    <Compile Include="..\Gelf4Net\Extensions.cs">
       <Link>Extensions.cs</Link>
     </Compile>
-    <Compile Include="..\Gelf4net\GelfMessage.cs">
+    <Compile Include="..\Gelf4Net\GelfMessage.cs">
       <Link>GelfMessage.cs</Link>
     </Compile>
-    <Compile Include="..\Gelf4net\Layout\GelfLayout.cs">
+    <Compile Include="..\Gelf4Net\Layout\GelfLayout.cs">
       <Link>Layout\GelfLayout.cs</Link>
     </Compile>
-    <Compile Include="..\Gelf4net\ObjectRenderer\GelfRenderer.cs">
+    <Compile Include="..\Gelf4Net\ObjectRenderer\GelfRenderer.cs">
       <Link>ObjectRenderer\GelfRenderer.cs</Link>
     </Compile>
-    <Compile Include="..\Gelf4net\Util\TypeConverters\IPAddressConverter.cs">
+    <Compile Include="..\Gelf4Net\Util\TypeConverters\IPAddressConverter.cs">
       <Link>Util\TypeConverters\IPAddressConverter.cs</Link>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -1,24 +1,24 @@
-﻿using System;
+﻿using log4net.Core;
+using System;
 using System.Collections.Concurrent;
 using System.Diagnostics;
 using System.Threading;
-using log4net.Core;
 
-namespace Gelf4net.Appender
+namespace Gelf4Net.Appender
 {
     public class AsyncGelfAmqpAppender : GelfAmqpAppender
     {
-        
-        private readonly ConcurrentQueue<LoggingEvent> _pendingTasks;
+        private readonly ConcurrentQueue<byte[]> _pendingTasks;
         private readonly ManualResetEvent _manualResetEvent;
         private bool _onClosing;
 
-        public AsyncGelfAmqpAppender() 
+        public AsyncGelfAmqpAppender()
         {
-            _pendingTasks = new ConcurrentQueue<LoggingEvent>();
+            _pendingTasks = new ConcurrentQueue<byte[]>();
             _manualResetEvent = new ManualResetEvent(false);
             Start();
         }
+
         protected override void Append(LoggingEvent[] loggingEvents)
         {
             foreach (var loggingEvent in loggingEvents)
@@ -26,13 +26,15 @@ namespace Gelf4net.Appender
                 Append(loggingEvent);
             }
         }
+
         protected override void Append(LoggingEvent loggingEvent)
         {
             if (FilterEvent(loggingEvent))
             {
-                _pendingTasks.Enqueue(loggingEvent);
+                _pendingTasks.Enqueue(this.RenderLoggingEvent(loggingEvent).GzipMessage(this.Encoding));
             }
         }
+
         private void Start()
         {
             if (_onClosing)
@@ -42,11 +44,12 @@ namespace Gelf4net.Appender
             var thread = new Thread(LogMessages);
             thread.Start();
         }
+
         private void LogMessages()
         {
             while (!_onClosing)
             {
-                LoggingEvent loggingEvent;
+                byte[] loggingEvent;
                 while (!_pendingTasks.TryDequeue(out loggingEvent))
                 {
                     Thread.Sleep(10);
@@ -54,7 +57,7 @@ namespace Gelf4net.Appender
                     {
                         try
                         {
-                            base.Append(_pendingTasks.ToArray());
+                            base.SendMessage(_pendingTasks.ToArray());
                             break;
                         }
                         catch (Exception ex)
@@ -66,11 +69,12 @@ namespace Gelf4net.Appender
                 }
                 if (loggingEvent != null)
                 {
-                    base.Append(loggingEvent);
+                    base.SendMessage(loggingEvent);
                 }
             }
             _manualResetEvent.Set();
         }
+
         protected override void OnClose()
         {
             Debug.WriteLine("Closing Async Appender");

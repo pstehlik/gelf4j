@@ -5,7 +5,10 @@
 //------------------------------------------------------------------------------
 using System.Reflection;
 
+[assembly: AssemblyTitle("Gelf4Net.UdpAppender")]
+[assembly: AssemblyProduct("Gelf4Net.UdpAppender")]
 [assembly: AssemblyVersion("1.0.0.6")]
 [assembly: AssemblyFileVersion("1.0.0.6")]
 [assembly: AssemblyInformationalVersion("1.0.0.6")]
+[assembly: AssemblyCopyright("MIT 2017")]
 

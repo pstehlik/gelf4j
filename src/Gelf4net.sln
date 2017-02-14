@@ -3,45 +3,49 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gelf4net", "gelf4net\Gelf4net.csproj", "{21601568-D8AD-433F-998D-1500A27F3FBD}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gelf4Net", "Gelf4Net\Gelf4Net.csproj", "{21601568-D8AD-433F-998D-1500A27F3FBD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gelf4netTests", "gelf4netTests\Gelf4netTests.csproj", "{713C9C99-6008-445A-A308-8EE32EA5A275}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gelf4Net.Tests", "Gelf4Net.Tests\Gelf4Net.Tests.csproj", "{713C9C99-6008-445A-A308-8EE32EA5A275}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{14E74BD7-050F-434A-939F-5A867572021A}"
 	ProjectSection(SolutionItems) = preProject
 		.nuget\packages.config = .nuget\packages.config
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gelf4net.Core", "Gelf4net.Core\Gelf4net.Core.csproj", "{C477F0C6-F132-438F-A6C3-302C48927224}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gelf4Net.Core", "Gelf4Net.Core\Gelf4Net.Core.csproj", "{C477F0C6-F132-438F-A6C3-302C48927224}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gelf4net.UdpAppender", "Gelf4net.UdpAppender\Gelf4net.UdpAppender.csproj", "{3133D184-E5EC-4858-9818-66024E557F7B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gelf4Net.UdpAppender", "Gelf4Net.UdpAppender\Gelf4Net.UdpAppender.csproj", "{3133D184-E5EC-4858-9818-66024E557F7B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gelf4net.AmqpAppender", "Gelf4net.AmqpAppender\Gelf4net.AmqpAppender.csproj", "{55267E06-F6F3-4061-8528-6324D44B8CB9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gelf4Net.AmqpAppender", "Gelf4Net.AmqpAppender\Gelf4Net.AmqpAppender.csproj", "{55267E06-F6F3-4061-8528-6324D44B8CB9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gelf4net.HttpAppender", "Gelf4net.HttpAppender\Gelf4net.HttpAppender.csproj", "{33476840-A5C5-4E5A-8A48-F350E84F4BDC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gelf4Net.HttpAppender", "Gelf4Net.HttpAppender\Gelf4Net.HttpAppender.csproj", "{33476840-A5C5-4E5A-8A48-F350E84F4BDC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gelf4net.Portable", "Gelf4net.Portable\Gelf4net.Portable.csproj", "{8BC7712D-7E31-44FD-BA71-30D3B8A94F60}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gelf4Net.Portable", "Gelf4Net.Portable\Gelf4Net.Portable.csproj", "{8BC7712D-7E31-44FD-BA71-30D3B8A94F60}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "build", "build", "{3F3EFEA1-F427-4271-AB36-366B1A2AF7BA}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "build-scripts", "build-scripts", "{3F3EFEA1-F427-4271-AB36-366B1A2AF7BA}"
 	ProjectSection(SolutionItems) = preProject
 		..\build.cake = ..\build.cake
 		..\build.ps1 = ..\build.ps1
 		..\build.sh = ..\build.sh
-		..\buildps.ps1 = ..\buildps.ps1
-		..\defaultps.ps1 = ..\defaultps.ps1
 		..\excludeInternalize.txt = ..\excludeInternalize.txt
 		..\LICENSE.md = ..\LICENSE.md
 		..\README.md = ..\README.md
 		..\SharedAssemblyInfo.cs = ..\SharedAssemblyInfo.cs
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gelf4net.Core.Portable", "Gelf4net.Core.Portable\Gelf4net.Core.Portable.csproj", "{7030474F-7076-44D9-AC46-48A6D4562AAA}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gelf4Net.Core.Portable", "Gelf4Net.Core.Portable\Gelf4Net.Core.Portable.csproj", "{7030474F-7076-44D9-AC46-48A6D4562AAA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gelf4net.AmqpAppender.Portable", "Gelf4net.AmqpAppender.Portable\Gelf4net.AmqpAppender.Portable.csproj", "{756CAE18-85E6-4202-AA35-5663F56E193D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gelf4Net.AmqpAppender.Portable", "Gelf4Net.AmqpAppender.Portable\Gelf4Net.AmqpAppender.Portable.csproj", "{756CAE18-85E6-4202-AA35-5663F56E193D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gelf4net.HttpAppender.Portable", "Gelf4net.HttpAppender.Portable\Gelf4net.HttpAppender.Portable.csproj", "{AB1C6C93-50B7-4DF5-80CB-4F3EA0E536DC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gelf4Net.HttpAppender.Portable", "Gelf4Net.HttpAppender.Portable\Gelf4Net.HttpAppender.Portable.csproj", "{AB1C6C93-50B7-4DF5-80CB-4F3EA0E536DC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gelf4net.UdpAppender.Portable", "Gelf4net.UdpAppender.Portable\Gelf4net.UdpAppender.Portable.csproj", "{316F0E86-B131-4A24-8B2F-319CDB1CB4F7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gelf4Net.UdpAppender.Portable", "Gelf4Net.UdpAppender.Portable\Gelf4Net.UdpAppender.Portable.csproj", "{316F0E86-B131-4A24-8B2F-319CDB1CB4F7}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{FF8F0435-5D29-4088-8A80-0739DF96CA1A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "portable", "portable", "{3F80A6BA-12FA-4726-BA9A-7CBAD4F8CB2C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "net45", "net45", "{9F13DC90-1F1E-42DC-AA02-A15BF8351FC4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -96,5 +100,18 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{21601568-D8AD-433F-998D-1500A27F3FBD} = {9F13DC90-1F1E-42DC-AA02-A15BF8351FC4}
+		{713C9C99-6008-445A-A308-8EE32EA5A275} = {FF8F0435-5D29-4088-8A80-0739DF96CA1A}
+		{C477F0C6-F132-438F-A6C3-302C48927224} = {9F13DC90-1F1E-42DC-AA02-A15BF8351FC4}
+		{3133D184-E5EC-4858-9818-66024E557F7B} = {9F13DC90-1F1E-42DC-AA02-A15BF8351FC4}
+		{55267E06-F6F3-4061-8528-6324D44B8CB9} = {9F13DC90-1F1E-42DC-AA02-A15BF8351FC4}
+		{33476840-A5C5-4E5A-8A48-F350E84F4BDC} = {9F13DC90-1F1E-42DC-AA02-A15BF8351FC4}
+		{8BC7712D-7E31-44FD-BA71-30D3B8A94F60} = {3F80A6BA-12FA-4726-BA9A-7CBAD4F8CB2C}
+		{7030474F-7076-44D9-AC46-48A6D4562AAA} = {3F80A6BA-12FA-4726-BA9A-7CBAD4F8CB2C}
+		{756CAE18-85E6-4202-AA35-5663F56E193D} = {3F80A6BA-12FA-4726-BA9A-7CBAD4F8CB2C}
+		{AB1C6C93-50B7-4DF5-80CB-4F3EA0E536DC} = {3F80A6BA-12FA-4726-BA9A-7CBAD4F8CB2C}
+		{316F0E86-B131-4A24-8B2F-319CDB1CB4F7} = {3F80A6BA-12FA-4726-BA9A-7CBAD4F8CB2C}
 	EndGlobalSection
 EndGlobal

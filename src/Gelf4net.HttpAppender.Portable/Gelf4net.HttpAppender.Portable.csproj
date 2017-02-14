@@ -8,8 +8,8 @@
     <ProjectGuid>{AB1C6C93-50B7-4DF5-80CB-4F3EA0E536DC}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Gelf4net.HttpAppender.Portable</RootNamespace>
-    <AssemblyName>Gelf4net.HttpAppender</AssemblyName>
+    <RootNamespace>Gelf4Net.HttpAppender</RootNamespace>
+    <AssemblyName>Gelf4Net.HttpAppender</AssemblyName>
     <DefaultLanguage>en-US</DefaultLanguage>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{786C830F-07A1-408B-BD7F-6EE04809D6DB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -39,15 +39,15 @@
     <None Include="project.json" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\Gelf4net\Appender\GelfHttpAppender.cs">
+    <Compile Include="..\Gelf4Net\Appender\GelfHttpAppender.cs">
       <Link>Appender\GelfHttpAppender.cs</Link>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Gelf4net.Core.Portable\Gelf4net.Core.Portable.csproj">
+    <ProjectReference Include="..\Gelf4Net.Core.Portable\Gelf4Net.Core.Portable.csproj">
       <Project>{7030474f-7076-44d9-ac46-48a6d4562aaa}</Project>
-      <Name>Gelf4net.Core.Portable</Name>
+      <Name>Gelf4Net.Core.Portable</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />

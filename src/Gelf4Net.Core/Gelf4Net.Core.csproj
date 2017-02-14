@@ -7,8 +7,8 @@
     <ProjectGuid>{C477F0C6-F132-438F-A6C3-302C48927224}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Gelf4net.Core</RootNamespace>
-    <AssemblyName>Gelf4net.Core</AssemblyName>
+    <RootNamespace>Gelf4Net.Core</RootNamespace>
+    <AssemblyName>Gelf4Net.Core</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
@@ -51,19 +51,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\Gelf4net\Extensions.cs">
+    <Compile Include="..\Gelf4Net\Extensions.cs">
       <Link>Extensions.cs</Link>
     </Compile>
-    <Compile Include="..\Gelf4net\GelfMessage.cs">
+    <Compile Include="..\Gelf4Net\GelfMessage.cs">
       <Link>GelfMessage.cs</Link>
     </Compile>
-    <Compile Include="..\Gelf4net\Layout\GelfLayout.cs">
+    <Compile Include="..\Gelf4Net\Layout\GelfLayout.cs">
       <Link>Layout\GelfLayout.cs</Link>
     </Compile>
-    <Compile Include="..\Gelf4net\ObjectRenderer\GelfRenderer.cs">
+    <Compile Include="..\Gelf4Net\ObjectRenderer\GelfRenderer.cs">
       <Link>ObjectRenderer\GelfRenderer.cs</Link>
     </Compile>
-    <Compile Include="..\Gelf4net\Util\TypeConverters\IPAddressConverter.cs">
+    <Compile Include="..\Gelf4Net\Util\TypeConverters\IPAddressConverter.cs">
       <Link>Util\TypeConverters\IPAddressConverter.cs</Link>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />

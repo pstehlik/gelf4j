@@ -9,7 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Gelf4net.Layout
+namespace Gelf4Net.Layout
 {
     public class GelfLayout : LayoutSkeleton
     {
@@ -199,13 +199,8 @@ namespace Gelf4net.Layout
 
             if (this.IncludeLocationInformation)
             {
-                message.File = loggingEvent.LocationInformation.FileName;
-                message.Line = loggingEvent.LocationInformation.LineNumber;
-            }
-            else
-            {
-                message.File = loggingEvent.LocationInformation.FileName;
-                message.Line = loggingEvent.LocationInformation.LineNumber;
+                message.File = (loggingEvent.LocationInformation.FileName != "?" ? loggingEvent.LocationInformation.FileName : string.Empty);
+                message.Line = (loggingEvent.LocationInformation.LineNumber != "?" ? loggingEvent.LocationInformation.LineNumber : string.Empty);
             }
 
             return message;

@@ -8,7 +8,7 @@ using System.IO;
 using System.IO.Compression;
 using System.Text;
 
-namespace Gelf4net
+namespace Gelf4Net
 {
     public static class Extensions
     {

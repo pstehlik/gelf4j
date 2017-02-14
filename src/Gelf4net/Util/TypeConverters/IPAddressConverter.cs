@@ -2,7 +2,7 @@
 using System;
 using System.Net;
 
-namespace Gelf4net.Util.TypeConverters
+namespace Gelf4Net.Util.TypeConverters
 {
     /// <summary>
     /// The built-in IPAddressConverter in log4net does not perform well and errors out unecessarily when parsing external IP address.

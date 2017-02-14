@@ -5,122 +5,321 @@ gelf4net is a log4net adapter that formats logs to the [GELF][1] specification a
 
 You can install the latest stable release using on of the the nugets package:
 
-* [`gelf4net`](https://www.nuget.org/packages/Gelf4Net/). Contains all the Appenders, the HttpAppender uses `WebClient`
-* [`gelf4net.UdpAppender`](https://www.nuget.org/packages/Gelf4Net.UdpAppender/). Only UdpAppenders
-* [`gelf4net.AmqpAppender`](https://www.nuget.org/packages/Gelf4Net.AmqpAppender/). Only AmqpAppenders
-* [`gelf4net.HttpAppender`](https://www.nuget.org/packages/Gelf4Net.HttpAppender/). Only HttpAppenders (it uses `HttpClient`)
+All the libraries suppots `net45` and `netstandard1.5`
 
-
-If you want to use the daily builds you can install the `gelf4net-ci` package.
+* [`Gelf4Net`](https://www.nuget.org/packages/Gelf4Net/). Contains all the Appenders
+* [`Gelf4Net.UdpAppender`](https://www.nuget.org/packages/Gelf4Net.UdpAppender/). Only UdpAppenders
+* [`Gelf4Net.AmqpAppender`](https://www.nuget.org/packages/Gelf4Net.AmqpAppender/). Only AmqpAppenders
+* [`Gelf4Net.HttpAppender`](https://www.nuget.org/packages/Gelf4Net.HttpAppender/). Only HttpAppenders
 
 ## Configuration
 
-gelf4net gives you the ability to log messages either through Udp, Amqp or Http.
+Gelf4Net gives you the ability to log messages either through Udp, Amqp or Http.
 
-**Sample Configuration**
+## Gelf4Net
+
+*net45 & dotnetstandard1.5*
 
 ```
 <?xml version="1.0"?>
 <configuration>
-	<configSections>
-		<section name="log4net" type="log4net.Config.Log4NetConfigurationSectionHandler,Log4net"/>
-	</configSections>
+    <configSections>
+        <section name="log4net" type="log4net.Config.Log4NetConfigurationSectionHandler,Log4net"/>
+    </configSections>
 
-	<log4net>
-		<root>
-		  <level value="ALL"/>
-		  <appender-ref ref="GelfUdpAppender"/>
-		  <appender-ref ref="GelfAmqpAppender"/>
-		  <appender-ref ref="AsyncGelfUdpAppender"/>
-		  <appender-ref ref="AsyncGelfAmqpAppender"/>
-		</root>
-
-		<appender name="GelfUdpAppender" type="Gelf4net.Appender.GelfUdpAppender, Gelf4net">
-		  <remoteAddress value="127.0.0.1"/>
-		  <remotePort value="12201" />
-		  <layout type="Gelf4net.Layout.GelfLayout, Gelf4net">
-			<param name="AdditionalFields" value="app:RandomSentence,version:1.0,Level:%level" />
-			<param name="Facility" value="RandomPhrases" />
-			<param name="IncludeLocationInformation" value="true"/>
-			<!-- Sets the full_message and short_message to the specified pattern-->
-			<!--<param name="ConversionPattern" value="[%t] %c{1} - %m" />-->
-		  </layout>
-		</appender>
-
-		<appender name="AsyncGelfUdpAppender" type="Gelf4net.Appender.AsyncGelfUdpAppender, Gelf4net">
-		  <remoteAddress value="127.0.0.1"/>
-		  <remotePort value="12201" />
-		  <layout type="Gelf4net.Layout.GelfLayout, Gelf4net">
-			<param name="AdditionalFields" value="app:RandomSentence,version:1.0,Level:%level" />
-			<param name="Facility" value="RandomPhrases" />
-			<param name="IncludeLocationInformation" value="true"/>
-			<!-- Sets the full_message and short_message to the specified pattern-->
-			<!--<param name="ConversionPattern" value="[%t] %c{1} - %m" />-->
-		  </layout>
-		</appender>
-
-	<appender name="GelfUdpHostNameAppender" type="Gelf4net.Appender.GelfUdpAppender, Gelf4net">
-		  <remoteHostName value="my.graylog2.local"/>
-		  <remotePort value="12201" />
-		  <layout type="Gelf4net.Layout.GelfLayout, Gelf4net">
-			<param name="AdditionalFields" value="app:RandomSentence,version:1.0,Level:%level" />
-			<param name="Facility" value="RandomPhrases" />
-			<param name="IncludeLocationInformation" value="true"/>
-			<!-- Sets the full_message and short_message to the specified pattern-->
-			<!--<param name="ConversionPattern" value="[%t] %c{1} - %m" />-->
-		  </layout>
-		</appender>
-
-		<appender name="GelfAmqpAppender" type="Gelf4net.Appender.GelfAmqpAppender, Gelf4net">
-		  <remoteAddress value="127.0.0.1" />
-		  <remotePort value="5672" />
-		  <username value="guest" />
-		  <password value="guest" />
-		  <virtualHost value="/" />
-		  <exchange value="sendExchange" />
-		  <key value="key" />
-		  <layout type="Gelf4net.Layout.GelfLayout, Gelf4net">
-			<param name="AdditionalFields" value="app:RandomSentence,version:1.0,Level:%level" />
-			<param name="Facility" value="RandomPhrases" />
-			<param name="IncludeLocationInformation" value="true"/>
-			<!-- Sets the full_message and short_message to the specified pattern-->
-			<!--<param name="ConversionPattern" value="[%t] %c{1} - %m" />-->
-		  </layout>
-		</appender>
-
-		<appender name="AsyncGelfAmqpAppender" type="Gelf4net.Appender.AsyncGelfAmqpAppender, Gelf4net">
-		  <remoteAddress value="127.0.0.1" />
-		  <remotePort value="5672" />
-		  <username value="guest" />
-		  <password value="guest" />
-		  <virtualHost value="/" />
-		  <exchange value="sendExchange" />
-		  <key value="key" />
-		  <layout type="Gelf4net.Layout.GelfLayout, Gelf4net">
-			<param name="AdditionalFields" value="app:RandomSentence,version:1.0,Level:%level" />
-			<param name="Facility" value="RandomPhrases" />
-			<param name="IncludeLocationInformation" value="true"/>
-			<!-- Sets the full_message and short_message to the specified pattern-->
-			<!--<param name="ConversionPattern" value="[%t] %c{1} - %m" />-->
-		  </layout>
-		</appender>
-
-        <appender name="GelfHttpAppender" type="gelf4net.Appender.GelfHttpAppender, Gelf4net">
-            <url value="http://192.168.33.10:12201/gelf" />
-            <!--
-            <user value="user"/>
-            <password value="password"/>
-            -->
-            <layout type="Gelf4net.Layout.GelfLayout, Gelf4net">
-                <param name="AdditionalFields" value="app:RandomSentence,version:1.0,Environment:Dev,Level:%level" />
+    <log4net>
+        <appender name="GelfUdpAppenderCC" type="Gelf4Net.Appender.GelfUdpAppender, Gelf4Net">
+            <remoteAddress value="192.168.44.10" />
+            <remotePort value="12201" />
+            <layout type="Gelf4Net.Layout.GelfLayout, Gelf4Net">
+                <param name="AdditionalFields" value="app:UdpAppenderCC,version:1.0,Environment:Dev,Level:%level" />
                 <param name="Facility" value="RandomPhrases" />
                 <param name="IncludeLocationInformation" value="true" />
                 <!-- Sets the full_message and short_message to the specified pattern-->
                 <param name="ConversionPattern" value="[%t] %c{1} - %m" />
             </layout>
         </appender>
-	</log4net>
+
+        <appender name="GelfUdpAppender" type="Gelf4Net.Appender.GelfUdpAppender, Gelf4Net">
+            <remoteAddress value="192.168.44.10" />
+            <remotePort value="12201" />
+            <layout type="Gelf4Net.Layout.GelfLayout, Gelf4Net">
+                <param name="AdditionalFields" value="app:UdpAppender,version:1.0,Environment:Dev,Level:%level" />
+                <param name="Facility" value="RandomPhrases" />
+                <param name="IncludeLocationInformation" value="true" />
+            </layout>
+        </appender>
+
+        <appender name="AsyncGelfUdpAppender" type="Gelf4Net.Appender.AsyncGelfUdpAppender, Gelf4Net">
+            <remoteAddress value="192.168.44.10" />
+            <remotePort value="12201" />
+            <layout type="Gelf4Net.Layout.GelfLayout, Gelf4Net">
+                <param name="AdditionalFields" value="app:AsyncUdpAppender,version:1.0,Environment:Dev,Level:%level" />
+                <param name="Facility" value="RandomPhrases" />
+                <param name="IncludeLocationInformation" value="true" />
+            </layout>
+        </appender>
+
+        <appender name="GelfHttpAppender" type="Gelf4Net.Appender.GelfHttpAppender, Gelf4Net">
+            <url value="http://192.168.44.10:12201/gelf" />
+            <layout type="Gelf4Net.Layout.GelfLayout, Gelf4Net">
+                <param name="AdditionalFields" value="app:HttpAppender,version:1.0,Environment:Dev,Level:%level" />
+                <param name="Facility" value="RandomPhrases" />
+                <param name="IncludeLocationInformation" value="true" />
+                <!--Sets the full_message and short_message to the specified pattern-->
+                <!--<param name="ConversionPattern" value="[%t] %c{1} - %m" />-->
+            </layout>
+        </appender>
+
+        <appender name="GelfAmqpAppender" type="Gelf4Net.Appender.GelfAmqpAppender, Gelf4Net">
+            <remoteAddress value="192.168.44.10" />
+            <remotePort value="5672" />
+            <username value="guest" />
+            <password value="guest" />
+            <virtualHost value="/" />
+            <exchange value="log-messages" />
+            <key value="#" />
+            <layout type="Gelf4Net.Layout.GelfLayout, Gelf4Net">
+                <param name="AdditionalFields" value="app:GelfAmqpAppender,version:1.0,Level:%level" />
+                <param name="Facility" value="RandomPhrases" />
+                <param name="IncludeLocationInformation" value="true" />
+                <!-- Sets the full_message and short_message to the specified pattern-->
+                <!--<param name="ConversionPattern" value="[%t] %c{1} - %m" />-->
+            </layout>
+        </appender>
+
+        <appender name="AsyncGelfAmqpAppender" type="Gelf4Net.Appender.AsyncGelfAmqpAppender, Gelf4Net">
+            <remoteAddress value="192.168.44.10" />
+            <remotePort value="5672" />
+            <username value="guest" />
+            <password value="guest" />
+            <virtualHost value="/" />
+            <exchange value="log-messages" />
+            <key value="#" />
+            <layout type="Gelf4Net.Layout.GelfLayout, Gelf4Net">
+                <param name="AdditionalFields" value="app:AsyncGelfAmqpAppender,version:1.0,Level:%level" />
+                <param name="Facility" value="RandomPhrases" />
+                <param name="IncludeLocationInformation" value="true" />
+                <!-- Sets the full_message and short_message to the specified pattern-->
+                <!--<param name="ConversionPattern" value="[%t] %c{1} - %m" />-->
+            </layout>
+        </appender>
+
+        <root>
+            <level value="ALL" />
+            <appender-ref ref="GelfUdpAppender" />
+            <appender-ref ref="GelfUdpAppenderCC" />
+            <appender-ref ref="AsyncGelfUdpAppender" />
+            <appender-ref ref="GelfHttpAppender" />
+            <appender-ref ref="GelfAmqpAppender" />
+            <appender-ref ref="AsyncGelfAmqpAppender" />
+        </root>
+    </log4net>
 </configuration>
+```
+
+## Gelf4Net.AmqpAppender
+
+*net45*
+
+```
+<log4net>
+    <appender name="GelfAmqpAppender" type="Gelf4Net.Appender.GelfAmqpAppender, Gelf4Net.AmqpAppender">
+        <remoteAddress value="192.168.44.10" />
+        <remotePort value="5672" />
+        <username value="guest" />
+        <password value="guest" />
+        <virtualHost value="/" />
+        <exchange value="log-messages" />
+        <key value="#" />
+        <layout type="Gelf4Net.Layout.GelfLayout, Gelf4Net.AmqpAppender">
+            <param name="AdditionalFields" value="app:GelfAmqpAppender,version:1.0,Level:%level" />
+            <param name="Facility" value="RandomPhrases" />
+            <param name="IncludeLocationInformation" value="true" />
+            <!-- Sets the full_message and short_message to the specified pattern-->
+            <!--<param name="ConversionPattern" value="[%t] %c{1} - %m" />-->
+        </layout>
+    </appender>
+
+    <appender name="AsyncGelfAmqpAppender" type="Gelf4Net.Appender.AsyncGelfAmqpAppender, Gelf4Net.AmqpAppender">
+        <remoteAddress value="192.168.44.10" />
+        <remotePort value="5672" />
+        <username value="guest" />
+        <password value="guest" />
+        <virtualHost value="/" />
+        <exchange value="log-messages" />
+        <key value="#" />
+        <layout type="Gelf4Net.Layout.GelfLayout, Gelf4Net.AmqpAppender">
+            <param name="AdditionalFields" value="app:AsyncGelfAmqpAppender,version:1.0,Level:%level" />
+            <param name="Facility" value="RandomPhrases" />
+            <param name="IncludeLocationInformation" value="true" />
+            <!-- Sets the full_message and short_message to the specified pattern-->
+            <!--<param name="ConversionPattern" value="[%t] %c{1} - %m" />-->
+        </layout>
+    </appender>
+
+    <root>
+        <level value="ALL" />
+        <appender-ref ref="GelfAmqpAppender" />
+        <appender-ref ref="AsyncGelfAmqpAppender" />
+    </root>
+</log4net>
+```
+
+*netstandard1.5*
+
+```
+<log4net>
+    <appender name="GelfAmqpAppender" type="Gelf4Net.Appender.GelfAmqpAppender, Gelf4Net.AmqpAppender">
+        <remoteAddress value="192.168.44.10" />
+        <remotePort value="5672" />
+        <username value="guest" />
+        <password value="guest" />
+        <virtualHost value="/" />
+        <exchange value="log-messages" />
+        <key value="#" />
+        <layout type="Gelf4Net.Layout.GelfLayout, Gelf4Net.Core">
+            <param name="AdditionalFields" value="app:DotnetcoreGelfAmqpAppender,version:1.0,Level:%level" />
+            <param name="Facility" value="RandomPhrases" />
+            <param name="IncludeLocationInformation" value="true" />
+        </layout>
+    </appender>
+
+    <appender name="AsyncGelfAmqpAppender" type="Gelf4Net.Appender.AsyncGelfAmqpAppender, Gelf4Net.AmqpAppender">
+        <remoteAddress value="192.168.44.10" />
+        <remotePort value="5672" />
+        <username value="guest" />
+        <password value="guest" />
+        <virtualHost value="/" />
+        <exchange value="log-messages" />
+        <key value="#" />
+        <layout type="Gelf4Net.Layout.GelfLayout, Gelf4Net.Core">
+            <param name="AdditionalFields" value="app:DotnetcoreAsyncGelfAmqpAppender,version:1.0,Level:%level" />
+            <param name="Facility" value="RandomPhrases" />
+            <param name="IncludeLocationInformation" value="true" />
+            <param name="ConversionPattern" value="[%t] %c{1} - %m" />
+        </layout>
+    </appender>
+
+    <root>
+        <level value="ALL" />
+        <appender-ref ref="GelfAmqpAppender" />
+        <appender-ref ref="AsyncGelfAmqpAppender" />
+    </root>
+</log4net>
+```
+
+## Gelf4Net.HttpAppender
+
+*net45*
+
+```
+<log4net>
+    <appender name="GelfHttpAppender" type="Gelf4net.Appender.GelfHttpAppender, Gelf4Net.HttpAppender">
+        <url value="http://192.168.44.10:12201/gelf" />
+        <layout type="Gelf4net.Layout.GelfLayout, Gelf4Net.HttpAppender">
+            <param name="AdditionalFields" value="app:GelfHttpAppender,version:1.0,Environment:Dev,Level:%level" />
+            <param name="Facility" value="RandomPhrases" />
+            <param name="IncludeLocationInformation" value="true" />
+            <!-- Sets the full_message and short_message to the specified pattern-->
+            <param name="ConversionPattern" value="[%t] %c{1} - %m" />
+        </layout>
+    </appender>
+
+    <root>
+        <level value="ALL" />
+        <appender-ref ref="GelfHttpAppender" />
+    </root>
+</log4net>
+```
+
+*dotnetstandard1.5*
+
+```
+<log4net>
+
+    <appender name="GelfHttpAppender" type="Gelf4Net.Appender.GelfHttpAppender, Gelf4Net.HttpAppender">
+        <url value="http://192.168.44.10:12201/gelf" />
+        <layout type="Gelf4Net.Layout.GelfLayout, Gelf4Net.Core">
+            <param name="AdditionalFields" value="app:DotnetcoreHttpAppender,version:1.0,Environment:Dev,Level:%level" />
+            <param name="Facility" value="RandomPhrases" />
+            <param name="IncludeLocationInformation" value="true" />
+        </layout>
+    </appender>
+
+    <root>
+        <level value="ALL" />
+        <appender-ref ref="GelfHttpAppender" />
+    </root>
+</log4net>
+```
+
+## Gelf4Net.UdpAppender
+
+*net45*
+
+```
+<log4net>
+    <appender name="AsyncGelfUdpAppender" type="Gelf4Net.Appender.AsyncGelfUdpAppender, Gelf4Net.UdpAppender">
+        <remoteAddress value="192.168.44.10" />
+        <remotePort value="12201" />
+        <maxChunkSize value="3" />
+        <layout type="Gelf4Net.Layout.GelfLayout, Gelf4Net.UdpAppender">
+            <param name="AdditionalFields" value="app:AsyncGelfUdpAppender,version:1.0,Environment:Dev,Level:%level" />
+            <param name="Facility" value="RandomPhrases" />
+            <param name="IncludeLocationInformation" value="true" />
+        </layout>
+    </appender>
+
+    <appender name="GelfUdpAppender" type="Gelf4Net.Appender.GelfUdpAppender, Gelf4Net.UdpAppender">
+        <remoteAddress value="192.168.44.10" />
+        <remotePort value="12201" />
+        <layout type="Gelf4Net.Layout.GelfLayout, Gelf4Net.UdpAppender">
+            <param name="AdditionalFields" value="app:GelfUdpAppender,version:1.0,Environment:Dev,Level:%level" />
+            <param name="Facility" value="RandomPhrases" />
+            <param name="IncludeLocationInformation" value="true" />
+        </layout>
+    </appender>
+
+    <root>
+        <level value="ALL" />
+        <appender-ref ref="GelfUdpAppender" />
+        <appender-ref ref="AsyncGelfUdpAppender" />
+    </root>
+</log4net>
+```
+
+*dotnetstandard1.5*
+
+```
+<log4net>
+    <appender name="GelfUdpAppenderCC" type="Gelf4Net.Appender.GelfUdpAppender, Gelf4Net.UdpAppender">
+        <remoteAddress value="192.168.44.10" />
+        <remotePort value="12201" />
+        <layout type="Gelf4Net.Layout.GelfLayout, Gelf4Net.Core">
+            <param name="AdditionalFields" value="app:DotnetcoreUdpAppenderCC,version:1.0,Environment:Dev,Level:%level" />
+            <param name="Facility" value="RandomPhrases" />
+            <param name="IncludeLocationInformation" value="true" />
+            <param name="ConversionPattern" value="[%t] %c{1} - %m" />
+        </layout>
+    </appender>
+
+    <appender name="GelfUdpAppender" type="Gelf4Net.Appender.GelfUdpAppender, Gelf4Net.UdpAppender">
+        <remoteAddress value="192.168.44.10" />
+        <remotePort value="12201" />
+        <layout type="Gelf4Net.Layout.GelfLayout, Gelf4Net.Core">
+            <param name="AdditionalFields" value="app:DotnetcoreUdpAppender,version:1.0,Environment:Dev,Level:%level" />
+            <param name="Facility" value="RandomPhrases" />
+            <param name="IncludeLocationInformation" value="true" />
+        </layout>
+    </appender>
+
+    <root>
+        <level value="ALL" />
+        <appender-ref ref="GelfUdpAppender" />
+        <appender-ref ref="GelfUdpAppenderCC" />
+    </root>
+</log4net>
 ```
 
 ## Additional Properties
@@ -142,10 +341,10 @@ This will add the following fields to your GELF log:
 ```
 {
     ...
-	"_app":"RandomSentence",
-	"_version":"1.0",
-	"_Level":"DEBUG",
-	...
+    "_app":"RandomSentence",
+    "_version":"1.0",
+    "_Level":"DEBUG",
+    ...
 }
 ```
 
@@ -153,7 +352,7 @@ You can also use your own custom field and key/value separators to deal with the
 ```
 <layout type="Gelf4net.Layout.GelfLayout, Gelf4net">
     <param name="AdditionalFields" value="app¬:¬RandomSentence¬|¬version:1.0¬|¬Level¬:¬%level" />
-	<param name="FieldSeparator" value="¬|¬" />
+    <param name="FieldSeparator" value="¬|¬" />
     <param name="KeyValueSeparator" value="¬:¬" />
 </layout>
 ```
@@ -239,9 +438,9 @@ If you want to format your message using a conversion pattern you can do so by s
 Again you can specify all the same parameters that you would if you were using the [PatternLayout][3].
 
 ```
-		  <layout type="Gelf4net.Layout.GelfLayout, Gelf4net">
-			<param name="ConversionPattern" value="[%t] %c{1} - %m" />
-		  </layout>
+          <layout type="Gelf4net.Layout.GelfLayout, Gelf4net">
+            <param name="ConversionPattern" value="[%t] %c{1} - %m" />
+          </layout>
 ```
 
 
@@ -260,10 +459,9 @@ _logger.Debug(new Dictionary<string,string>{
 If the custom object does not have a `Message` or `ShortMessage` field than the message will be the
 output of the `ToString()` of that object.
 
-## Async Appenders
+## dotnetstandard1.5 Appenders
 
-Async~Appenders doesn't log the file an line and IncludeLocationInformation should be set as false (default)
-`<param name="IncludeLocationInformation" value="false"/>`
+dotnetstandard1.5~Appenders doesn't log the file an line...
 
 ## Custom LoggingEventData
 
@@ -275,10 +473,10 @@ in the `appender` configuration `<param name="IncludeLocationInformation" value=
 ```
 var loggingEventData = new LoggingEventData
 {
-	Message = "This is a message",
-	LoggerName = "Test.Logger.Class",
-	Level = Level.Debug,
-	TimeStamp = DateTime.Now
+    Message = "This is a message",
+    LoggerName = "Test.Logger.Class",
+    Level = Level.Debug,
+    TimeStamp = DateTime.Now
 };
 var loggingEvent = new LoggingEvent(loggingEventData);
 ```
@@ -294,16 +492,21 @@ var customObject = new {
 
 var loggingEventData = new LoggingEventData
 {
-	Message = JsonConvert.SerializeObject(customObject),
-	LoggerName = "Test.Logger.Class",
-	Level = Level.Debug,
-	TimeStamp = DateTime.Now
+    Message = JsonConvert.SerializeObject(customObject),
+    LoggerName = "Test.Logger.Class",
+    Level = Level.Debug,
+    TimeStamp = DateTime.Now
 };
 var loggingEvent = new LoggingEvent(loggingEventData);
 ```
 
+## Thanks
+
+The dotnetcore web project sample was based in http://dotnetliberty.com/index.php/2015/11/09/asp-net-5-logging-with-log4net/
+
 ## License
 This project is licensed under the [MIT](2) license
+
 
 [1]: https://github.com/Graylog2/graylog2-docs/wiki/GELF
 [2]: https://opensource.org/licenses/MIT

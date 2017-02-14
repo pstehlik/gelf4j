@@ -4,21 +4,21 @@ using System.Collections.Concurrent;
 using System.Diagnostics;
 using System.Threading;
 
-namespace Gelf4net.Appender
+namespace Gelf4Net.Appender
 {
     public class AsyncGelfUdpAppender : GelfUdpAppender
     {
-
-        private readonly ConcurrentQueue<LoggingEvent> _pendingTasks;
+        private readonly ConcurrentQueue<byte[]> _pendingTasks;
         private readonly ManualResetEvent _manualResetEvent;
         private bool _onClosing;
 
         public AsyncGelfUdpAppender()
         {
-            _pendingTasks = new ConcurrentQueue<LoggingEvent>();
+            _pendingTasks = new ConcurrentQueue<byte[]>();
             _manualResetEvent = new ManualResetEvent(false);
             Start();
         }
+
         protected override void Append(LoggingEvent[] loggingEvents)
         {
             foreach (var loggingEvent in loggingEvents)
@@ -26,29 +26,32 @@ namespace Gelf4net.Appender
                 Append(loggingEvent);
             }
         }
+
         protected override void Append(LoggingEvent loggingEvent)
         {
             if (FilterEvent(loggingEvent))
             {
-                _pendingTasks.Enqueue(loggingEvent);
+                _pendingTasks.Enqueue(this.RenderLoggingEvent(loggingEvent).GzipMessage(this.Encoding));
             }
         }
+
         private void Start()
         {
-            Debug.WriteLine("[Gelf4net] Start Async Appender");
+            Debug.WriteLine("[Gelf4Net] Start Async Appender");
             if (_onClosing)
             {
-                Debug.WriteLine("[Gelf4net] Closing");
+                Debug.WriteLine("[Gelf4Net] Closing");
                 return;
             }
             var thread = new Thread(LogMessages);
             thread.Start();
         }
+
         private void LogMessages()
         {
             while (!_onClosing)
             {
-                LoggingEvent loggingEvent;
+                byte[] loggingEvent;
                 while (!_pendingTasks.TryDequeue(out loggingEvent))
                 {
                     Thread.Sleep(10);
@@ -56,8 +59,8 @@ namespace Gelf4net.Appender
                     {
                         try
                         {
-                            Debug.WriteLine("[Gelf4net] Appending");
-                            base.Append(_pendingTasks.ToArray());
+                            Debug.WriteLine("[Gelf4Net] Appending");
+                            base.SendMessage(_pendingTasks.ToArray());
                             break;
                         }
                         catch (Exception ex)
@@ -69,18 +72,19 @@ namespace Gelf4net.Appender
                 }
                 if (loggingEvent != null)
                 {
-                    Debug.WriteLine("[Gelf4net] Appending 2");
-                    base.Append(loggingEvent);
+                    Debug.WriteLine("[Gelf4Net] Appending 2");
+                    base.SendMessage(loggingEvent);
                 }
             }
             _manualResetEvent.Set();
         }
+
         protected override void OnClose()
         {
-            Debug.WriteLine("[Gelf4net] Closing Async Appender");
+            Debug.WriteLine("[Gelf4Net] Closing Async Appender");
             _onClosing = true;
             _manualResetEvent.WaitOne(TimeSpan.FromSeconds(10));
-            Debug.WriteLine("[Gelf4net] Logging thread has stopped");
+            Debug.WriteLine("[Gelf4Net] Logging thread has stopped");
             base.OnClose();
         }
     }

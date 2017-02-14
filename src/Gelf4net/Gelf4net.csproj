@@ -6,8 +6,8 @@
     <ProjectGuid>{21601568-D8AD-433F-998D-1500A27F3FBD}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Gelf4net</RootNamespace>
-    <AssemblyName>Gelf4net</AssemblyName>
+    <RootNamespace>Gelf4Net</RootNamespace>
+    <AssemblyName>Gelf4Net</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
@@ -44,10 +44,6 @@
     </Reference>
     <Reference Include="RabbitMQ.Client, Version=3.5.6.0, Culture=neutral, PublicKeyToken=89e7d7c5feba84ce, processorArchitecture=MSIL">
       <HintPath>..\packages\RabbitMQ.Client.3.5.6\lib\net40\RabbitMQ.Client.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="RabbitMQ.ServiceModel, Version=3.5.6.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\RabbitMQ.ServiceModel.3.5.6\lib\net40\RabbitMQ.ServiceModel.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />

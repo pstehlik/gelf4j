@@ -1,4 +1,4 @@
-using Gelf4net.Util.TypeConverters;
+using Gelf4Net.Util.TypeConverters;
 using log4net.Core;
 using System;
 using System.Collections.Generic;
@@ -9,7 +9,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Gelf4net.Appender
+namespace Gelf4Net.Appender
 {
     /// <summary>
     /// Gelf Udp Appender
@@ -51,36 +51,58 @@ namespace Gelf4net.Appender
 
         public int MaxChunkSize { get; set; }
 
-        protected override async void Append(LoggingEvent loggingEvent)
+        protected override void Append(LoggingEvent loggingEvent)
         {
             try
             {
                 byte[] bytes = this.RenderLoggingEvent(loggingEvent).GzipMessage(this.Encoding);
-
-                if (MaxChunkSize < bytes.Length)
-                {
-                    var state = new UdpState() { SendClient = Client, Bytes = bytes, ChunkCount = 0, MessageId = null, SendIndex = 0 };
-                    while (state.SendIndex <= state.ChunkCount)
-                    {
-                        var messageChunkFull = GetMessageChunkFull(state.Bytes, state.MessageId, state.SendIndex, state.ChunkCount);
-                        await Client.SendAsync(messageChunkFull, messageChunkFull.Length, RemoteEndPoint);
-                        state.SendIndex++;
-                    }
-                }
-                else
-                {
-                    var chunkCount = (bytes.Length / MaxChunkSize) + 1;
-                    var messageId = GenerateMessageId();
-                    var state = new UdpState() { SendClient = Client, Bytes = bytes, ChunkCount = chunkCount, MessageId = messageId, SendIndex = 0 };
-                    var messageChunkFull = GetMessageChunkFull(state.Bytes, state.MessageId, state.SendIndex, state.ChunkCount);
-                    //Client.BeginSend(messageChunkFull, messageChunkFull.Length, RemoteEndPoint, SendCallback, state);
-                    await Client.SendAsync(messageChunkFull, messageChunkFull.Length, RemoteEndPoint);
-                }
+                SendMessage(bytes);
             }
             catch (Exception ex)
             {
                 this.ErrorHandler.Error("Unable to send logging event to remote host " + this.RemoteAddress + " on port " + this.RemotePort + ".", ex, ErrorCode.WriteFailure);
             }
+        }
+
+        protected void SendMessage(byte[][] loggingEvents)
+        {
+            foreach (var loggingEvent in loggingEvents)
+            {
+                SendMessage(loggingEvent);
+            }
+        }
+
+        protected void SendMessage(byte[] payload)
+        {
+            Task.Run(async () =>
+            {
+                try
+                {
+                    if (MaxChunkSize < payload.Length)
+                    {
+                        var chunkCount = (payload.Length / MaxChunkSize) + 1;
+                        var messageId = GenerateMessageId();
+                        var state = new UdpState() { SendClient = Client, Bytes = payload, ChunkCount = chunkCount, MessageId = messageId, SendIndex = 0 };
+                        var messageChunkFull = GetMessageChunkFull(state.Bytes, state.MessageId, state.SendIndex, state.ChunkCount);
+
+                        while (state.SendIndex <= state.ChunkCount)
+                        {
+                            messageChunkFull = GetMessageChunkFull(state.Bytes, state.MessageId, state.SendIndex, state.ChunkCount);
+                            await Client.SendAsync(messageChunkFull, messageChunkFull.Length, RemoteEndPoint);
+                            state.SendIndex++;
+                        }
+                    }
+                    else
+                    {
+                        var state = new UdpState() { SendClient = Client, Bytes = payload, ChunkCount = 0, MessageId = null, SendIndex = 0 };
+                        await Client.SendAsync(payload, payload.Length, RemoteEndPoint);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    this.ErrorHandler.Error("Unable to send logging event to remote host " + this.RemoteAddress + " on port " + this.RemotePort + ".", ex, ErrorCode.WriteFailure);
+                }
+            });
         }
 
         private byte[] GetMessageChunkFull(byte[] bytes, byte[] messageId, int i, int chunkCount)
