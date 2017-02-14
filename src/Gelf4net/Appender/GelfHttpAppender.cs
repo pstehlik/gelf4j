@@ -3,9 +3,8 @@ using log4net.Core;
 using System;
 using System.Net.Http;
 using System.Text;
-using System.Threading.Tasks;
 
-namespace Gelf4net.Appender
+namespace Gelf4Net.Appender
 {
     public class GelfHttpAppender : AppenderSkeleton
     {
@@ -39,21 +38,30 @@ namespace Gelf4net.Appender
             }
         }
 
-        protected override void Append(LoggingEvent loggingEvent)
+        protected override async void Append(LoggingEvent loggingEvent)
         {
-            Task.Run(async () =>
+            try
             {
-                try
-                {
-                    var payload = this.RenderLoggingEvent(loggingEvent);
-                    var content = new StringContent(payload, System.Text.Encoding.UTF8, "application/json");
-                    await _httpClient.PostAsync(_baseUrl, content);
-                }
-                catch (Exception ex)
-                {
-                    this.ErrorHandler.Error("Unable to send logging event to remote host " + this.Url, ex);
-                }
-            });
+                var payload = this.RenderLoggingEvent(loggingEvent);
+                var content = new StringContent(payload, System.Text.Encoding.UTF8, "application/json");
+                await _httpClient.PostAsync(_baseUrl, content);
+            }
+            catch (Exception ex)
+            {
+                this.ErrorHandler.Error("Unable to send logging event to remote host " + this.Url, ex);
+            }
+            //Task.Run(async () =>
+            //{
+            //    try
+            //    {
+            //        var content = new StringContent(payload, System.Text.Encoding.UTF8, "application/json");
+            //        await _httpClient.PostAsync(_baseUrl, content);
+            //    }
+            //    catch (Exception ex)
+            //    {
+            //        this.ErrorHandler.Error("Unable to send logging event to remote host " + this.Url, ex);
+            //    }
+            //});
         }
     }
 }

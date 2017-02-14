@@ -4,7 +4,7 @@ using System;
 using System.Text;
 using System.Threading;
 
-namespace Gelf4net.Appender
+namespace Gelf4Net.Appender
 {
     public class GelfAmqpAppender : AppenderSkeleton
     {
@@ -51,11 +51,23 @@ namespace Gelf4net.Appender
         protected override void Append(log4net.Core.LoggingEvent loggingEvent)
         {
             var message = RenderLoggingEvent(loggingEvent).GzipMessage(Encoding);
-            byte[] messageBodyBytes = message;
+            SendMessage(message);
+        }
+
+        protected void SendMessage(byte[][] loggingEvents)
+        {
+            foreach (var loggingEvent in loggingEvents)
+            {
+                SendMessage(loggingEvent);
+            }
+        }
+
+        protected void SendMessage(byte[] payload)
+        {
             if (WaitForConnectionToConnectOrReconnect(new TimeSpan(0, 0, 0, 0, 500)))
             {
                 lock (_syncLock)
-                    Channel.BasicPublish(Exchange, Key, null, messageBodyBytes);
+                    Channel.BasicPublish(Exchange, Key, null, payload);
             }
         }
 

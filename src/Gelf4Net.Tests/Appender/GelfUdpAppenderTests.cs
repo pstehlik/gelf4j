@@ -1,27 +1,10 @@
-﻿using System;
-using System.Text;
-using System.Collections.Generic;
-using System.Linq;
-using Gelf4net.Appender;
-using log4net.Core;
-using System.Security.Cryptography;
-using System.IO;
+﻿using Gelf4Net.Appender;
 using NUnit.Framework;
-using log4net;
-using System.Net.Sockets;
-using System.Net;
-using System.Diagnostics;
-using System.Threading;
-using System.IO.Compression;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using log4net.Appender;
-using log4net.Repository;
-using log4net.Util;
-using System.Globalization;
-using Gelf4net;
+using System;
+using System.Collections.Generic;
+using System.Text;
 
-namespace Gelf4netTest
+namespace Gelf4Net.Tests.Appender
 {
     /// <summary>
     /// Summary description for UnitTest1

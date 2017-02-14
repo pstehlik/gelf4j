@@ -8,8 +8,8 @@
     <ProjectGuid>{7030474F-7076-44D9-AC46-48A6D4562AAA}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Gelf4net.Core.Portable</RootNamespace>
-    <AssemblyName>Gelf4net.Core</AssemblyName>
+    <RootNamespace>Gelf4Net.Core</RootNamespace>
+    <AssemblyName>Gelf4Net.Core</AssemblyName>
     <DefaultLanguage>en-US</DefaultLanguage>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{786C830F-07A1-408B-BD7F-6EE04809D6DB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -38,19 +38,19 @@
     <!-- A reference to the entire .NET Framework is automatically included -->
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\Gelf4net\Extensions.cs">
+    <Compile Include="..\Gelf4Net\Extensions.cs">
       <Link>Extensions.cs</Link>
     </Compile>
-    <Compile Include="..\Gelf4net\GelfMessage.cs">
+    <Compile Include="..\Gelf4Net\GelfMessage.cs">
       <Link>GelfMessage.cs</Link>
     </Compile>
-    <Compile Include="..\Gelf4net\Layout\GelfLayout.cs">
+    <Compile Include="..\Gelf4Net\Layout\GelfLayout.cs">
       <Link>Layout\GelfLayout.cs</Link>
     </Compile>
-    <Compile Include="..\Gelf4net\ObjectRenderer\GelfRenderer.cs">
+    <Compile Include="..\Gelf4Net\ObjectRenderer\GelfRenderer.cs">
       <Link>ObjectRenderer\GelfRenderer.cs</Link>
     </Compile>
-    <Compile Include="..\Gelf4net\Util\TypeConverters\IPAddressConverter.cs">
+    <Compile Include="..\Gelf4Net\Util\TypeConverters\IPAddressConverter.cs">
       <Link>Util\TypeConverters\IPAddressConverter.cs</Link>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />

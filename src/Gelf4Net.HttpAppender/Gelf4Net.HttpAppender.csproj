@@ -7,8 +7,8 @@
     <ProjectGuid>{33476840-A5C5-4E5A-8A48-F350E84F4BDC}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Gelf4net.HttpAppender</RootNamespace>
-    <AssemblyName>Gelf4net.HttpAppender</AssemblyName>
+    <RootNamespace>Gelf4Net.HttpAppender</RootNamespace>
+    <AssemblyName>Gelf4Net.HttpAppender</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
@@ -62,7 +62,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\Gelf4net\Appender\GelfHttpAppender.cs">
+    <Compile Include="..\Gelf4Net\Appender\GelfHttpAppender.cs">
       <Link>Appender\GelfHttpAppender.cs</Link>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -72,9 +72,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Gelf4net.Core\Gelf4net.Core.csproj">
+    <ProjectReference Include="..\Gelf4Net.Core\Gelf4Net.Core.csproj">
       <Project>{c477f0c6-f132-438f-a6c3-302c48927224}</Project>
-      <Name>Gelf4net.Core</Name>
+      <Name>Gelf4Net.Core</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -1,5 +1,4 @@
-﻿using Gelf4net;
-using Gelf4net.Layout;
+﻿using Gelf4Net.Layout;
 using log4net;
 using log4net.Appender;
 using log4net.Core;
@@ -13,7 +12,7 @@ using System.Globalization;
 using System.IO;
 using System.Text;
 
-namespace Gelf4netTest.Layout
+namespace Gelf4Net.Tests.Layout
 {
     [TestFixture]
     public class GelfLayoutTests
@@ -351,7 +350,7 @@ namespace Gelf4netTest.Layout
         }
 
         [Test]
-        public void IncludeLocationInformation()
+        public void IncludeLocationInformationWithoutLine()
         {
             var layout = new GelfLayout();
             layout.IncludeLocationInformation = true;
@@ -363,8 +362,8 @@ namespace Gelf4netTest.Layout
 
             Assert.AreEqual(message, result.FullMessage);
             Assert.AreEqual(message, result.ShortMessage);
-            Assert.IsNotNullOrEmpty(result.Line);
-            Assert.IsNotNullOrEmpty(result.File);
+            Assert.IsEmpty(result.Line);
+            Assert.IsEmpty(result.File);
         }
 
         [Test]
@@ -749,7 +748,8 @@ namespace Gelf4netTest.Layout
 
         private static LoggingEvent GetLogginEvent(object message)
         {
-            return new LoggingEvent((Type)null, (ILoggerRepository)null, "Test.Logger.Class", Level.Debug, message, null);
+            var @event = new LoggingEvent((Type)null, (ILoggerRepository)null, "Test.Logger.Class", Level.Debug, message, null);
+            return @event;
         }
 
         private static LoggingEvent GetLogginEventRenderedMessage(string message)
@@ -759,7 +759,8 @@ namespace Gelf4netTest.Layout
                 Message = message,
                 LoggerName = "Test.Logger.Class",
                 Level = Level.Debug,
-                TimeStamp = DateTime.UtcNow
+                TimeStamp = DateTime.UtcNow,
+                LocationInfo = new LocationInfo("Test.Logger.Class", "Method", "Hola.cs", "8")
             };
             return new LoggingEvent(loggingEventData);
         }

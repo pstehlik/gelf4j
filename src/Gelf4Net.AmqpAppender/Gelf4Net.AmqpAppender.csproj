@@ -7,8 +7,8 @@
     <ProjectGuid>{55267E06-F6F3-4061-8528-6324D44B8CB9}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Gelf4net.AmqpAppender</RootNamespace>
-    <AssemblyName>Gelf4net.AmqpAppender</AssemblyName>
+    <RootNamespace>Gelf4Net.AmqpAppender</RootNamespace>
+    <AssemblyName>Gelf4Net.AmqpAppender</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
@@ -55,10 +55,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\Gelf4net\Appender\AsyncGelfAmqpAppender.cs">
+    <Compile Include="..\Gelf4Net\Appender\AsyncGelfAmqpAppender.cs">
       <Link>Appender\AsyncGelfAmqpAppender.cs</Link>
     </Compile>
-    <Compile Include="..\Gelf4net\Appender\GelfAmqpAppender.cs">
+    <Compile Include="..\Gelf4Net\Appender\GelfAmqpAppender.cs">
       <Link>Appender\GelfAmqpAppender.cs</Link>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -68,9 +68,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Gelf4net.Core\Gelf4net.Core.csproj">
+    <ProjectReference Include="..\Gelf4Net.Core\Gelf4Net.Core.csproj">
       <Project>{c477f0c6-f132-438f-a6c3-302c48927224}</Project>
-      <Name>Gelf4net.Core</Name>
+      <Name>Gelf4Net.Core</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

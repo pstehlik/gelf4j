@@ -3,7 +3,7 @@ using System.Globalization;
 using Newtonsoft.Json;
 using System.Collections.Generic;
 
-namespace Gelf4net
+namespace Gelf4Net
 {
     public class GelfMessage : Dictionary<string, object>
     {

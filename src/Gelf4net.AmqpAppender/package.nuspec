@@ -13,9 +13,6 @@
         <dependencies>
             <group targetFramework=".NETFramework4.5">
                 <dependency id="log4net" version="2.0.0" />
-                <dependency id="Newtonsoft.Json" version="7.0.1" />
-                <dependency id="RabbitMQ.Client" version="3.5.6" />
-                <dependency id="RabbitMQ.ServiceModel" version="3.5.6" />
             </group>
             <group targetFramework=".NETStandard1.5">
                 <dependency id="log4net" version="2.0.7" />
