@@ -5,10 +5,10 @@
 //------------------------------------------------------------------------------
 using System.Reflection;
 
-[assembly: AssemblyTitle("${appName}.{appenderName}")]
+[assembly: AssemblyTitle("Gelf4Net.HttpAppender")]
 [assembly: AssemblyProduct("Gelf4Net.HttpAppender")]
-[assembly: AssemblyVersion("1.0.0.17")]
-[assembly: AssemblyFileVersion("1.0.0.17")]
-[assembly: AssemblyInformationalVersion("1.0.0.17")]
-[assembly: AssemblyCopyright("Copyright � 2017")]
+[assembly: AssemblyVersion("1.0.0.6")]
+[assembly: AssemblyFileVersion("1.0.0.6")]
+[assembly: AssemblyInformationalVersion("1.0.0.6")]
+[assembly: AssemblyCopyright("MIT 2017")]
 

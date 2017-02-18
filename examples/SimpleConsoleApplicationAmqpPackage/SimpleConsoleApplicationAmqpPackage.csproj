@@ -32,8 +32,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Gelf4Net.AmqpAppender, Version=1.0.0.21, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Gelf4Net.AmqpAppender.1.0.0.22\lib\net45\Gelf4Net.AmqpAppender.dll</HintPath>
+    <Reference Include="Gelf4Net.AmqpAppender, Version=1.0.0.5, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Gelf4Net.AmqpAppender.1.0.0.6\lib\net45\Gelf4Net.AmqpAppender.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="log4net, Version=1.2.11.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">

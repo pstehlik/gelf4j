@@ -32,8 +32,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Gelf4Net.HttpAppender, Version=1.0.0.10, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Gelf4Net.HttpAppender.1.0.0.11\lib\net45\Gelf4Net.HttpAppender.dll</HintPath>
+    <Reference Include="Gelf4Net.HttpAppender, Version=1.0.0.5, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Gelf4Net.HttpAppender.1.0.0.6\lib\net45\Gelf4Net.HttpAppender.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="log4net, Version=2.0.7.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">

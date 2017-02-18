@@ -5,10 +5,10 @@
 //------------------------------------------------------------------------------
 using System.Reflection;
 
-[assembly: AssemblyTitle("${appName}")]
+[assembly: AssemblyTitle("Gelf4Net")]
 [assembly: AssemblyProduct("Gelf4Net")]
-[assembly: AssemblyVersion("3.0.0.28")]
-[assembly: AssemblyFileVersion("3.0.0.28")]
-[assembly: AssemblyInformationalVersion("3.0.0.28")]
-[assembly: AssemblyCopyright("Copyright � 2017")]
+[assembly: AssemblyVersion("3.0.0.2")]
+[assembly: AssemblyFileVersion("3.0.0.2")]
+[assembly: AssemblyInformationalVersion("3.0.0.2")]
+[assembly: AssemblyCopyright("MIT 2017")]
 
