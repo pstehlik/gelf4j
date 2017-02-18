@@ -33,3 +33,5 @@ upload.ps1
 /project.lock.json
 /.vs
 tools/
+private/
+.vscode/
