@@ -1,0 +1,8 @@
+2017-02-28 23:07:34,873 | INFO | serverlogger | info server log message
+2017-02-28 23:07:37,349 | WARN | jsLogger | {"msg":"warn client log message - logging object","x":5,"y":88}
+2017-02-28 23:07:37,349 | FATAL | ClientRoot | {"stack":"ReferenceError: 'xyz' is undefined\n   at Global code (http://localhost:54823/scripts/jsnlogdemo.js:14:2)","message":"'xyz' is undefined","name":"ReferenceError","logData":"Something went wrong!"}
+2017-02-28 23:07:37,350 | DEBUG | jsLogger | debug client log message
+2017-02-28 23:07:37,350 | FATAL | jsLogger | fatal client log message
+2017-02-28 23:07:37,649 | ERROR | jsLogger | error client log message - returned by function
+2017-02-28 23:07:37,633 | INFO | jsLogger | info client log message
+2017-02-28 23:07:37,831 | FATAL | onerrorLogger | {"msg":"Uncaught Exception","errorMsg":"'xyz2' is undefined","url":"http://localhost:54823/scripts/jsnlogdemo.js","line number":21,"column":1}
