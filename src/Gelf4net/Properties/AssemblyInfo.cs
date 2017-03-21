@@ -7,8 +7,8 @@ using System.Reflection;
 
 [assembly: AssemblyTitle("Gelf4Net")]
 [assembly: AssemblyProduct("Gelf4Net")]
-[assembly: AssemblyVersion("3.0.0.2")]
-[assembly: AssemblyFileVersion("3.0.0.2")]
-[assembly: AssemblyInformationalVersion("3.0.0.2")]
+[assembly: AssemblyVersion("3.0.0.3")]
+[assembly: AssemblyFileVersion("3.0.0.3")]
+[assembly: AssemblyInformationalVersion("3.0.0.3")]
 [assembly: AssemblyCopyright("MIT 2017")]
 
