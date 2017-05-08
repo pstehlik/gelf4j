@@ -39,32 +39,42 @@ void PushPackage(string packageName, string newVersion)
     });
 }
 
-string updateAssemblyFile(string packageName, bool upload)
+string getAssemblyVersionFile(string packageName)
 {
     var assemblyFile = $"./src/{packageName}/Properties/AssemblyInfo.cs";
     var assemblyInfo = ParseAssemblyInfo(assemblyFile);
     var version = assemblyInfo.AssemblyVersion.Split('.');
-    var buildNumber = int.Parse(version[3]) + 1;
+    var buildNumber = int.Parse(version[3]);
+
+    return string.Format("{0}.{1}.{2}.{3}", version[0], version[1], version[2], buildNumber);
+}
+
+string updateAssemblyFile(string packageName, bool revert = false)
+{
+    var assemblyFile = $"./src/{packageName}/Properties/AssemblyInfo.cs";
+
+    var assemblyVersion = getAssemblyVersionFile(packageName);
+    var version = assemblyVersion.Split('.');
+    var buildNumber = int.Parse(version[3]) + (revert ? -1 : 1);
+
     var newVersion = string.Format("{0}.{1}.{2}.{3}", version[0], version[1], version[2], buildNumber);
 
-    if(upload)
-    {
-        CreateAssemblyInfo(assemblyFile, new AssemblyInfoSettings {
-            Title = $"{packageName}",
-            Product = $"{packageName}",
-            Copyright = $"MIT {DateTime.Now.Year}",
-            Version = newVersion,
-            FileVersion = newVersion,
-            InformationalVersion = newVersion
-        });
-    }
+    CreateAssemblyInfo(assemblyFile, new AssemblyInfoSettings {
+        Title = $"{packageName}",
+        Product = $"{packageName}",
+        Copyright = $"MIT {DateTime.Now.Year}",
+        Version = newVersion,
+        FileVersion = newVersion,
+        InformationalVersion = newVersion
+    });
+
     return newVersion;
 }
 
 void uploadGelf4net(bool upload = true)
 {
     var packageName = appName;
-    var newVersion = updateAssemblyFile(packageName, upload);
+    var newVersion = getAssemblyVersionFile(packageName);
 
     var net45Path = $"src/{packageName}/bin/Release/";
 
@@ -78,8 +88,8 @@ void uploadGelf4net(bool upload = true)
     var nuGetPackSettings   = new NuGetPackSettings {
                                      Version =  newVersion,
                                      Files = new [] {
-                                        new NuSpecContent {Source = $"{binDir}/{packageName}.dll", Target = "lib/net45"},
-                                        new NuSpecContent {Source = $"src/{packageName}.Portable/bin/Release/{packageName}.dll", Target = "lib/netstandard1.5"}
+                                        new NuSpecContent {Source = $"{binDir}/{packageName}.dll", Target = @"lib\net45"},
+                                        new NuSpecContent {Source = $"src/{packageName}.Portable/bin/Release/{packageName}.dll", Target = @"lib\netstandard1.5"}
                                     },
                                      BasePath   = ".",
                                      OutputDirectory = distDir
@@ -87,14 +97,18 @@ void uploadGelf4net(bool upload = true)
 
     NuGetPack($"./src/{packageName}/package.nuspec", nuGetPackSettings);
 
-    PushPackage(packageName, newVersion);
+    if(upload){
+        PushPackage(packageName, newVersion);
+    } else {
+        updateAssemblyFile(packageName, true);
+    }
 }
 
 void uploadGelf4netAmqpAppender(bool upload = true)
 {
     var packageName = $"{appName}.AmqpAppender";
 
-    var newVersion = updateAssemblyFile(packageName, upload);
+    var newVersion = getAssemblyVersionFile(packageName);
 
     var net45Path = $"src/{packageName}/bin/Release/";
     var portablePath = $"src/{packageName}.Portable/bin/Release/";
@@ -117,9 +131,9 @@ void uploadGelf4netAmqpAppender(bool upload = true)
     var nuGetPackSettings   = new NuGetPackSettings {
                                      Version =  newVersion,
                                      Files = new [] {
-                                        new NuSpecContent {Source = $"{binDir}/{packageName}.dll", Target = "lib/net45"},
-                                        new NuSpecContent {Source = $"{portablePath}{packageName}.dll", Target = "lib/netstandard1.5"},
-                                        new NuSpecContent {Source = $"{portablePath}{appName}.Core.dll", Target = "lib/netstandard1.5"},
+                                        new NuSpecContent {Source = $"{binDir}/{packageName}.dll", Target = @"lib\net45"},
+                                        new NuSpecContent {Source = $"{portablePath}{packageName}.dll", Target = @"lib\netstandard1.5"},
+                                        new NuSpecContent {Source = $"{portablePath}{appName}.Core.dll", Target = @"lib\netstandard1.5"},
                                     },
                                      BasePath   = ".",
                                      OutputDirectory = distDir
@@ -127,7 +141,11 @@ void uploadGelf4netAmqpAppender(bool upload = true)
 
     NuGetPack($"./src/{packageName}/package.nuspec", nuGetPackSettings);
 
-    PushPackage(packageName, newVersion);
+    if(upload){
+        PushPackage(packageName, newVersion);
+    } else {
+        updateAssemblyFile(packageName, true);
+    }
 }
 
 
@@ -135,7 +153,7 @@ void uploadGelf4netHttpAppender(bool upload = true)
 {
     var packageName = $"{appName}.HttpAppender";
 
-    var newVersion = updateAssemblyFile(packageName, upload);
+    var newVersion = getAssemblyVersionFile(packageName);
 
     var net45Path = $"src/{packageName}/bin/Release/";
     var portablePath = $"src/{packageName}.Portable/bin/Release/";
@@ -156,9 +174,9 @@ void uploadGelf4netHttpAppender(bool upload = true)
     var nuGetPackSettings   = new NuGetPackSettings {
                                      Version =  newVersion,
                                      Files = new [] {
-                                        new NuSpecContent {Source = $"{binDir}/{packageName}.dll", Target = "lib/net45"},
-                                        new NuSpecContent {Source = $"{portablePath}{packageName}.dll", Target = "lib/netstandard1.5"},
-                                        new NuSpecContent {Source = $"{portablePath}{appName}.Core.dll", Target = "lib/netstandard1.5"},
+                                        new NuSpecContent {Source = $"{binDir}/{packageName}.dll", Target = @"lib\net45"},
+                                        new NuSpecContent {Source = $"{portablePath}{packageName}.dll", Target = @"lib\netstandard1.5"},
+                                        new NuSpecContent {Source = $"{portablePath}{appName}.Core.dll", Target = @"lib\netstandard1.5"},
                                     },
                                      BasePath   = ".",
                                      OutputDirectory = distDir
@@ -166,14 +184,18 @@ void uploadGelf4netHttpAppender(bool upload = true)
 
     NuGetPack($"./src/{packageName}/package.nuspec", nuGetPackSettings);
 
-    PushPackage(packageName, newVersion);
+    if(upload){
+        PushPackage(packageName, newVersion);
+    } else {
+        updateAssemblyFile(packageName, true);
+    }
 }
 
 void uploadGelf4netUdpAppender(bool upload = true)
 {
     var packageName = $"{appName}.UdpAppender";
 
-    var newVersion = updateAssemblyFile(packageName, upload);
+    var newVersion = getAssemblyVersionFile(packageName);
 
     var appenderName = "UdpAppender";
     
@@ -197,9 +219,9 @@ void uploadGelf4netUdpAppender(bool upload = true)
     var nuGetPackSettings   = new NuGetPackSettings {
                                      Version =  newVersion,
                                      Files = new [] {
-                                        new NuSpecContent {Source = $"{binDir}/{packageName}.dll", Target = "lib/net45"},
-                                        new NuSpecContent {Source = $"{portablePath}{packageName}.dll", Target = "lib/netstandard1.5"},
-                                        new NuSpecContent {Source = $"{portablePath}{appName}.Core.dll", Target = "lib/netstandard1.5"},
+                                        new NuSpecContent {Source = $"{binDir}/{packageName}.dll", Target = @"lib\net45"},
+                                        new NuSpecContent {Source = $"{portablePath}{packageName}.dll", Target = @"lib\netstandard1.5"},
+                                        new NuSpecContent {Source = $"{portablePath}{appName}.Core.dll", Target = @"lib\netstandard1.5"},
                                     },
                                      BasePath   = ".",
                                      OutputDirectory = distDir
@@ -207,7 +229,45 @@ void uploadGelf4netUdpAppender(bool upload = true)
 
     NuGetPack($"./src/{packageName}/package.nuspec", nuGetPackSettings);
 
-    PushPackage(packageName, newVersion);
+    if(upload){
+        PushPackage(packageName, newVersion);
+    } else {
+        updateAssemblyFile(packageName, true);
+    }
+}
+
+void Build()
+{
+    if(IsRunningOnWindows())
+    {
+      // Use MSBuild
+      //ToolPath hardcoded until https://github.com/cake-build/cake/pull/1520 is accepted to use vswhere
+        MSBuild($"./src/{appName}.sln", new MSBuildSettings {
+            Configuration = "Release",
+            ToolPath = @"C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\MSBuild\15.0\Bin\MSBuild.exe"
+        });
+    }
+    else
+    {
+      // Use XBuild
+      XBuild($"./src/{appName}.sln", settings =>
+        settings.SetConfiguration(configuration));
+    }
+}
+
+void RunTests()
+{
+    NUnit("./src/**/bin/" + configuration + "/*.Tests.dll", new NUnitSettings {
+        NoResults = true
+    });
+}
+
+void BuildUploadPackage(bool uploadPackage)
+{
+    uploadGelf4net(uploadPackage);
+    uploadGelf4netAmqpAppender(uploadPackage);
+    uploadGelf4netHttpAppender(uploadPackage);
+    uploadGelf4netUdpAppender(uploadPackage);
 }
 
 
@@ -234,54 +294,50 @@ Task("Restore-NuGet-Packages")
 });
 
 Task("Build")
-    .IsDependentOn("Restore-NuGet-Packages")
+    .IsDependentOn("UpdateVersion")
     .Does(() =>
 {
+    Build();
+});
 
-    if(IsRunningOnWindows())
-    {
-      // Use MSBuild
-        MSBuild($"./src/{appName}.sln", settings =>
-            settings.SetConfiguration(configuration));
-    }
-    else
-    {
-      // Use XBuild
-      XBuild($"./src/{appName}.sln", settings =>
-        settings.SetConfiguration(configuration));
-    }
+Task("UpdateVersion")
+    .IsDependentOn("Restore-NuGet-Packages")
+    .Does(() => {
+
+    var packageName = $"{appName}";
+    updateAssemblyFile(packageName);
+
+    packageName = $"{appName}.AmqpAppender";
+    updateAssemblyFile(packageName);
+
+    packageName = $"{appName}.HttpAppender";
+    updateAssemblyFile(packageName);
+
+    packageName = $"{appName}.UdpAppender";
+    updateAssemblyFile(packageName);
+
 });
 
 Task("Run-Unit-Tests")
     .IsDependentOn("Build")
     .Does(() =>
 {
-    NUnit("./src/**/bin/" + configuration + "/*.Tests.dll", new NUnitSettings {
-        NoResults = true
-    });
+    RunTests();
 });
+
 
 Task("BuildPackage")
     .IsDependentOn("Run-Unit-Tests")
     .Does(() =>
 {
-    uploadGelf4net(false);
-    uploadGelf4netAmqpAppender(false);
-    uploadGelf4netHttpAppender(false);
-    uploadGelf4netUdpAppender(false);
-
+    BuildUploadPackage(false);
 });
-
-
 
 Task("PushToNuget")
     .IsDependentOn("Run-Unit-Tests")
     .Does(() =>
 {
-    uploadGelf4net();
-    uploadGelf4netAmqpAppender();
-    uploadGelf4netHttpAppender();
-    uploadGelf4netUdpAppender();
+    BuildUploadPackage(true);
 
 });
 
