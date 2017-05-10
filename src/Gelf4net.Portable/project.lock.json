@@ -2,7 +2,7 @@
   "version": 2,
   "targets": {
     ".NETStandard,Version=v1.5": {
-      "log4net/2.0.7": {
+      "log4net/2.0.8": {
         "type": "package",
         "dependencies": {
           "System.AppContext": "4.1.0",
@@ -1559,10 +1559,10 @@
     }
   },
   "libraries": {
-    "log4net/2.0.7": {
-      "sha512": "9zY5lPFy4ppjeaTKwHjXbHe6lhle64Bnwui3YDEnnlo4NzHcUE9/h4BqCn3PCCvYbpwO4+ceWdqk9J/lxrQ9dQ==",
+    "log4net/2.0.8": {
+      "sha512": "N41MQGHZImiCfn0cUuSBjZxrcNfIQCuCgQP0rpgB3J/NWponEh3lc1LxJEuIsPAR9Oc1jVvfkNNFCY1C5hf9LA==",
       "type": "package",
-      "path": "log4net/2.0.7",
+      "path": "log4net/2.0.8",
       "files": [
         "lib/net20-full/log4net.dll",
         "lib/net20-full/log4net.xml",
@@ -1577,7 +1577,7 @@
         "lib/net45-full/log4net.dll",
         "lib/net45-full/log4net.xml",
         "lib/netstandard1.3/log4net.dll",
-        "log4net.2.0.7.nupkg.sha512",
+        "log4net.2.0.8.nupkg.sha512",
         "log4net.nuspec"
       ]
     },
@@ -5592,7 +5592,7 @@
       "Newtonsoft.Json >= 9.0.1",
       "RabbitMQ.Client >= 4.1.1",
       "System.ComponentModel.TypeConverter >= 4.3.0",
-      "log4net >= 2.0.7"
+      "log4net >= 2.0.8"
     ],
     ".NETStandard,Version=v1.5": []
   },
