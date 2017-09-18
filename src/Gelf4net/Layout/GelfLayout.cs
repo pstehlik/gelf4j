@@ -26,6 +26,7 @@ namespace Gelf4Net.Layout
             LogStackTraceFromMessage = true;
             IgnoresException = false;
             _patternLayout = new PatternLayout();
+            SendTimeStampAsString = true;
         }
 
         /// <summary>
@@ -79,6 +80,8 @@ namespace Gelf4Net.Layout
         /// Specifies wehter location inormation should be included in the message
         /// </summary>
         public bool IncludeLocationInformation { get; set; }
+
+        public bool SendTimeStampAsString { get; set; }
 
         public override void ActivateOptions()
         {
@@ -184,7 +187,7 @@ namespace Gelf4Net.Layout
 
         private GelfMessage GetBaseGelfMessage(LoggingEvent loggingEvent)
         {
-            var message = new GelfMessage
+            var message = new GelfMessage(SendTimeStampAsString)
             {
                 Facility = Facility ?? "GELF",
                 File = string.Empty,

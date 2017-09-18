@@ -752,6 +752,43 @@ namespace Gelf4Net.Tests.Layout
             return @event;
         }
 
+        [Test]
+        public void SendTimeStampAsString()
+        {
+            var layout = new GelfLayout();
+            layout.IncludeLocationInformation = true;
+
+            var message = "test";
+            var loggingEvent = GetLogginEventRenderedMessage(message);
+
+            var result = GetMessage(layout, loggingEvent);
+
+            Assert.AreEqual(message, result.FullMessage);
+            Assert.AreEqual(message, result.ShortMessage);
+            Assert.AreEqual(typeof(string), result["timestamp"].GetType());
+            Assert.IsNotNullOrEmpty(result.Line);
+            Assert.IsNotNullOrEmpty(result.File);
+        }
+
+        [Test]
+        public void SendTimeStampAsNumber()
+        {
+            var layout = new GelfLayout();
+            layout.IncludeLocationInformation = true;
+            layout.SendTimeStampAsString = false;
+
+            var message = "test";
+            var loggingEvent = GetLogginEventRenderedMessage(message);
+
+            var result = GetMessage(layout, loggingEvent);
+
+            Assert.AreEqual(message, result.FullMessage);
+            Assert.AreEqual(message, result.ShortMessage);
+            Assert.AreEqual(typeof(double), result["timestamp"].GetType());
+            Assert.IsNotNullOrEmpty(result.Line);
+            Assert.IsNotNullOrEmpty(result.File);
+        }
+
         private static LoggingEvent GetLogginEventRenderedMessage(string message)
         {
             var loggingEventData = new LoggingEventData

@@ -75,13 +75,24 @@ namespace Gelf4Net
                     return DateTime.MinValue;
 
                 var val = this[TimeStampKey];
-                double value;
-                var parsed = double.TryParse(val as string, NumberStyles.Any, CultureInfo.InvariantCulture, out value);
-                return parsed ? value.FromUnixTimestamp() : DateTime.MinValue;
+                if (_sentTimeStampAsString)
+                {
+                    double value;
+                    var parsed = double.TryParse(val as string, NumberStyles.Any, CultureInfo.InvariantCulture, out value);
+                    return parsed ? value.FromUnixTimestamp() : DateTime.MinValue;
+                }
+
+                return Convert.ToDouble(val).FromUnixTimestamp();
             }
             set
             {
-                StoreValue(TimeStampKey, value.ToUnixTimestamp().ToString(CultureInfo.InvariantCulture));
+                var timestamp = value.ToUnixTimestamp();
+                StoreValue(TimeStampKey, timestamp);
+                if (_sentTimeStampAsString)
+                {
+                    StoreValue(TimeStampKey, timestamp.ToString(CultureInfo.InvariantCulture));
+                }
+                
             }
         }
 
@@ -102,6 +113,18 @@ namespace Gelf4Net
                 Add(key, value);
             else
                 this[key] = value;
+        }
+
+        private bool _sentTimeStampAsString;
+
+        public GelfMessage(bool sendTimeStampAsString = false)
+        {
+            _sentTimeStampAsString = sendTimeStampAsString;
+        }
+
+        public GelfMessage()
+        {
+
         }
     }
 }

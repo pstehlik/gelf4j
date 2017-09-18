@@ -1,8 +1,10 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.26730.10
 MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{D9795F83-A101-42E6-9FBD-EE628AC205F0}"
+EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RandomSentence", "RandomSentence\RandomSentence.csproj", "{66FA4787-0847-4B16-A653-0D0E4A6ED6DB}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleConsoleApplication", "SimpleConsoleApplication\SimpleConsoleApplication.csproj", "{EC6086D7-2D09-43A8-A448-6B9067FAEF93}"
@@ -17,20 +19,15 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleConsoleApplicationUdp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleConsoleApplicationLoggingEvent", "SimpleConsoleApplicationLoggingEvent\SimpleConsoleApplicationLoggingEvent.csproj", "{BB7437A6-CAE6-4D15-80BD-CB7843BFCE6C}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "SimpleDotnetcoreConsoleApplication", "SimpleDotnetcoreConsoleApplication\SimpleDotnetcoreConsoleApplication.xproj", "{B73D00F0-68D2-48BD-8383-67C89DF15FAA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SimpleDotnetcoreConsoleApplication", "SimpleDotnetcoreConsoleApplication\SimpleDotnetcoreConsoleApplication.csproj", "{B73D00F0-68D2-48BD-8383-67C89DF15FAA}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "SimpleDotnetcoreConsoleApplicationAmqpPackage", "SimpleDotnetcoreConsoleApplicationAmqpPackage\SimpleDotnetcoreConsoleApplicationAmqpPackage.xproj", "{08DB026C-6DA8-466D-A589-82663D30E19F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SimpleDotnetcoreConsoleApplicationAmqpPackage", "SimpleDotnetcoreConsoleApplicationAmqpPackage\SimpleDotnetcoreConsoleApplicationAmqpPackage.csproj", "{08DB026C-6DA8-466D-A589-82663D30E19F}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "SimpleDotnetcoreConsoleApplicationHttpPackage", "SimpleDotnetcoreConsoleApplicationHttpPackage\SimpleDotnetcoreConsoleApplicationHttpPackage.xproj", "{667AA1B5-C157-40A1-8235-C8F3715AB6A1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SimpleDotnetcoreConsoleApplicationHttpPackage", "SimpleDotnetcoreConsoleApplicationHttpPackage\SimpleDotnetcoreConsoleApplicationHttpPackage.csproj", "{667AA1B5-C157-40A1-8235-C8F3715AB6A1}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "SimpleDotnetcoreConsoleApplicationUdpPackage", "SimpleDotnetcoreConsoleApplicationUdpPackage\SimpleDotnetcoreConsoleApplicationUdpPackage.xproj", "{788821F6-197B-4E3F-A1D0-3B1CDDADDBE5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SimpleDotnetcoreConsoleApplicationUdpPackage", "SimpleDotnetcoreConsoleApplicationUdpPackage\SimpleDotnetcoreConsoleApplicationUdpPackage.csproj", "{788821F6-197B-4E3F-A1D0-3B1CDDADDBE5}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{D9795F83-A101-42E6-9FBD-EE628AC205F0}"
-	ProjectSection(SolutionItems) = preProject
-		global.json = global.json
-	EndProjectSection
-EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "SimpleDotnetcoreWebApplication", "SimpleDotnetcoreWebApplication\SimpleDotnetcoreWebApplication.xproj", "{F4EBDF60-216C-48A9-B941-A3053E8283A9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SimpleDotnetcoreWebApplication", "SimpleDotnetcoreWebApplication\SimpleDotnetcoreWebApplication.csproj", "{F4EBDF60-216C-48A9-B941-A3053E8283A9}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JSNLogDemo_Log4Net", "JSNLogDemo_Log4Net\JSNLogDemo_Log4Net.csproj", "{BE76AA48-CD0F-4DA1-AA89-F1EB25812F9A}"
 EndProject
@@ -199,5 +196,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {7D69C9DF-2D73-45D5-9C60-3361C4668EA8}
 	EndGlobalSection
 EndGlobal

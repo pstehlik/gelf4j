@@ -29,6 +29,8 @@ void GenerateMergedDll(string outputFile, string primaryDll, IEnumerable<FilePat
 
 void PushPackage(string packageName, string newVersion)
 {
+    Console.WriteLine("push " + newVersion);
+/*
     var packagePath = $"{distDir}/{packageName}.{newVersion}.nupkg";
     var apiKey = FileReadText(File("./private/nugetapikey.txt"));
     Console.WriteLine(apiKey);
@@ -37,6 +39,7 @@ void PushPackage(string packageName, string newVersion)
         Source = "https://www.nuget.org/api/v2/package",
         ApiKey = apiKey
     });
+*/
 }
 
 string getAssemblyVersionFile(string packageName)
@@ -49,13 +52,13 @@ string getAssemblyVersionFile(string packageName)
     return string.Format("{0}.{1}.{2}.{3}", version[0], version[1], version[2], buildNumber);
 }
 
-string updateAssemblyFile(string packageName, bool revert = false)
+string updateAssemblyFile(string packageName)
 {
     var assemblyFile = $"./src/{packageName}/Properties/AssemblyInfo.cs";
 
     var assemblyVersion = getAssemblyVersionFile(packageName);
     var version = assemblyVersion.Split('.');
-    var buildNumber = int.Parse(version[3]) + (revert ? -1 : 1);
+    var buildNumber = int.Parse(version[3]) + 1;
 
     var newVersion = string.Format("{0}.{1}.{2}.{3}", version[0], version[1], version[2], buildNumber);
 
@@ -75,6 +78,10 @@ void uploadGelf4net(bool upload = true)
 {
     var packageName = appName;
     var newVersion = getAssemblyVersionFile(packageName);
+
+    if(upload){
+        newVersion = updateAssemblyFile(packageName);
+    }
 
     var net45Path = $"src/{packageName}/bin/Release/";
 
@@ -99,8 +106,6 @@ void uploadGelf4net(bool upload = true)
 
     if(upload){
         PushPackage(packageName, newVersion);
-    } else {
-        updateAssemblyFile(packageName, true);
     }
 }
 
@@ -109,6 +114,10 @@ void uploadGelf4netAmqpAppender(bool upload = true)
     var packageName = $"{appName}.AmqpAppender";
 
     var newVersion = getAssemblyVersionFile(packageName);
+
+    if(upload){
+        newVersion = updateAssemblyFile(packageName);
+    }
 
     var net45Path = $"src/{packageName}/bin/Release/";
     var portablePath = $"src/{packageName}.Portable/bin/Release/";
@@ -143,8 +152,6 @@ void uploadGelf4netAmqpAppender(bool upload = true)
 
     if(upload){
         PushPackage(packageName, newVersion);
-    } else {
-        updateAssemblyFile(packageName, true);
     }
 }
 
@@ -154,6 +161,10 @@ void uploadGelf4netHttpAppender(bool upload = true)
     var packageName = $"{appName}.HttpAppender";
 
     var newVersion = getAssemblyVersionFile(packageName);
+
+    if(upload){
+        newVersion = updateAssemblyFile(packageName);
+    }
 
     var net45Path = $"src/{packageName}/bin/Release/";
     var portablePath = $"src/{packageName}.Portable/bin/Release/";
@@ -186,8 +197,6 @@ void uploadGelf4netHttpAppender(bool upload = true)
 
     if(upload){
         PushPackage(packageName, newVersion);
-    } else {
-        updateAssemblyFile(packageName, true);
     }
 }
 
@@ -196,6 +205,9 @@ void uploadGelf4netUdpAppender(bool upload = true)
     var packageName = $"{appName}.UdpAppender";
 
     var newVersion = getAssemblyVersionFile(packageName);
+    if(upload){
+        newVersion = updateAssemblyFile(packageName);
+    }
 
     var appenderName = "UdpAppender";
     
@@ -231,8 +243,6 @@ void uploadGelf4netUdpAppender(bool upload = true)
 
     if(upload){
         PushPackage(packageName, newVersion);
-    } else {
-        updateAssemblyFile(packageName, true);
     }
 }
 
@@ -294,7 +304,7 @@ Task("Restore-NuGet-Packages")
 });
 
 Task("Build")
-    .IsDependentOn("UpdateVersion")
+    //.IsDependentOn("UpdateVersion")
     .Does(() =>
 {
     Build();
