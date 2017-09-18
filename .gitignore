@@ -35,3 +35,4 @@ upload.ps1
 tools/
 private/
 .vscode/
+src/.vs/

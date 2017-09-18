@@ -35,6 +35,7 @@ Gelf4Net gives you the ability to log messages either through Udp, Amqp or Http.
                 <param name="AdditionalFields" value="app:UdpAppenderCC,version:1.0,Environment:Dev,Level:%level" />
                 <param name="Facility" value="RandomPhrases" />
                 <param name="IncludeLocationInformation" value="true" />
+                <param name="SendTimeStampAsString" value="true"/>
                 <!-- Sets the full_message and short_message to the specified pattern-->
                 <param name="ConversionPattern" value="[%t] %c{1} - %m" />
             </layout>
@@ -47,6 +48,7 @@ Gelf4Net gives you the ability to log messages either through Udp, Amqp or Http.
                 <param name="AdditionalFields" value="app:UdpAppender,version:1.0,Environment:Dev,Level:%level" />
                 <param name="Facility" value="RandomPhrases" />
                 <param name="IncludeLocationInformation" value="true" />
+                <param name="SendTimeStampAsString" value="false"/>
             </layout>
         </appender>
 
@@ -57,6 +59,7 @@ Gelf4Net gives you the ability to log messages either through Udp, Amqp or Http.
                 <param name="AdditionalFields" value="app:AsyncUdpAppender,version:1.0,Environment:Dev,Level:%level" />
                 <param name="Facility" value="RandomPhrases" />
                 <param name="IncludeLocationInformation" value="true" />
+                <param name="SendTimeStampAsString" value="true"/>
             </layout>
         </appender>
 
@@ -66,6 +69,7 @@ Gelf4Net gives you the ability to log messages either through Udp, Amqp or Http.
                 <param name="AdditionalFields" value="app:HttpAppender,version:1.0,Environment:Dev,Level:%level" />
                 <param name="Facility" value="RandomPhrases" />
                 <param name="IncludeLocationInformation" value="true" />
+                <param name="SendTimeStampAsString" value="false"/>
                 <!--Sets the full_message and short_message to the specified pattern-->
                 <!--<param name="ConversionPattern" value="[%t] %c{1} - %m" />-->
             </layout>
@@ -83,6 +87,7 @@ Gelf4Net gives you the ability to log messages either through Udp, Amqp or Http.
                 <param name="AdditionalFields" value="app:GelfAmqpAppender,version:1.0,Level:%level" />
                 <param name="Facility" value="RandomPhrases" />
                 <param name="IncludeLocationInformation" value="true" />
+                <param name="SendTimeStampAsString" value="false"/>
                 <!-- Sets the full_message and short_message to the specified pattern-->
                 <!--<param name="ConversionPattern" value="[%t] %c{1} - %m" />-->
             </layout>
@@ -136,6 +141,7 @@ Gelf4Net gives you the ability to log messages either through Udp, Amqp or Http.
             <param name="AdditionalFields" value="app:GelfAmqpAppender,version:1.0,Level:%level" />
             <param name="Facility" value="RandomPhrases" />
             <param name="IncludeLocationInformation" value="true" />
+            <param name="SendTimeStampAsString" value="false"/>
             <!-- Sets the full_message and short_message to the specified pattern-->
             <!--<param name="ConversionPattern" value="[%t] %c{1} - %m" />-->
         </layout>
@@ -153,6 +159,7 @@ Gelf4Net gives you the ability to log messages either through Udp, Amqp or Http.
             <param name="AdditionalFields" value="app:AsyncGelfAmqpAppender,version:1.0,Level:%level" />
             <param name="Facility" value="RandomPhrases" />
             <param name="IncludeLocationInformation" value="true" />
+            <param name="SendTimeStampAsString" value="false"/>
             <!-- Sets the full_message and short_message to the specified pattern-->
             <!--<param name="ConversionPattern" value="[%t] %c{1} - %m" />-->
         </layout>
@@ -182,6 +189,7 @@ Gelf4Net gives you the ability to log messages either through Udp, Amqp or Http.
             <param name="AdditionalFields" value="app:DotnetcoreGelfAmqpAppender,version:1.0,Level:%level" />
             <param name="Facility" value="RandomPhrases" />
             <param name="IncludeLocationInformation" value="true" />
+            <param name="SendTimeStampAsString" value="false"/>
         </layout>
     </appender>
 
@@ -221,6 +229,7 @@ Gelf4Net gives you the ability to log messages either through Udp, Amqp or Http.
             <param name="AdditionalFields" value="app:GelfHttpAppender,version:1.0,Environment:Dev,Level:%level" />
             <param name="Facility" value="RandomPhrases" />
             <param name="IncludeLocationInformation" value="true" />
+            <param name="SendTimeStampAsString" value="false"/>
             <!-- Sets the full_message and short_message to the specified pattern-->
             <param name="ConversionPattern" value="[%t] %c{1} - %m" />
         </layout>
@@ -268,6 +277,7 @@ Gelf4Net gives you the ability to log messages either through Udp, Amqp or Http.
             <param name="AdditionalFields" value="app:AsyncGelfUdpAppender,version:1.0,Environment:Dev,Level:%level" />
             <param name="Facility" value="RandomPhrases" />
             <param name="IncludeLocationInformation" value="true" />
+            <param name="SendTimeStampAsString" value="false"/>
         </layout>
     </appender>
 
@@ -311,6 +321,7 @@ Gelf4Net gives you the ability to log messages either through Udp, Amqp or Http.
             <param name="AdditionalFields" value="app:DotnetcoreUdpAppender,version:1.0,Environment:Dev,Level:%level" />
             <param name="Facility" value="RandomPhrases" />
             <param name="IncludeLocationInformation" value="true" />
+            <param name="SendTimeStampAsString" value="false"/>
         </layout>
     </appender>
 

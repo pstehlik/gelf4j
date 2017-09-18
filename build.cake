@@ -29,8 +29,6 @@ void GenerateMergedDll(string outputFile, string primaryDll, IEnumerable<FilePat
 
 void PushPackage(string packageName, string newVersion)
 {
-    Console.WriteLine("push " + newVersion);
-/*
     var packagePath = $"{distDir}/{packageName}.{newVersion}.nupkg";
     var apiKey = FileReadText(File("./private/nugetapikey.txt"));
     Console.WriteLine(apiKey);
@@ -39,7 +37,7 @@ void PushPackage(string packageName, string newVersion)
         Source = "https://www.nuget.org/api/v2/package",
         ApiKey = apiKey
     });
-*/
+
 }
 
 string getAssemblyVersionFile(string packageName)
