@@ -7,8 +7,8 @@ using System.Reflection;
 
 [assembly: AssemblyTitle("Gelf4Net.UdpAppender")]
 [assembly: AssemblyProduct("Gelf4Net.UdpAppender")]
-[assembly: AssemblyVersion("1.0.0.11")]
-[assembly: AssemblyFileVersion("1.0.0.11")]
-[assembly: AssemblyInformationalVersion("1.0.0.11")]
-[assembly: AssemblyCopyright("MIT 2017")]
+[assembly: AssemblyVersion("1.0.0.12")]
+[assembly: AssemblyFileVersion("1.0.0.12")]
+[assembly: AssemblyInformationalVersion("1.0.0.12")]
+[assembly: AssemblyCopyright("MIT 2018")]
 

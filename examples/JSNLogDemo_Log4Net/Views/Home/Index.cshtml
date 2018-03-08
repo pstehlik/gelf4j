@@ -8,28 +8,28 @@
 <head>
     <meta name="viewport" content="width=device-width" />
     <title>JSNLogDemo_Log4Net</title>
-	
+    
     @Html.Raw(JSNLog.JavascriptLogging.Configure())
-	
+    
     <script src="~/scripts/jsnlogdemo.js"></script>
 </head>
 <body>
     <h1>JSNLogDemo_Log4Net</h1>
-	
-	<p>
-	Log messages are sent to server the moment this page is opened.
-	</p>
-	<p>
-	The code generating the log messages is in scripts/jsnlogdemo.js.
-	</p>
-	<p>
-	JSNLog sets the <i>window.onerror</i> handler when it loads, so uncaught JavaScript exceptions are sent to your server side log.
-	However, it will only do that if <i>window.onerror</i> has not already been set 
-	(<a href="http://jsnlog.com/Documentation/HowTo/ExceptionLogging">details</a>). That way, if you are setting your own onerror handler, it won't override that.  
-	</p>
-	
-	
-	        
+    
+    <p>
+    Log messages are sent to server the moment this page is opened.
+    </p>
+    <p>
+    The code generating the log messages is in scripts/jsnlogdemo.js.
+    </p>
+    <p>
+    JSNLog sets the <i>window.onerror</i> handler when it loads, so uncaught JavaScript exceptions are sent to your server side log.
+    However, it will only do that if <i>window.onerror</i> has not already been set 
+    (<a href="http://jsnlog.com/Documentation/HowTo/ExceptionLogging">details</a>). That way, if you are setting your own onerror handler, it won't override that.  
+    </p>
+    
+    
+            
     <div>
     </div>
 </body>

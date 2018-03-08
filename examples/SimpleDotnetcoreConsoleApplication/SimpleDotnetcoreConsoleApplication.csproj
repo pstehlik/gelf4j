@@ -13,7 +13,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Gelf4Net" Version="3.0.0.7" />
+    <PackageReference Include="Gelf4Net" Version="3.0.0.8" />
   </ItemGroup>
 
 </Project>

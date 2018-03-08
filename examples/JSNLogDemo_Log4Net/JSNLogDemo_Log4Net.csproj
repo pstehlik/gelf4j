@@ -56,8 +56,8 @@
       <HintPath>..\packages\Common.Logging.Log4Net.Universal.1.0.1\lib\net40\Common.Logging.Log4Net.Universal.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Gelf4Net, Version=3.0.0.6, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Gelf4Net.3.0.0.7\lib\net45\Gelf4Net.dll</HintPath>
+    <Reference Include="Gelf4Net, Version=3.0.0.7, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Gelf4Net.3.0.0.8\lib\net45\Gelf4Net.dll</HintPath>
     </Reference>
     <Reference Include="JSNLog, Version=2.22.1.0, Culture=neutral, PublicKeyToken=742e180f6c5ccd0d, processorArchitecture=MSIL">
       <HintPath>..\packages\JSNLog.2.22.1\lib\net40\JSNLog.dll</HintPath>

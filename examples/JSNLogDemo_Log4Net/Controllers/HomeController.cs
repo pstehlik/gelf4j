@@ -12,8 +12,8 @@ namespace JSNLogDemo_Log4Net.Controllers
         public ActionResult Index()
         {
 		
-log4net.ILog log = log4net.LogManager.GetLogger("serverlogger");
-log.Info("info server log message");
+            log4net.ILog log = log4net.LogManager.GetLogger("serverlogger");
+            log.Info("info server log message");
 
             return View();
         }

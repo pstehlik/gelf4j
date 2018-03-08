@@ -1,5 +1,5 @@
 {
-  "version": 2,
+  "version": 3,
   "targets": {
     ".NETStandard,Version=v1.5": {
       "log4net/2.0.8": {
@@ -5779,7 +5779,8 @@
     ".NETStandard,Version=v1.5": []
   },
   "packageFolders": {
-    "C:\\Users\\jjchiw\\.nuget\\packages\\": {}
+    "C:\\Users\\jjchiw\\.nuget\\packages\\": {},
+    "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackagesFallback\\": {}
   },
   "project": {
     "restore": {
@@ -5787,10 +5788,23 @@
       "projectName": "Gelf4Net.AmqpAppender.Portable",
       "projectPath": "C:\\Users\\jjchiw\\Documents\\Github\\gelf4net\\src\\Gelf4Net.AmqpAppender.Portable\\Gelf4Net.AmqpAppender.Portable.csproj",
       "projectJsonPath": "C:\\Users\\jjchiw\\Documents\\Github\\gelf4net\\src\\Gelf4Net.AmqpAppender.Portable\\project.json",
+      "packagesPath": "C:\\Users\\jjchiw\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\jjchiw\\Documents\\Github\\gelf4net\\src\\Gelf4Net.AmqpAppender.Portable\\obj\\",
       "projectStyle": "ProjectJson",
-      "validateRuntimeAssets": true,
-      "files": {
-        "lib/netstandard1.5/Gelf4Net.AmqpAppender.Portable.dll": "C:\\Users\\jjchiw\\Documents\\Github\\gelf4net\\src\\Gelf4Net.AmqpAppender.Portable\\bin\\placeholder\\netstandard1.5\\Gelf4Net.AmqpAppender.Portable.dll"
+      "fallbackFolders": [
+        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackagesFallback\\"
+      ],
+      "configFilePaths": [
+        "C:\\Users\\jjchiw\\Documents\\Github\\gelf4net\\src\\NuGet.Config",
+        "C:\\Users\\jjchiw\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.Fallback.config"
+      ],
+      "sources": {
+        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+        "http://nuget.uxdivers.com/grial": {},
+        "https://api.nuget.org/v3/index.json": {},
+        "https://www.myget.org/F/aspnetcore-identity-marten/api/v3/index.json": {}
       },
       "frameworks": {
         "netstandard1.5": {
@@ -5803,11 +5817,11 @@
       }
     },
     "dependencies": {
-      "log4net": "2.0.8",
-      "Microsoft.NETCore.Portable.Compatibility": "1.0.1",
-      "NETStandard.Library": "1.6.0",
-      "Newtonsoft.Json": "9.0.1",
-      "RabbitMQ.Client": "4.1.1"
+      "Microsoft.NETCore.Portable.Compatibility": "[1.0.1, )",
+      "NETStandard.Library": "[1.6.0, )",
+      "Newtonsoft.Json": "[9.0.1, )",
+      "RabbitMQ.Client": "[4.1.1, )",
+      "log4net": "[2.0.8, )"
     },
     "frameworks": {
       "netstandard1.5": {}
