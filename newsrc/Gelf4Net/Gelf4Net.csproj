@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <ProjectReference Include="..\Gelf4Net.HttpAppender\Gelf4Net.HttpAppender.csproj" />
+    <ProjectReference Include="..\Gelf4Net.UdpAppender\Gelf4Net.UdpAppender.csproj" />
+    <ProjectReference Include="..\Gelf4Net.AmqpAppender\Gelf4Net.AmqpAppender.csproj" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <TargetFramework>netstandard1.5</TargetFramework>
+  </PropertyGroup>
+
+</Project>
