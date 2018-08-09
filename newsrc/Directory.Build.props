@@ -2,6 +2,9 @@
   <PropertyGroup>
     <Version>3.0.0.9</Version>
     <PackageVersion>3.0.0.9</PackageVersion>
+    <Authors>micahlmartin, jjchiw, contributors</Authors>
+    <PackageProjectUrl>https://github.com/jjchiw/gelf4net</PackageProjectUrl>
+    <PackageIconUrl>http://nuget.org/Content/Images/packageDefaultIcon.png</PackageIconUrl>
+    <PackageLicenseUrl>https://opensource.org/licenses/MIT</PackageLicenseUrl>
   </PropertyGroup>
 </Project>
-

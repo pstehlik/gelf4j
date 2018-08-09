@@ -8,6 +8,7 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard1.5</TargetFramework>
+    <Description>GELF log4net UdpAppender, AmqpAppender, HttpAppender - graylog2. Built for log4net</Description>
   </PropertyGroup>
 
 </Project>
