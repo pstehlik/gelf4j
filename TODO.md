@@ -3,4 +3,4 @@
  * [ ] Add targets for `net45`
  * [ ] ILMerge support (msbuild???)
  * [ ] Type Forwarders
- * [ ] Check Dependency Versions
+ * [x] Check Dependency Versions

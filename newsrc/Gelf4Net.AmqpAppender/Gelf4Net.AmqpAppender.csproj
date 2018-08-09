@@ -1,12 +1,16 @@
 <Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <ProjectReference Include="..\Gelf4Net.Core\Gelf4Net.Core.csproj" />
+  </ItemGroup>
+
   <PropertyGroup>
     <TargetFramework>netstandard1.5</TargetFramework>
     <Description>GELF log4net AmqpAppender - graylog2. Built for log4net</Description>
   </PropertyGroup>
+
   <ItemGroup>
-    <PackageReference Include="RabbitMQ.Client" Version="5.1.0" />
+    <PackageReference Include="RabbitMQ.Client" Version="4.1.1" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Gelf4Net.Core\Gelf4Net.Core.csproj" />
-  </ItemGroup>
+
 </Project>
