@@ -55,7 +55,19 @@ Task("Run-Unit-Tests")
   .IsDependentOn("Build")
   .Does(() =>
 {
-  DotNetCoreTest("./test/Gelf4Net.Tests/");
+  var settings = new DotNetCoreTestSettings
+  {
+    Framework = "net47",
+    Configuration = configuration,
+    NoBuild = true,
+    NoRestore = true,
+  };
+
+  var projectFiles = GetFiles("./test/**/*.csproj");
+  foreach(var file in projectFiles)
+  {
+    DotNetCoreTest(file.FullPath, settings);
+  }
 });
 
 
@@ -63,11 +75,17 @@ Task("BuildPackage")
   .IsDependentOn("Run-Unit-Tests")
   .Does(() =>
 {
-  // BuildUploadPackage(false);
+  var settings = new DotNetCorePackSettings
+  {
+    Configuration = configuration,
+    OutputDirectory = "./artifacts/"
+  };
+
+  DotNetCorePack("gelf4net.sln", settings);
 });
 
 Task("PushToNuget")
-  .IsDependentOn("Run-Unit-Tests")
+  .IsDependentOn("BuildPackage")
   .Does(() =>
 {
   // BuildUploadPackage(true);
