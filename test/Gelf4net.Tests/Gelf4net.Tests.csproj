@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
-    <ProjectReference Include="..\..\newsrc\Gelf4Net\Gelf4Net.csproj" />
+    <ProjectReference Include="..\..\src\Gelf4Net\Gelf4Net.csproj" />
   </ItemGroup>
 
   <PropertyGroup>
