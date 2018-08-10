@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard1.5</TargetFramework>
+    <TargetFrameworks>netstandard1.5;net451</TargetFrameworks>
     <Description>GELF log4net core classes.</Description>
   </PropertyGroup>
 

@@ -5,7 +5,7 @@
   </ItemGroup>
 
   <PropertyGroup>
-    <TargetFramework>netstandard1.5</TargetFramework>
+    <TargetFrameworks>netstandard1.5;net451</TargetFrameworks>
     <Description>GELF log4net UdpAppender - graylog2. Built for log4net</Description>
   </PropertyGroup>
 
