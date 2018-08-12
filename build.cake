@@ -1,8 +1,10 @@
+#addin "Cake.FileHelpers"
 
 //////////////////////////////////////////////////////////////////////
 // ARGUMENTS
 //////////////////////////////////////////////////////////////////////
 
+var artifactsDir = MakeAbsolute(Directory("./artifacts"));
 var target = Argument("target", "Default");
 var configuration = Argument("configuration", "Release");
 
@@ -13,6 +15,7 @@ var configuration = Argument("configuration", "Release");
 Task("Clean")
   .Does(() =>
 {
+  CleanDirectory(artifactsDir);
   DotNetCoreClean("./gelf4net.sln");
 });
 
@@ -24,31 +27,13 @@ Task("Restore-NuGet-Packages")
 });
 
 Task("Build")
-  //.IsDependentOn("UpdateVersion")
+  .IsDependentOn("Clean")
   .Does(() =>
 {
   DotNetCoreBuild("./gelf4net.sln", new DotNetCoreBuildSettings
   {
     Configuration = configuration,
   });
-});
-
-Task("UpdateVersion")
-  .IsDependentOn("Restore-NuGet-Packages")
-  .Does(() => {
-
-  // var packageName = $"{appName}";
-  // updateAssemblyFile(packageName);
-
-  // packageName = $"{appName}.AmqpAppender";
-  // updateAssemblyFile(packageName);
-
-  // packageName = $"{appName}.HttpAppender";
-  // updateAssemblyFile(packageName);
-
-  // packageName = $"{appName}.UdpAppender";
-  // updateAssemblyFile(packageName);
-
 });
 
 Task("Run-Unit-Tests")
@@ -88,7 +73,19 @@ Task("PushToNuget")
   .IsDependentOn("BuildPackage")
   .Does(() =>
 {
-  // BuildUploadPackage(true);
+    var apiKey = FileReadText(File("./private/nugetapikey.txt"));
+    var settings = new DotNetCoreNuGetPushSettings
+    {
+        Source = "https://api.nuget.org/v3/index.json",
+        ApiKey = apiKey
+    };
+
+    var files = GetFiles("./artifacts/*.nupkg");
+    foreach(var file in files)
+    {
+        Information("File: {0}", file.FullPath);
+        DotNetCoreNuGetPush(file.FullPath, settings);
+    }
 });
 
 //////////////////////////////////////////////////////////////////////

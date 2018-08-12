@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
     <ProjectReference Include="..\Gelf4Net.HttpAppender\Gelf4Net.HttpAppender.csproj" />
@@ -7,10 +7,12 @@
   </ItemGroup>
 
   <PropertyGroup>
-    <Version>3.0.0.9</Version>
-    <PackageVersion>3.0.0.9</PackageVersion>
+    <Version>3.0.0.10</Version>
+    <PackageVersion>3.0.0.10</PackageVersion>
     <TargetFrameworks>netstandard1.5;net451</TargetFrameworks>
     <Description>GELF log4net UdpAppender, AmqpAppender, HttpAppender - graylog2. Built for log4net</Description>
+    <AssemblyVersion>3.0.0.10</AssemblyVersion>
+    <FileVersion>3.0.0.10</FileVersion>
   </PropertyGroup>
 
 </Project>

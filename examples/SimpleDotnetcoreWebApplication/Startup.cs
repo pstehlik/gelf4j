@@ -46,11 +46,9 @@ namespace SimpleDotnetcoreWebApplication
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
-            loggerFactory.AddDebug();
+            //loggerFactory.AddDebug();
             loggerFactory.AddLog4Net();
-
-            app.UseApplicationInsightsRequestTelemetry();
-
+            
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -60,9 +58,7 @@ namespace SimpleDotnetcoreWebApplication
             {
                 app.UseExceptionHandler("/Home/Error");
             }
-
-            app.UseApplicationInsightsExceptionTelemetry();
-
+            
             app.UseStaticFiles();
 
             app.UseMvc(routes =>

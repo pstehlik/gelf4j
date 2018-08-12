@@ -1,8 +1,4 @@
-2018-03-08 21:27:59,655 | INFO | serverlogger | info server log message
-2018-03-08 21:28:02,531 | FATAL | onerrorLogger | {"stack":"ReferenceError: 'xyz2' is not defined\n   at Global code (http://localhost:54823/scripts/jsnlogdemo.js:21:1)","message":"'xyz2' is not defined","name":"ReferenceError","logData":{"msg":"Uncaught Exception","errorMsg":"'xyz2' is not defined","url":"http://localhost:54823/scripts/jsnlogdemo.js","line number":21,"column":1}}
-2018-03-08 21:28:02,531 | ERROR | jsLogger | error client log message - returned by function
-2018-03-08 21:28:02,532 | DEBUG | jsLogger | debug client log message
-2018-03-08 21:28:02,641 | FATAL | jsLogger | fatal client log message
-2018-03-08 21:28:02,535 | WARN | jsLogger | {"msg":"warn client log message - logging object","x":5,"y":88}
-2018-03-08 21:28:02,542 | INFO | jsLogger | info client log message
-2018-03-08 21:28:02,900 | FATAL | ClientRoot | {"stack":"ReferenceError: 'xyz' is not defined\n   at Global code (http://localhost:54823/scripts/jsnlogdemo.js:14:2)","message":"'xyz' is not defined","name":"ReferenceError","logData":"Something went wrong!"}
+2018-08-12 15:13:39,055 | INFO | serverlogger | info server log message
+2018-08-12 15:35:37,492 | INFO | serverlogger | info server log message
+2018-08-12 15:36:27,383 | INFO | serverlogger | info server log message
+2018-08-12 15:36:41,989 | INFO | serverlogger | info server log message
