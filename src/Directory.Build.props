@@ -1,0 +1,10 @@
+<Project>
+  <PropertyGroup>
+    <Version>1.0.0.13</Version>
+    <PackageVersion>1.0.0.13</PackageVersion>
+    <Authors>micahlmartin, jjchiw, contributors</Authors>
+    <PackageProjectUrl>https://github.com/jjchiw/gelf4net</PackageProjectUrl>
+    <PackageIconUrl>http://nuget.org/Content/Images/packageDefaultIcon.png</PackageIconUrl>
+    <PackageLicenseUrl>https://opensource.org/licenses/MIT</PackageLicenseUrl>
+  </PropertyGroup>
+</Project>

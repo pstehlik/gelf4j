@@ -37,3 +37,5 @@ private/
 .vscode/
 src/.vs/
 examples/JSNLogDemo_Log4Net/Logs/
+
+artifacts/
